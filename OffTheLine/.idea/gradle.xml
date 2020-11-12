@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -10,12 +11,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/android" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/andoridEngine" />
+            <option value="$PROJECT_DIR$/androidLauncher" />
             <option value="$PROJECT_DIR$/engine" />
-            <option value="$PROJECT_DIR$/logic" />
-            <option value="$PROJECT_DIR$/main" />
-            <option value="$PROJECT_DIR$/pc" />
+            <option value="$PROJECT_DIR$/offTheLineLogic" />
+            <option value="$PROJECT_DIR$/windowsEngine" />
+            <option value="$PROJECT_DIR$/windowsLauncher" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

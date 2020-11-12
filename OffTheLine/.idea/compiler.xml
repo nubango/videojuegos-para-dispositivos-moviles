@@ -5,7 +5,10 @@
       <module name="engine" target="1.7" />
       <module name="logic" target="1.7" />
       <module name="main" target="1.7" />
+      <module name="offTheLineLogic" target="1.7" />
       <module name="pc" target="1.7" />
+      <module name="windowsEngine" target="1.7" />
+      <module name="windowsLauncher" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
