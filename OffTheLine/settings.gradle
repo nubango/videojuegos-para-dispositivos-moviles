@@ -1,5 +1,5 @@
+include ':androidEngine'
 include ':windowsEngine'
-include ':andoridEngine'
 include ':offTheLineLogic'
 include ':windowsLauncher'
 include ':androidLauncher'

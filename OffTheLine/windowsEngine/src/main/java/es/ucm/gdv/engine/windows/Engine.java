@@ -7,6 +7,8 @@ import es.ucm.gdv.engine.Input;
 
 public class Engine implements es.ucm.gdv.engine.Engine {
 
+    public Engine() { }
+
     public boolean init(String winTitle) {
         _graphics = new es.ucm.gdv.engine.windows.Graphics(winTitle);
         _graphics.init();

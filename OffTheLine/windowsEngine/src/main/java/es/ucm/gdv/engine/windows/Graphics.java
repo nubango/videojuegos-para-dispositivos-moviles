@@ -15,11 +15,13 @@ public class Graphics extends JFrame implements es.ucm.gdv.engine.Graphics {
 
     public boolean init()
     {
-        setSize(400,400);
+        setSize(480,640);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        /*
         createBufferStrategy(2);    // creamos dos buffers
         _strategy = getBufferStrategy();
+        */
         return true;
     }
 

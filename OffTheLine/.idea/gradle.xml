@@ -11,7 +11,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/andoridEngine" />
+            <option value="$PROJECT_DIR$/androidEngine" />
             <option value="$PROJECT_DIR$/androidLauncher" />
             <option value="$PROJECT_DIR$/engine" />
             <option value="$PROJECT_DIR$/offTheLineLogic" />
