@@ -6,9 +6,18 @@ import es.ucm.gdv.engine.Graphics;
 import es.ucm.gdv.engine.Input;
 
 public class Engine implements es.ucm.gdv.engine.Engine {
+
+    public boolean init(String winTitle) {
+        _graphics = new es.ucm.gdv.engine.windows.Graphics(winTitle);
+        _graphics.init();
+        _graphics.setIgnoreRepaint(false);
+        _graphics.setVisible(true);
+        return true;
+    }
+
     @Override
     public Graphics getGraphics() {
-        return null;
+        return _graphics;
     }
 
     @Override
@@ -20,4 +29,6 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     public InputStream openInputStream(String filename) {
         return null;
     }
+
+    es.ucm.gdv.engine.windows.Graphics _graphics;
 }

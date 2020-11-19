@@ -1,8 +1,37 @@
 package es.ucm.gdv.engine.windows;
 
+import java.awt.image.BufferStrategy;
+
+import javax.swing.JFrame;
+
 import es.ucm.gdv.engine.Font;
 
-public class Graphics implements es.ucm.gdv.engine.Graphics {
+public class Graphics extends JFrame implements es.ucm.gdv.engine.Graphics {
+
+    public Graphics(String titulo)
+    {
+        super(titulo);
+    }
+
+    public boolean init()
+    {
+        setSize(400,400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        createBufferStrategy(2);    // creamos dos buffers
+        _strategy = getBufferStrategy();
+        return true;
+    }
+
+    public void assignGraphics() {
+        _graphics = _strategy.getDrawGraphics();
+    }
+
+    public void disposeGraphics() {
+        _graphics.dispose();
+    }
+
+
 
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
@@ -72,4 +101,8 @@ public class Graphics implements es.ucm.gdv.engine.Graphics {
     public int getHeight() {
         return 0;
     }
+
+    BufferStrategy _strategy;
+    java.awt.Graphics _graphics;
+
 }
