@@ -9,6 +9,9 @@ import java.io.InputStream;
 
 public interface Engine {
 
+    // Inicializa el bucle principal de juego con la logica que le pasamos
+    void initLogic(Logic logic);
+
     // Devuelve la instancia del motor grafico
     Graphics getGraphics();
 

@@ -6,34 +6,21 @@ import javax.swing.JFrame;
 
 import es.ucm.gdv.engine.Font;
 
-public class Graphics extends JFrame implements es.ucm.gdv.engine.Graphics {
+public class Graphics implements es.ucm.gdv.engine.Graphics {
 
-    public Graphics(String titulo)
+    public Graphics()
     {
-        super(titulo);
     }
 
-    public boolean init()
+    public void setGraphics(java.awt.Graphics2D graphics)
     {
-        setSize(480,640);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        /*
-        createBufferStrategy(2);    // creamos dos buffers
-        _strategy = getBufferStrategy();
-        */
-        return true;
+        _graphics = graphics;
     }
 
-    public void assignGraphics() {
-        _graphics = _strategy.getDrawGraphics();
-    }
-
-    public void disposeGraphics() {
+    public void dispose()
+    {
         _graphics.dispose();
     }
-
-
 
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
@@ -80,17 +67,20 @@ public class Graphics extends JFrame implements es.ucm.gdv.engine.Graphics {
     */
 
     @Override
-    public void drawLine(int x1, int y1, int x2, int y2) {
-
+    public void drawLine(int x1, int y1, int x2, int y2)
+    {
+        _graphics.drawLine(x1, y1, x2, y2);
     }
 
     @Override
-    public void fillRect(int x1, int y1, int x2, int y2) {
-
+    public void fillRect(int x1, int y1, int x2, int y2)
+    {
+        _graphics.fillRect(x1, y1, x2, y2);
     }
 
     @Override
-    public void drawText(String text, int x, int y) {
+    public void drawText(String text, int x, int y)
+    {
 
     }
 
@@ -104,7 +94,6 @@ public class Graphics extends JFrame implements es.ucm.gdv.engine.Graphics {
         return 0;
     }
 
-    BufferStrategy _strategy;
-    java.awt.Graphics _graphics;
+    java.awt.Graphics2D _graphics;
 
 }
