@@ -13,17 +13,17 @@ public interface Graphics {
      Font newFont(String filename, int size, boolean isBold);
 
     // Borra el contenido completo de la ventana, rellenandolo con un color recibido
-   // void clear(Color color);
+    void clear(Color color);
 
     // Metodos de control de la transformacion sobre el canvas
-    void translate(double x, double y);
+    void translate(int x, int y);
     void scale(double x, double y);
     void rotate(double angle);
-    void save();
+    boolean save();
     void restore();
 
     // Establece el color a utilizar en las operaciones de dibujado posteriores
-   // void setColor(Color color);
+    void setColor(Color color);
 
     // Dibuja una linea
     void drawLine(int x1, int y1, int x2, int y2);
@@ -37,5 +37,6 @@ public interface Graphics {
     // Devuelven el tamano de la ventana
     int getWidth();
     int getHeight();
+    void setLogicSize(int w, int h);
 
 }

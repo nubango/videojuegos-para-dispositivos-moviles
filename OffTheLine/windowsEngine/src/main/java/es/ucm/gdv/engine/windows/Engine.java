@@ -1,5 +1,6 @@
 package es.ucm.gdv.engine.windows;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.io.InputStream;
@@ -14,9 +15,9 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
     public Engine() { }
 
-    public boolean init(String winTitle) {
+    public boolean initApplication(String winTitle, int w, int h) {
         _ventana = new JFrame(winTitle);
-        _ventana.setSize(640,480);
+        _ventana.setSize(w,h);
         _ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _ventana.setIgnoreRepaint(false);
         _ventana.setVisible(true);
@@ -26,6 +27,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         return true;
     }
 
+    @Override
     public void initLogic(Logic logic)
     {
         long lastFrameTime = System.nanoTime();
@@ -34,6 +36,8 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
         BufferStrategy strategy = _ventana.getBufferStrategy();
 
+
+
         while(true)
         {
             long currentTime = System.nanoTime();
@@ -41,6 +45,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
             lastFrameTime = currentTime;
 
             _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
+            _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
 
             logic.update(nanoDelta / 1.0E9);
             try{
