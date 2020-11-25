@@ -17,7 +17,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
     public boolean initApplication(String winTitle, int w, int h) {
         _ventana = new JFrame(winTitle);
-        _ventana.setSize(w,h);
+        _ventana.setSize(w, h);
         _ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _ventana.setIgnoreRepaint(false);
         _ventana.setVisible(true);
@@ -35,7 +35,6 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _ventana.createBufferStrategy(2);
 
         BufferStrategy strategy = _ventana.getBufferStrategy();
-
 
 
         while(true)

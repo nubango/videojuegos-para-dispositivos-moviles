@@ -13,9 +13,18 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     {
         _transformQueue = new LinkedList<>();
         // cantidad de pixeles que ocupa la barra superior de la ventana
-        _offsetBar = 58;
+        //_offsetBar = 58;
+        _offsetBar = 45;
     }
 
+    /*
+    * DUDAS:
+    * Hemos hecho las cuentas del reescalado pero no sabemos muy bien cómo usar los números.
+	*   - Lo primero, en PC cuando se tiene que hacer el reescalado? en cada vuelta de bucle?
+	*   - Donde aplicamos las cuentas y como? en el método de drawLine aplicamos la traslación
+	*   traslate(w, h) y el escalado scale(x,x) o no usamos esos métodos y lo que hacemos es
+	*   directamente multiplicar por el factor de escala y trasladar los puntos?
+    * */
     void setScaleFactor(int wReal, int hReal) {
         _widthSizeWindow = wReal;
         _heightSizeWindow = hReal;
@@ -23,8 +32,6 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         // factor de escala: hay dos y escogemos el más pequeño porque es el "mínimo común múltiplo entre los dos"
         double wFactor = wReal / (float)getWidth();
         double hFactor = hReal / (float)getHeight();
-
-        _scaleFactor = Math.min(wFactor, hFactor);
 
         // si hemos escogido el wFactor, el width de la pantalla ocupa el width de la ventana entero
         if (wFactor < hFactor) {
@@ -37,13 +44,13 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         else {
             _scaleFactor = hFactor;
 
-            _widthSizeScreen =  (hReal * getWidth()) / getHeight();;
+            _widthSizeScreen =  (hReal * getWidth()) / getHeight();
             _heightSizeScreen = hReal;
         }
 
         // calculamos lo que miden las barras negras tanto superior como inferior
         _widthBlackBar = (wReal - _widthSizeScreen) / 2;
-        _heightBlackBar = ((hReal - _heightSizeScreen) / 2);
+        _heightBlackBar = ((hReal - _heightSizeScreen + _offsetBar) / 2);
 
 /*
         scale(_scaleFactor, _scaleFactor);
@@ -51,16 +58,15 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         // offset baja el origen de coordenadas para que empiece por debajo de la barra de la ventana
         translate(_widthBlackBar, _heightBlackBar+_offsetBar);
 */
+        // Pintamos el fondo de negro
+        _graphics.setBackground(Color.black);
+        _graphics.clearRect(0,0, _widthSizeWindow, _heightSizeWindow);
 
     }
 
     public void setGraphics(java.awt.Graphics2D graphics)
     {
         _graphics = graphics;
-
-        // debug
-        _graphics.setColor(Color.black);
-        _graphics.fillRect(0, 0, _widthSizeWindow, _heightSizeWindow);
     }
 
     public void dispose()
@@ -75,12 +81,15 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     @Override
     public void clear(Color color) {
+        _graphics.setBackground(color);
 
-        // Debug
-        Color c = _graphics.getColor();
-        _graphics.setColor(color);
-        _graphics.fillRect(_widthBlackBar, _heightBlackBar, _widthSizeScreen , _heightSizeScreen);
-        _graphics.setColor(c);
+        if (save()) {
+            translate(_widthBlackBar, _heightBlackBar);
+            scale(_scaleFactor, _scaleFactor);
+        }
+
+        _graphics.clearRect(0, 0, getWidth(), getHeight());
+        restore();
     }
 
     @Override
@@ -123,20 +132,39 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     @Override
     public void drawLine(int x1, int y1, int x2, int y2)
     {
+        if (save()) {
+            translate(_widthBlackBar, _heightBlackBar);
+            scale(_scaleFactor, _scaleFactor);
+
+        }
+
+        _graphics.drawLine(x1, y1, x2, y2);
+
+        restore();
+        /*
         int sx1, sy1, sx2, sy2;
         sx1 = (int)(x1*_scaleFactor) + _widthBlackBar;
-        sy1 = (int)(y1*_scaleFactor) + _heightBlackBar;
+        sy1 = (int)(y1*_scaleFactor) + _heightBlackBar + _offsetBar;
         sx2 = (int)(x2*_scaleFactor) + _widthBlackBar;
         sy2 = (int)(y2*_scaleFactor) + _heightBlackBar;
 
         _graphics.drawLine(sx1, sy1, sx2, sy2);
+
+         */
         //_graphics.drawLine(x1, y1, x2, y2);
     }
 
     @Override
     public void fillRect(int x1, int y1, int x2, int y2)
     {
+        if (save()) {
+            translate(_widthBlackBar, _heightBlackBar);
+            scale(_scaleFactor, _scaleFactor);
+        }
+        _graphics.fillRect(x1, y1, x2, y2);
+        restore();
 
+        /*
         int sx1, sy1, sx2, sy2;
         sx1 = (int)(x1*_scaleFactor) + _widthBlackBar;
         sy1 = (int)(y1*_scaleFactor) + _heightBlackBar;
@@ -144,6 +172,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         sy2 = (int)(y2*_scaleFactor) + _heightBlackBar;
 
         _graphics.fillRect(sx1, sy1, sx2, sy2);
+        */
        // _graphics.fillRect(x1, y1, x2, y2);
 
     }
