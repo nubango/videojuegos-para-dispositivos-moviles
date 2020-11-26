@@ -17,11 +17,11 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
     public boolean initApplication(String winTitle, int w, int h) {
         _ventana = new JFrame(winTitle);
+        //_ventana.setUndecorated(true);
         _ventana.setSize(w, h);
         _ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _ventana.setIgnoreRepaint(false);
         _ventana.setVisible(true);
-
         _graphics = new es.ucm.gdv.engine.windows.Graphics();
 
         return true;
@@ -43,9 +43,13 @@ public class Engine implements es.ucm.gdv.engine.Engine {
             long nanoDelta = currentTime - lastFrameTime;
             lastFrameTime = currentTime;
 
-            _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
-            _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
+            //_ventana.setSize(_ventana.getSize().width + 1, _ventana.getSize().height + 3);
 
+            _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
+
+
+            // un listener -> futuro
+            _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
             logic.update(nanoDelta / 1.0E9);
             try{
                 logic.render(_graphics);

@@ -14,7 +14,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         _transformQueue = new LinkedList<>();
         // cantidad de pixeles que ocupa la barra superior de la ventana
         //_offsetBar = 58;
-        _offsetBar = 45;
+        _offsetBar = 0;
     }
 
     /*
@@ -62,6 +62,8 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         _graphics.setBackground(Color.black);
         _graphics.clearRect(0,0, _widthSizeWindow, _heightSizeWindow);
 
+        translate(_widthBlackBar, _heightBlackBar);
+        scale(_scaleFactor, _scaleFactor);
     }
 
     public void setGraphics(java.awt.Graphics2D graphics)
@@ -82,14 +84,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     @Override
     public void clear(Color color) {
         _graphics.setBackground(color);
-
-        if (save()) {
-            translate(_widthBlackBar, _heightBlackBar);
-            scale(_scaleFactor, _scaleFactor);
-        }
-
         _graphics.clearRect(0, 0, getWidth(), getHeight());
-        restore();
     }
 
     @Override
@@ -132,15 +127,8 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     @Override
     public void drawLine(int x1, int y1, int x2, int y2)
     {
-        if (save()) {
-            translate(_widthBlackBar, _heightBlackBar);
-            scale(_scaleFactor, _scaleFactor);
-
-        }
-
         _graphics.drawLine(x1, y1, x2, y2);
 
-        restore();
         /*
         int sx1, sy1, sx2, sy2;
         sx1 = (int)(x1*_scaleFactor) + _widthBlackBar;
@@ -157,12 +145,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     @Override
     public void fillRect(int x1, int y1, int x2, int y2)
     {
-        if (save()) {
-            translate(_widthBlackBar, _heightBlackBar);
-            scale(_scaleFactor, _scaleFactor);
-        }
         _graphics.fillRect(x1, y1, x2, y2);
-        restore();
 
         /*
         int sx1, sy1, sx2, sy2;
