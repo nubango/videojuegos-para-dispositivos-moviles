@@ -14,7 +14,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         _transformQueue = new LinkedList<>();
         // cantidad de pixeles que ocupa la barra superior de la ventana
         //_offsetBar = 58;
-        _offsetBar = 0;
+        _offsetBar = 71;
     }
 
     /*
@@ -26,44 +26,48 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 	*   directamente multiplicar por el factor de escala y trasladar los puntos?
     * */
     void setScaleFactor(int wReal, int hReal) {
-        _widthSizeWindow = wReal;
-        _heightSizeWindow = hReal;
 
-        // factor de escala: hay dos y escogemos el más pequeño porque es el "mínimo común múltiplo entre los dos"
-        double wFactor = wReal / (float)getWidth();
-        double hFactor = hReal / (float)getHeight();
+        // valor que indica el factor de escala con el que rescalaremos la pantalla
+        double scaleFactor;
+
+        // tamaño de las barras negras verticales y horizontales
+        int widthBlackBar, heightBlackBar;
+
+        // pixeles reales que ocupa la pantalla lógica (ya rescalada)
+        int widthSizeScreen, heightSizeScreen;
+
+        // factor de escala horizontal y vertical (solo elegimos uno, el más pequeño, para rescalar la pantalla)
+        double wFactor, hFactor;
+
+        // getWidth y getHeight son el tamaño lógico de la pantalla (setLogicSize)
+        wFactor = (double)wReal / (double)getWidth();
+        hFactor = (double)hReal / (double)getHeight();
 
         // si hemos escogido el wFactor, el width de la pantalla ocupa el width de la ventana entero
         if (wFactor < hFactor) {
-            _scaleFactor = wFactor;
+            scaleFactor = wFactor;
 
-            _widthSizeScreen =  wReal;
-            _heightSizeScreen = ((wReal * getHeight()) / getWidth());
+            widthSizeScreen =  wReal;
+            heightSizeScreen = ((wReal * getHeight()) / getWidth());
         }
         // si hemos escogido el hFactor, el height de la pantalla ocupa el height de la ventana entero
         else {
-            _scaleFactor = hFactor;
+            scaleFactor = hFactor;
 
-            _widthSizeScreen =  (hReal * getWidth()) / getHeight();
-            _heightSizeScreen = hReal;
+            widthSizeScreen =  (hReal * getWidth()) / getHeight();
+            heightSizeScreen = hReal;
         }
 
         // calculamos lo que miden las barras negras tanto superior como inferior
-        _widthBlackBar = (wReal - _widthSizeScreen) / 2;
-        _heightBlackBar = ((hReal - _heightSizeScreen + _offsetBar) / 2);
+        widthBlackBar = (wReal - widthSizeScreen) / 2;
+        heightBlackBar = ((hReal - heightSizeScreen) / 2);
 
-/*
-        scale(_scaleFactor, _scaleFactor);
-
-        // offset baja el origen de coordenadas para que empiece por debajo de la barra de la ventana
-        translate(_widthBlackBar, _heightBlackBar+_offsetBar);
-*/
         // Pintamos el fondo de negro
         _graphics.setBackground(Color.black);
-        _graphics.clearRect(0,0, _widthSizeWindow, _heightSizeWindow);
+        _graphics.clearRect(0,0, wReal, hReal);
 
-        translate(_widthBlackBar, _heightBlackBar);
-        scale(_scaleFactor, _scaleFactor);
+        translate(widthBlackBar, heightBlackBar);
+        scale(scaleFactor, scaleFactor);
     }
 
     public void setGraphics(java.awt.Graphics2D graphics)
@@ -128,36 +132,12 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     public void drawLine(int x1, int y1, int x2, int y2)
     {
         _graphics.drawLine(x1, y1, x2, y2);
-
-        /*
-        int sx1, sy1, sx2, sy2;
-        sx1 = (int)(x1*_scaleFactor) + _widthBlackBar;
-        sy1 = (int)(y1*_scaleFactor) + _heightBlackBar + _offsetBar;
-        sx2 = (int)(x2*_scaleFactor) + _widthBlackBar;
-        sy2 = (int)(y2*_scaleFactor) + _heightBlackBar;
-
-        _graphics.drawLine(sx1, sy1, sx2, sy2);
-
-         */
-        //_graphics.drawLine(x1, y1, x2, y2);
     }
 
     @Override
     public void fillRect(int x1, int y1, int x2, int y2)
     {
         _graphics.fillRect(x1, y1, x2, y2);
-
-        /*
-        int sx1, sy1, sx2, sy2;
-        sx1 = (int)(x1*_scaleFactor) + _widthBlackBar;
-        sy1 = (int)(y1*_scaleFactor) + _heightBlackBar;
-        sx2 = (int)(x2*_scaleFactor) + _widthBlackBar;
-        sy2 = (int)(y2*_scaleFactor) + _heightBlackBar;
-
-        _graphics.fillRect(sx1, sy1, sx2, sy2);
-        */
-       // _graphics.fillRect(x1, y1, x2, y2);
-
     }
 
     @Override
@@ -169,8 +149,4 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     java.awt.Graphics2D _graphics;
     Queue<AffineTransform> _transformQueue;
     private int _offsetBar;
-    private double _scaleFactor;
-    private int _widthBlackBar, _heightBlackBar;
-    private int _widthSizeScreen, _heightSizeScreen;
-    private int _widthSizeWindow, _heightSizeWindow;
 }

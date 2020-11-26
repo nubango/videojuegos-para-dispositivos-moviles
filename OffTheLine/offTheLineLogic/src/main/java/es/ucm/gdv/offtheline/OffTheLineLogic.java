@@ -14,11 +14,14 @@ public class OffTheLineLogic implements Logic {
     public void render(Graphics g)
     {
         g.clear(Color.white);
-        g.setColor(Color.blue);
 
+        g.setColor(Color.blue.darker());
+        if(g.save()) {
+            g.scale(2, 2);
+        }
         g.drawLine(0,0, g.getWidth(), g.getHeight());
 
-        //g.fillRect(0, 0, 500, 100);  // 58 el lo que ocupa de alto la barra superior de la ventana
+        g.restore();
 
     };
 }

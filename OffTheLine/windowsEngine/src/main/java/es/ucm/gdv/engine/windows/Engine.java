@@ -32,10 +32,30 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     {
         long lastFrameTime = System.nanoTime();
 
-        _ventana.createBufferStrategy(2);
+        //_ventana.createBufferStrategy(2);
+        int intentos = 100;
+        while(intentos-- > 0) {
+            try {
+                _ventana.createBufferStrategy(2);
+                break;
+            }
+            catch(Exception e) {
+            }
+        } // while pidiendo la creación de la buffeStrategy
+        if (intentos == 0) {
+            System.err.println("No pude crear la BufferStrategy");
+            return;
+        }
+        else {
+            // En "modo debug" podríamos querer escribir esto.
+            System.out.println("BufferStrategy tras " + (100 - intentos) + " intentos.");
+        }
+
 
         BufferStrategy strategy = _ventana.getBufferStrategy();
 
+        _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
+        _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
 
         while(true)
         {
@@ -43,21 +63,34 @@ public class Engine implements es.ucm.gdv.engine.Engine {
             long nanoDelta = currentTime - lastFrameTime;
             lastFrameTime = currentTime;
 
-            //_ventana.setSize(_ventana.getSize().width + 1, _ventana.getSize().height + 3);
 
-            _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
-
-
-            // un listener -> futuro
-            _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
             logic.update(nanoDelta / 1.0E9);
-            try{
+
+/*            try{
                 logic.render(_graphics);
             }
             finally{
                 _graphics.dispose();
             }
             strategy.show();
+*/
+
+            do {
+                do {
+                    //_ventana.setSize(_ventana.getSize().width + 1, _ventana.getSize().height + 3);
+
+                    _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
+                    // un listener -> futuro
+                    _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
+                    try {
+                        logic.render(_graphics);
+                    }
+                    finally {
+                        _graphics.dispose();
+                    }
+                } while(strategy.contentsRestored());
+                strategy.show();
+            } while(strategy.contentsLost());
         }
     }
 
