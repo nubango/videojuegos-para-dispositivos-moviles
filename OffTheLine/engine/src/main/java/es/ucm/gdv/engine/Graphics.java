@@ -4,7 +4,6 @@ package es.ucm.gdv.engine;
  * Proporciona las funcionalidades graficas minimas sobre la ventana de la aplicacion
  */
 
-import java.awt.Color;
 
 public interface Graphics {
 
@@ -13,7 +12,7 @@ public interface Graphics {
      Font newFont(String filename, int size, boolean isBold);
 
     // Borra el contenido completo de la ventana, rellenandolo con un color recibido
-    void clear(Color color);
+    void clear(int color);
 
     // Metodos de control de la transformacion sobre el canvas
     void translate(int x, int y);
@@ -23,7 +22,7 @@ public interface Graphics {
     void restore();
 
     // Establece el color a utilizar en las operaciones de dibujado posteriores
-    void setColor(Color color);
+    void setColor(int color);
 
     // Dibuja una linea
     void drawLine(int x1, int y1, int x2, int y2);

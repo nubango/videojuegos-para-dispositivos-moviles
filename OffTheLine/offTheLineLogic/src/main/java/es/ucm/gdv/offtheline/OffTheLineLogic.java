@@ -13,15 +13,17 @@ public class OffTheLineLogic implements Logic {
     };
     public void render(Graphics g)
     {
-        g.clear(Color.white);
+        g.clear(0xFF0000FF);
 
-        g.setColor(Color.blue.darker());
+        g.setColor(0x00000000);
         if(g.save()) {
             g.scale(2, 2);
         }
-        g.drawLine(0,0, g.getWidth(), g.getHeight());
+        g.drawLine(0,0, g.getWidth()-1, g.getHeight()-1);
 
         g.restore();
+
+
 
     };
 }

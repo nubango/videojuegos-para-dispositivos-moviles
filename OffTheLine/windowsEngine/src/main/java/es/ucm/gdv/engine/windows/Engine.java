@@ -27,9 +27,11 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         return true;
     }
 
-    @Override
-    public void initLogic(Logic logic)
+    public void run(Logic logic)
     {
+        if(_ventana == null || _graphics == null)
+            return;
+
         long lastFrameTime = System.nanoTime();
 
         //_ventana.createBufferStrategy(2);

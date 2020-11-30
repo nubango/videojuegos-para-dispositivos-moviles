@@ -8,6 +8,6 @@ public class WindowsLauncher {
         Engine e = new Engine();
         e.initApplication("test", 1000, 500);
         OffTheLineLogic logic = new OffTheLineLogic();
-        e.initLogic(logic);
+        e.run(logic);
     }
 }

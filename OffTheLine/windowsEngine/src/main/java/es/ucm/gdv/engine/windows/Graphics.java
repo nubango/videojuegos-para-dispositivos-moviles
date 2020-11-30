@@ -86,8 +86,9 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     }
 
     @Override
-    public void clear(Color color) {
-        _graphics.setBackground(color);
+    public void clear(int color) {
+        Color c = new Color(color);
+        _graphics.setBackground(c);
         _graphics.clearRect(0, 0, getWidth(), getHeight());
     }
 
@@ -124,8 +125,9 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     }
 
     @Override
-    public void setColor(Color color) {
-        _graphics.setColor(color);
+    public void setColor(int color) {
+        Color c = new Color(color);
+        _graphics.setColor(c);
     }
 
     @Override
