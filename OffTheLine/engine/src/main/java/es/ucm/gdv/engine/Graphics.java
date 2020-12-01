@@ -11,6 +11,9 @@ public interface Graphics {
     // Se indica si se desea o no la fuente en negrita
      Font newFont(String filename, int size, boolean isBold);
 
+    // Establece la fuente que se va a usar
+     void setFont(Font f);
+
     // Borra el contenido completo de la ventana, rellenandolo con un color recibido
     void clear(int color);
 

@@ -1,8 +1,12 @@
 package es.ucm.gdv.engine.windows;
 
+import org.omg.Messaging.SyncScopeHelper;
+
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import javax.swing.JFrame;
@@ -15,14 +19,14 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
     public Engine() { }
 
-    public boolean initApplication(String winTitle, int w, int h) {
+    public boolean createWindow(String winTitle, int w, int h) {
         _ventana = new JFrame(winTitle);
         //_ventana.setUndecorated(true);
         _ventana.setSize(w, h);
         _ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _ventana.setIgnoreRepaint(false);
         _ventana.setVisible(true);
-        _graphics = new es.ucm.gdv.engine.windows.Graphics();
+        _graphics = new es.ucm.gdv.engine.windows.Graphics(this);
 
         return true;
     }
@@ -34,7 +38,6 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
         long lastFrameTime = System.nanoTime();
 
-        //_ventana.createBufferStrategy(2);
         int intentos = 100;
         while(intentos-- > 0) {
             try {
@@ -59,6 +62,11 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
         _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
 
+        if(!logic.init()) {
+            System.out.println("Init de la lógica ha devuelto false");
+            return;
+        }
+
         while(true)
         {
             long currentTime = System.nanoTime();
@@ -67,15 +75,6 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
 
             logic.update(nanoDelta / 1.0E9);
-
-/*            try{
-                logic.render(_graphics);
-            }
-            finally{
-                _graphics.dispose();
-            }
-            strategy.show();
-*/
 
             do {
                 do {
@@ -108,8 +107,10 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     }
 
     @Override
-    public InputStream openInputStream(String filename) {
-        return null;
+    public InputStream openInputStream(String filename) throws FileNotFoundException {
+
+        InputStream is = new FileInputStream(filename);
+        return is;
     }
 
     private es.ucm.gdv.engine.windows.Graphics _graphics;

@@ -5,12 +5,14 @@ import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import es.ucm.gdv.engine.Font;
+import javax.sound.midi.SysexMessage;
+
 
 public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
-    public Graphics()
+    public Graphics(Engine engine)
     {
+        _engine = engine;
         _transformQueue = new LinkedList<>();
     }
 
@@ -39,9 +41,20 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         _graphics.dispose();
     }
 
+    // Se asigna la font creada por defecto al _graphics
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
-        return null;
+        Font f = new Font(filename, size, isBold, _engine);
+        return f;
+    }
+
+    @Override
+    public void setFont(es.ucm.gdv.engine.Font f) {
+        if (_graphics == null){
+            System.out.println("Parte de Graphics sin inicializar: accediendo a _graphics antes de hacer run(Logic logic) ");
+            return;
+        }
+        _graphics.setFont(((Font)f).getFont());
     }
 
     @Override
@@ -104,10 +117,18 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     @Override
     public void drawText(String text, int x, int y)
     {
-
+        if (_graphics.getFont() != null) {
+            _graphics.setColor(Color.WHITE);
+            _graphics.drawString(text, (int)x, y);
+        }
+        else {
+            System.out.println("Establece una fuente con el método setFont(Font f)");
+        }
     }
+
 
     java.awt.Graphics2D _graphics;
     Queue<AffineTransform> _transformQueue;
+    private Engine _engine;
 
 }

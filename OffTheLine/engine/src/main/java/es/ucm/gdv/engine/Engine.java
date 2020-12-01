@@ -1,5 +1,6 @@
 package es.ucm.gdv.engine;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /*
@@ -16,5 +17,5 @@ public interface Engine {
     Input getInput();
 
     // Devuelve un stream de lectura de un fichero
-    InputStream openInputStream(String filename);
+    InputStream openInputStream(String filename) throws FileNotFoundException;
 }
