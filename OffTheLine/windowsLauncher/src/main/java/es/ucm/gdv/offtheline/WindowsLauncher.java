@@ -7,7 +7,7 @@ public class WindowsLauncher {
     {
         Engine e = new Engine();
         e.createWindow("test", 1080, 1500);
-        OffTheLineLogic logic = new OffTheLineLogic("Bangers-Regular.ttf", e);
+        OffTheLineLogic logic = new OffTheLineLogic();
         e.run(logic);
     }
 }

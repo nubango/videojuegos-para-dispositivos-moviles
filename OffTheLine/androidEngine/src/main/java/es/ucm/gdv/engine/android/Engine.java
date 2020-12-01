@@ -1,8 +1,11 @@
 package es.ucm.gdv.engine.android;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.InputStream;
 
@@ -16,6 +19,7 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
     SurfaceHolder _holder;
     private ActiveRendering _activeRendering;
     private es.ucm.gdv.engine.android.Graphics _graphics;
+    private AssetManager _assetManager;
 
     /**
      * Constructor.
@@ -23,25 +27,12 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
      * @param context Contexto en el que se integrará la vista
      *                (normalmente una actividad).
      */
-    public Engine(Context context, Logic logic) {
-
+    public Engine(Context context,  Logic logic) {
         super(context);
+        _assetManager = context.getAssets();
         _holder = getHolder();
-
         _activeRendering = new ActiveRendering(logic, this);
-
-        _graphics = new es.ucm.gdv.engine.android.Graphics();
-/*        if (_font != null) {
-            // Tenemos fuente. Vamos a escribir texto.
-            // Preparamos la configuración de formato en el
-            // objeto _paint que utilizaremos en cada frame.
-            _paint.setTypeface(_font);
-            _paint.setFakeBoldText(true);
-            _paint.setColor(0xFFFFFFFF);
-            _paint.setTextSize(80);
-
-        }*/
-
+        _graphics = new es.ucm.gdv.engine.android.Graphics(_assetManager);
     } // Engine
 
     public SurfaceHolder get_holder() {

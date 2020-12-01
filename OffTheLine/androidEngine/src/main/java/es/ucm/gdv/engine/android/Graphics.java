@@ -1,22 +1,27 @@
 package es.ucm.gdv.engine.android;
 
+import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import es.ucm.gdv.engine.Font;
-
 /*
-CUIDADO con el color en android porque es ARGB (creo, por lo menos el alfa son los 2 primeros números por lo que si son 0 no se pintyará nada
+CUIDADO con el color en android porque es ARGB (creo, por lo menos el alfa son los 2 primeros números por lo que si son 0 no se pintará nada
 
-Clase que contiene los métodos necesarios para pintar una linea, un rectángulo relleno y limpiar la pantalla.
+Clase que contiene los métodos necesarios para pintar una linea, un rectángulo relleno, texto y limpiar la pantalla.
 */
 
 
 
 public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
-    public Graphics() {
+    //--------------- ATRIBUTOS ---------------//
+    Canvas _canvas;
+    Paint _paint = new Paint();
+    AssetManager _assetManager;
 
+
+    public Graphics(AssetManager assetManager) {
+        _assetManager = assetManager;
     }
 
     /*
@@ -59,7 +64,21 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
-        return null;
+        Font f = new Font(_assetManager, filename, size, isBold);
+        setFont(f);
+        return f;
+    }
+
+    @Override
+    public void setFont(es.ucm.gdv.engine.Font f) {
+        if (f != null) {
+            // Tenemos fuente. Vamos a escribir texto.
+            // Preparamos la configuración de formato en el
+            // objeto _paint que utilizaremos en cada frame.
+            _paint.setTypeface(((Font) f).getFont());
+            _paint.setFakeBoldText(((Font) f).isBold());
+            _paint.setTextSize(((Font) f).getSize());
+        }
     }
 
     @Override
@@ -109,7 +128,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     @Override
     public void drawText(String text, int x, int y) {
-
+        _canvas.drawText(text, x, y, _paint);
     }
 
     @Override
@@ -123,9 +142,5 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
                 (color & 0xff00) >> 8,
                 (color & 0xff));
     }
-
-    //--------------- ATRIBUTOS ---------------//
-    Canvas _canvas;
-    Paint _paint = new Paint();
 
 }

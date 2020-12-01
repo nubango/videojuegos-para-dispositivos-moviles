@@ -1,8 +1,5 @@
 package es.ucm.gdv.engine.windows;
 
-import org.omg.Messaging.SyncScopeHelper;
-
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.io.FileInputStream;
@@ -19,6 +16,10 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
     public Engine() { }
 
+    /**
+    * Método que crea la ventana e inicializa el Graphics del Engine
+    *
+    */
     public boolean createWindow(String winTitle, int w, int h) {
         _ventana = new JFrame(winTitle);
         //_ventana.setUndecorated(true);
@@ -31,6 +32,10 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         return true;
     }
 
+    /**
+    * Método que contiene el bucle principal del juego (lógica)
+    *
+    */
     public void run(Logic logic)
     {
         if(_ventana == null || _graphics == null)
@@ -62,8 +67,8 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
         _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
 
-        if(!logic.init()) {
-            System.out.println("Init de la lógica ha devuelto false");
+        if(!logic.init(this)) {
+            System.out.println("****Init de la lógica ha devuelto false****");
             return;
         }
 

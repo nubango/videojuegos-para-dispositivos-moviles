@@ -33,7 +33,6 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         // Pintamos el fondo de negro
         _graphics.setBackground(Color.black);
         _graphics.clearRect(0,0, _wReal, _hReal);
-
     }
 
     public void dispose()
@@ -118,7 +117,6 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     public void drawText(String text, int x, int y)
     {
         if (_graphics.getFont() != null) {
-            _graphics.setColor(Color.WHITE);
             _graphics.drawString(text, (int)x, y);
         }
         else {

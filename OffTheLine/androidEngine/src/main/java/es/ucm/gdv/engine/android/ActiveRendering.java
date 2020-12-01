@@ -97,6 +97,8 @@ public class ActiveRendering implements Runnable {
         _engine.getGraphics().setScaleFactor(_engine.getWidth(), _engine.getHeight());
         _engine.getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
 
+        _logic.init(_engine);
+
         // Bucle principal.
         while(_running) {
 
