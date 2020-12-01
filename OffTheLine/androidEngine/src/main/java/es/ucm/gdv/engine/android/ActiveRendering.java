@@ -93,10 +93,10 @@ public class ActiveRendering implements Runnable {
         // Pintamos el frame
         while (!_engine.getHolder().getSurface().isValid())
             ;
-/*        _engine.getGraphics().setCanvas(_engine.getHolder().lockCanvas());
+        _engine.getGraphics().setCanvas(_engine.getHolder().lockCanvas());
         _engine.getGraphics().setScaleFactor(_engine.getWidth(), _engine.getHeight());
         _engine.getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
-*/
+
         // Bucle principal.
         while(_running) {
 
@@ -119,6 +119,7 @@ public class ActiveRendering implements Runnable {
                 ;
             _engine.getGraphics().setCanvas(_engine.getHolder().lockCanvas());
             _logic.render(_engine.getGraphics());
+            _engine.getGraphics().renderBlackBars();
             _engine.getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
                 /*
                 // Posibilidad: cedemos algo de tiempo. es una medida conflictiva...

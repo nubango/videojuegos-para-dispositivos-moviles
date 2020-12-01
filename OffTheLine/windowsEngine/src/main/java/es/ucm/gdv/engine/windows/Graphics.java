@@ -12,67 +12,26 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     public Graphics()
     {
         _transformQueue = new LinkedList<>();
-        // cantidad de pixeles que ocupa la barra superior de la ventana
-        //_offsetBar = 58;
-        _offsetBar = 71;
     }
 
-    /*
-    * DUDAS:
-    * Hemos hecho las cuentas del reescalado pero no sabemos muy bien cómo usar los números.
-	*   - Lo primero, en PC cuando se tiene que hacer el reescalado? en cada vuelta de bucle?
-	*   - Donde aplicamos las cuentas y como? en el método de drawLine aplicamos la traslación
-	*   traslate(w, h) y el escalado scale(x,x) o no usamos esos métodos y lo que hacemos es
-	*   directamente multiplicar por el factor de escala y trasladar los puntos?
-    * */
-    void setScaleFactor(int wReal, int hReal) {
+    @Override
+    protected void renderBlackBars() {
+        super.renderBlackBars();
+    }
 
-        // valor que indica el factor de escala con el que rescalaremos la pantalla
-        double scaleFactor;
-
-        // tamaño de las barras negras verticales y horizontales
-        int widthBlackBar, heightBlackBar;
-
-        // pixeles reales que ocupa la pantalla lógica (ya rescalada)
-        int widthSizeScreen, heightSizeScreen;
-
-        // factor de escala horizontal y vertical (solo elegimos uno, el más pequeño, para rescalar la pantalla)
-        double wFactor, hFactor;
-
-        // getWidth y getHeight son el tamaño lógico de la pantalla (setLogicSize)
-        wFactor = (double)wReal / (double)getWidth();
-        hFactor = (double)hReal / (double)getHeight();
-
-        // si hemos escogido el wFactor, el width de la pantalla ocupa el width de la ventana entero
-        if (wFactor < hFactor) {
-            scaleFactor = wFactor;
-
-            widthSizeScreen =  wReal;
-            heightSizeScreen = ((wReal * getHeight()) / getWidth());
-        }
-        // si hemos escogido el hFactor, el height de la pantalla ocupa el height de la ventana entero
-        else {
-            scaleFactor = hFactor;
-
-            widthSizeScreen =  (hReal * getWidth()) / getHeight();
-            heightSizeScreen = hReal;
-        }
-
-        // calculamos lo que miden las barras negras tanto superior como inferior
-        widthBlackBar = (wReal - widthSizeScreen) / 2;
-        heightBlackBar = ((hReal - heightSizeScreen) / 2);
-
-        // Pintamos el fondo de negro
-        _graphics.setBackground(Color.black);
-        _graphics.clearRect(0,0, wReal, hReal);
-
-        translate(widthBlackBar, heightBlackBar);
-        scale(scaleFactor, scaleFactor);
+    @Override
+    protected void setScaleFactor(int wReal, int hReal) {
+        super.setScaleFactor(wReal, hReal);
     }
 
     public void setGraphics(java.awt.Graphics2D graphics)
     {
         _graphics = graphics;
+
+        // Pintamos el fondo de negro
+        _graphics.setBackground(Color.black);
+        _graphics.clearRect(0,0, _wReal, _hReal);
+
     }
 
     public void dispose()
@@ -150,5 +109,5 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     java.awt.Graphics2D _graphics;
     Queue<AffineTransform> _transformQueue;
-    private int _offsetBar;
+
 }

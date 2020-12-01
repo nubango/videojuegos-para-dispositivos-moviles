@@ -6,7 +6,7 @@ public class WindowsLauncher {
     public static void main(String[] args)
     {
         Engine e = new Engine();
-        e.initApplication("test", 1000, 500);
+        e.initApplication("test", 1080, 1500);
         OffTheLineLogic logic = new OffTheLineLogic();
         e.run(logic);
     }

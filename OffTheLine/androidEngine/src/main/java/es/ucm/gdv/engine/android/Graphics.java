@@ -5,6 +5,13 @@ import android.graphics.Paint;
 
 import es.ucm.gdv.engine.Font;
 
+/*
+CUIDADO con el color en android porque es ARGB (creo, por lo menos el alfa son los 2 primeros números por lo que si son 0 no se pintyará nada
+
+Clase que contiene los métodos necesarios para pintar una linea, un rectángulo relleno y limpiar la pantalla.
+*/
+
+
 
 public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
@@ -13,62 +20,41 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     }
 
     /*
-     * DUDAS:
-     * Hemos hecho las cuentas del reescalado pero no sabemos muy bien cómo usar los números.
-     *   - Lo primero, en PC cuando se tiene que hacer el reescalado? en cada vuelta de bucle?
-     *   - Donde aplicamos las cuentas y como? en el método de drawLine aplicamos la traslación
-     *   traslate(w, h) y el escalado scale(x,x) o no usamos esos métodos y lo que hacemos es
-     *   directamente multiplicar por el factor de escala y trasladar los puntos?
-     * */
-    void setScaleFactor(int wReal, int hReal) {
+     * Clase que pinta unas bandas negras a los lados debido al reescalado de la pantalla
+     * Lo sobreescribimos para poder llamarlo desde La clase ActiveRendering
+     */
+    @Override
+    protected void renderBlackBars() {
+        super.renderBlackBars();
+    }
 
-        // valor que indica el factor de escala con el que rescalaremos la pantalla
-        double scaleFactor;
+    /*
+     * Clase que reescala el tamaño de la pantalla lógica para que se vea bien en todas las resoluciones
+     * Lo sobreescribimos para poder llamarlo desde La clase ActiveRendering
+     */
+    @Override
+    protected void setScaleFactor(int wReal, int hReal) {
+        super.setScaleFactor(wReal, hReal);
+    }
 
-        // tamaño de las barras negras verticales y horizontales
-        int widthBlackBar, heightBlackBar;
+    /*
+    * Método que asigna un canvas nuevo.
+    * Al ser nuevo tenemos que decirle el color de fondo y aplicamos la traslación y escalado para
+    * que se pinte en el lugar correcto de la pantalla reescalada
+    * */
+    public void setCanvas(Canvas canvas)
+    {
+        _canvas = canvas;
+        // decimos el grosor de la linea
+        _paint.setStrokeWidth(1f);
+        // Pintamos el fondo de negro
+        _canvas.drawRGB(0xFF,0xFF,0xFF);
 
-        // pixeles reales que ocupa la pantalla lógica (ya rescalada)
-        int widthSizeScreen, heightSizeScreen;
-
-        // factor de escala horizontal y vertical (solo elegimos uno, el más pequeño, para rescalar la pantalla)
-        double wFactor, hFactor;
-
-        // getWidth y getHeight son el tamaño lógico de la pantalla (setLogicSize)
-        wFactor = (double)wReal / (double)getWidth();
-        hFactor = (double)hReal / (double)getHeight();
-
-        // si hemos escogido el wFactor, el width de la pantalla ocupa el width de la ventana entero
-        if (wFactor < hFactor) {
-            scaleFactor = wFactor;
-
-            widthSizeScreen =  wReal;
-            heightSizeScreen = ((wReal * getHeight()) / getWidth());
-        }
-        // si hemos escogido el hFactor, el height de la pantalla ocupa el height de la ventana entero
-        else {
-            scaleFactor = hFactor;
-
-            widthSizeScreen =  (hReal * getWidth()) / getHeight();
-            heightSizeScreen = hReal;
-        }
-
-        // calculamos lo que miden las barras negras tanto superior como inferior
-        widthBlackBar = (wReal - widthSizeScreen) / 2;
-        heightBlackBar = ((hReal - heightSizeScreen) / 2);
-
-/*        // Pintamos el fondo de negro
-        _graphics.setBackground(Color.black);
-        _graphics.clearRect(0,0, wReal, hReal);
-*/
+        // aplicamos la traslación y el escalado
         translate(widthBlackBar, heightBlackBar);
         scale(scaleFactor, scaleFactor);
     }
 
-    public void setCanvas(Canvas canvas)
-    {
-        _canvas = canvas;
-    }
     public Canvas getCanvas(){ return _canvas; }
 
     @Override
@@ -102,7 +88,10 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     @Override
     public void restore() {
-        _canvas.restore();
+        if(_canvas != null)
+            _canvas.restore();
+        else
+            System.out.println("***********EL OBJETO '_canvas' ES NULL. NO SE PUEDE HACER EL RESTORE***********");
     }
 
     @Override
@@ -112,10 +101,10 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     @Override
     public void fillRect(int x1, int y1, int x2, int y2) {
-        Paint.Style s = _paint.getStyle();
-        _paint.setStyle(Paint.Style.FILL);
+        float g = _paint.getStrokeWidth();
+        _paint.setStrokeWidth(0);
         _canvas.drawRect(x1, y1, x2, y2, _paint);
-        _paint.setStyle(s);
+        _paint.setStrokeWidth(g);
     }
 
     @Override
@@ -135,6 +124,8 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
                 (color & 0xff));
     }
 
+    //--------------- ATRIBUTOS ---------------//
     Canvas _canvas;
     Paint _paint = new Paint();
+
 }

@@ -86,6 +86,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
                     _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
                     try {
                         logic.render(_graphics);
+                        _graphics.renderBlackBars();
                     }
                     finally {
                         _graphics.dispose();
