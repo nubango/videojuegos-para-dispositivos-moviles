@@ -35,10 +35,6 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
         _graphics = new es.ucm.gdv.engine.android.Graphics(_assetManager);
     } // Engine
 
-    public SurfaceHolder get_holder() {
-        return _holder;
-    }
-
     /**
      * Método llamado para solicitar que se continue con el
      * active rendering. El "juego" se vuelve a poner en marcha

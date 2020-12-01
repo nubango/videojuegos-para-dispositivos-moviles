@@ -18,7 +18,7 @@ public class OffTheLineLogic implements Logic {
     @Override
     public boolean init(Engine e) {
         _engine = e;
-        //_f = _engine.getGraphics().newFont("Bangers-Regular.ttf", 80, true);
+        _f = _engine.getGraphics().newFont("Bangers-Regular.ttf", 80, true);
         return true;
     }
 
@@ -34,8 +34,8 @@ public class OffTheLineLogic implements Logic {
 
         g.setColor(0xFF123456);
 
-        //g.setFont(_f);
-        //g.drawText("texto de prueba", 250,150);
+        g.setFont(_f);
+        g.drawText("texto de prueba", 250,150);
 
         if(g.save()) {
             g.scale(2, 2);
