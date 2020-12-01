@@ -5,7 +5,7 @@ package es.ucm.gdv.engine;
  */
 
 public interface Logic {
-
+    boolean init();
     void update(double deltaTime);
     void render(Graphics g);
 
