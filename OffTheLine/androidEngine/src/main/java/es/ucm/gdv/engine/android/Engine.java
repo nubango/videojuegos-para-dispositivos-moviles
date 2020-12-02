@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 import java.io.InputStream;
 
-import es.ucm.gdv.engine.Input;
 import es.ucm.gdv.engine.Logic;
 
 public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
@@ -19,7 +18,8 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
 
     SurfaceHolder _holder;
     private ActiveRendering _activeRendering;
-    private es.ucm.gdv.engine.android.Graphics _graphics;
+    private Graphics _graphics;
+    private Input _input;
     private AssetManager _assetManager;
 
     /**
@@ -33,7 +33,8 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
         _assetManager = context.getAssets();
         _holder = getHolder();
         _activeRendering = new ActiveRendering(logic, this);
-        _graphics = new es.ucm.gdv.engine.android.Graphics(_assetManager);
+        _graphics = new Graphics(_assetManager);
+        _input = new Input(this);
     } // Engine
 
     /**
@@ -61,13 +62,13 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
     } // pause
 
     @Override
-    public es.ucm.gdv.engine.android.Graphics getGraphics() {
+    public Graphics getGraphics() {
         return _graphics;
     }
 
     @Override
     public Input getInput() {
-        return null;
+        return _input;
     }
 
     @Override

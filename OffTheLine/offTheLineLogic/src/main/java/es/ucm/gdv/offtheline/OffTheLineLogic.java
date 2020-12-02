@@ -23,7 +23,7 @@ public class OffTheLineLogic implements Logic {
     public void update(double deltaTime)
     {
         List<Input.TouchEvent> e = _engine.getInput().getTouchEvents();
-        if(e != null)
+        if (e != null)
             System.out.println("Dedo usado: " + e.get(0)._fingerId + " Tipo de pulsación: "
                     + e.get(0)._type + " Coordenadas x: " + e.get(0)._x +" y: " + e.get(0)._y);
     };

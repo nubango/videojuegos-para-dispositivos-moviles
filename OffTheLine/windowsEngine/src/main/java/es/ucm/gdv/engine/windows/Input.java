@@ -10,6 +10,7 @@ public class Input extends es.ucm.gdv.engine.AbstractInput implements MouseListe
 
     Input(JFrame jFrame){
         jFrame.addMouseListener(this);
+        jFrame.addMouseMotionListener(this);
     }
 
     /**
@@ -34,7 +35,7 @@ public class Input extends es.ucm.gdv.engine.AbstractInput implements MouseListe
      */
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        _touchEvents.add(new TouchEvent(Type.release, mouseEvent.getX(), mouseEvent.getY(),mouseEvent.getButton()));
+        _touchEvents.add(new TouchEvent(Type.release, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
     }
 
     @Override
@@ -52,7 +53,7 @@ public class Input extends es.ucm.gdv.engine.AbstractInput implements MouseListe
      */
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-        _touchEvents.add(new TouchEvent(Type.displace, mouseEvent.getX(), mouseEvent.getY(),1));
+        _touchEvents.add(new TouchEvent(Type.displace, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
     }
 
     @Override
