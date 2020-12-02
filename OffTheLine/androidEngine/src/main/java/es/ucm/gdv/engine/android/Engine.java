@@ -7,6 +7,7 @@ import android.view.SurfaceView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import es.ucm.gdv.engine.Input;
@@ -71,6 +72,12 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
 
     @Override
     public InputStream openInputStream(String filename) {
+        try {
+            return _assetManager.open(filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("*****Ruta del fichero " + filename + " no encontrado*****");
         return null;
     }
 

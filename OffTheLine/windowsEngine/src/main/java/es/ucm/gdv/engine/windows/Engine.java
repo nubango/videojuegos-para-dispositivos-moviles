@@ -8,13 +8,14 @@ import java.io.InputStream;
 
 import javax.swing.JFrame;
 
-import es.ucm.gdv.engine.Graphics;
-import es.ucm.gdv.engine.Input;
 import es.ucm.gdv.engine.Logic;
 
 public class Engine implements es.ucm.gdv.engine.Engine {
 
-    public Engine() { }
+
+    private Graphics _graphics;
+    private Input _input;
+    private JFrame _ventana;
 
     /**
     * Método que crea la ventana e inicializa el Graphics del Engine
@@ -28,6 +29,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _ventana.setIgnoreRepaint(false);
         _ventana.setVisible(true);
         _graphics = new es.ucm.gdv.engine.windows.Graphics(this);
+        _input = new Input(_ventana);
 
         return true;
     }
@@ -107,9 +109,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     }
 
     @Override
-    public Input getInput() {
-        return null;
-    }
+    public Input getInput() { return _input; }
 
     @Override
     public InputStream openInputStream(String filename) throws FileNotFoundException {
@@ -118,6 +118,4 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         return is;
     }
 
-    private es.ucm.gdv.engine.windows.Graphics _graphics;
-    private JFrame _ventana;
 }
