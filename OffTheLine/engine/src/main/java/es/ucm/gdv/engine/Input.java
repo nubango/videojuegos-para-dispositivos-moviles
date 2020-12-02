@@ -8,10 +8,11 @@ import java.util.List;
 
 public interface Input {
 
-    /*
-     * Clase que representa la informacion de un toque sobre la pantalla o evento de raton
-     */
     enum Type { press, release, displace }
+
+    /**
+     * Clase que representa la informacion de un toque sobre la pantalla o evento de raton
+     **/
     class TouchEvent {
 
         public Type _type;

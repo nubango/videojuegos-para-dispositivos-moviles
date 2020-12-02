@@ -23,7 +23,7 @@ public class AndroidLauncher extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _engine = new Engine(this, new OffTheLineLogic());
-        setContentView(_engine);
+        setContentView(_engine.getSurfaceView());
     }
 
     /**

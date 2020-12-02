@@ -2,22 +2,17 @@ package es.ucm.gdv.engine.android;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import es.ucm.gdv.engine.Logic;
 
-public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
+public class Engine implements es.ucm.gdv.engine.Engine {
 
-
-
-    SurfaceHolder _holder;
-    private ActiveRendering _activeRendering;
+    private SurfaceView _surfaceView;
+    private MainLoop _mainLoop;
     private Graphics _graphics;
     private Input _input;
     private AssetManager _assetManager;
@@ -29,13 +24,16 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
      *                (normalmente una actividad).
      */
     public Engine(Context context,  Logic logic) {
-        super(context);
+        _surfaceView = new SurfaceView(context);
         _assetManager = context.getAssets();
-        _holder = getHolder();
-        _activeRendering = new ActiveRendering(logic, this);
+        _mainLoop = new MainLoop(logic, this);
         _graphics = new Graphics(_assetManager);
-        _input = new Input(this);
+        _input = new Input(_surfaceView);
     } // Engine
+
+/* ---------------------------------------------------------------------------------------------- *
+ * -------------------------------------- MÉTODOS PÚBLICOS -------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
 
     /**
      * Método llamado para solicitar que se continue con el
@@ -43,9 +41,8 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
      * (o se pone en marcha por primera vez).
      */
     public void resume() {
-        _activeRendering.resume();
+        _mainLoop.resume();
     } // resume
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Método llamado cuando el active rendering debe ser detenido.
@@ -58,7 +55,7 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
      * frame haya terminado de generarse).
      */
     public void pause() {
-        _activeRendering.pause();
+        _mainLoop.pause();
     } // pause
 
     @Override
@@ -81,5 +78,8 @@ public class Engine extends SurfaceView implements es.ucm.gdv.engine.Engine {
         System.out.println("*****Ruta del fichero " + filename + " no encontrado*****");
         return null;
     }
+
+
+    public SurfaceView getSurfaceView(){ return _surfaceView; }
 
 }

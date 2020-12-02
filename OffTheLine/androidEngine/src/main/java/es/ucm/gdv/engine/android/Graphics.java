@@ -4,7 +4,7 @@ import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-/*
+/**
 CUIDADO con el color en android porque es ARGB (creo, por lo menos el alfa son los 2 primeros números por lo que si son 0 no se pintará nada
 
 Clase que contiene los métodos necesarios para pintar una linea, un rectángulo relleno, texto y limpiar la pantalla.
@@ -14,7 +14,6 @@ Clase que contiene los métodos necesarios para pintar una linea, un rectángulo
 
 public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
-    //--------------- ATRIBUTOS ---------------//
     Canvas _canvas;
     Paint _paint = new Paint();
     AssetManager _assetManager;
@@ -24,25 +23,12 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         _assetManager = assetManager;
     }
 
-    /*
-     * Clase que pinta unas bandas negras a los lados debido al reescalado de la pantalla
-     * Lo sobreescribimos para poder llamarlo desde La clase ActiveRendering
-     */
-    @Override
-    protected void renderBlackBars() {
-        super.renderBlackBars();
-    }
 
-    /*
-     * Clase que reescala el tamaño de la pantalla lógica para que se vea bien en todas las resoluciones
-     * Lo sobreescribimos para poder llamarlo desde La clase ActiveRendering
-     */
-    @Override
-    protected void setScaleFactor(int wReal, int hReal) {
-        super.setScaleFactor(wReal, hReal);
-    }
+/* ---------------------------------------------------------------------------------------------- *
+ * -------------------------------------- MÉTODOS PÚBLICOS -------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
 
-    /*
+    /**
     * Método que asigna un canvas nuevo.
     * Al ser nuevo tenemos que decirle el color de fondo y aplicamos la traslación y escalado para
     * que se pinte en el lugar correcto de la pantalla reescalada
@@ -141,6 +127,28 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         _canvas.drawRGB((color & 0xff0000) >> 16,
                 (color & 0xff00) >> 8,
                 (color & 0xff));
+    }
+
+/* ---------------------------------------------------------------------------------------------- *
+ * ------------------------------------- MÉTODOS PROTEGIDOS ------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
+
+    /**
+     * Clase que pinta unas bandas negras a los lados debido al reescalado de la pantalla
+     * Lo sobreescribimos para poder llamarlo desde La clase MainLoop
+     */
+    @Override
+    protected void renderBlackBars() {
+        super.renderBlackBars();
+    }
+
+    /**
+     * Clase que reescala el tamaño de la pantalla lógica para que se vea bien en todas las resoluciones
+     * Lo sobreescribimos para poder llamarlo desde La clase MainLoop
+     */
+    @Override
+    protected void setScaleFactor(int wReal, int hReal) {
+        super.setScaleFactor(wReal, hReal);
     }
 
 }

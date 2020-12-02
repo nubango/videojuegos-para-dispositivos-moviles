@@ -5,10 +5,13 @@ import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.sound.midi.SysexMessage;
-
 
 public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
+
+    java.awt.Graphics2D _graphics;
+    Queue<AffineTransform> _transformQueue;
+    private Engine _engine;
+
 
     public Graphics(Engine engine)
     {
@@ -16,15 +19,9 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         _transformQueue = new LinkedList<>();
     }
 
-    @Override
-    protected void renderBlackBars() {
-        super.renderBlackBars();
-    }
-
-    @Override
-    protected void setScaleFactor(int wReal, int hReal) {
-        super.setScaleFactor(wReal, hReal);
-    }
+/* ---------------------------------------------------------------------------------------------- *
+ * -------------------------------------- MÉTODOS PUBLICOS -------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
 
     public void setGraphics(java.awt.Graphics2D graphics)
     {
@@ -125,8 +122,19 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     }
 
 
-    java.awt.Graphics2D _graphics;
-    Queue<AffineTransform> _transformQueue;
-    private Engine _engine;
+/* ---------------------------------------------------------------------------------------------- *
+ * ------------------------------------- MÉTODOS PROTEGIDOS ------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
+
+    @Override
+    protected void renderBlackBars() {
+        super.renderBlackBars();
+    }
+
+    @Override
+    protected void setScaleFactor(int wReal, int hReal) {
+        super.setScaleFactor(wReal, hReal);
+    }
 
 }
+

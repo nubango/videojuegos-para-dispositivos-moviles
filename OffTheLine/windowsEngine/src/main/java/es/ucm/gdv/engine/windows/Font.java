@@ -1,10 +1,11 @@
 package es.ucm.gdv.engine.windows;
 
-import java.awt.FontFormatException;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class Font implements es.ucm.gdv.engine.Font {
+
+    java.awt.Font _font;
+
     Font(String filename, int size, boolean isBold, Engine engine) {
 
         java.awt.Font baseFont = null;
@@ -22,7 +23,9 @@ public class Font implements es.ucm.gdv.engine.Font {
 
     }
 
-    public java.awt.Font getFont() { return _font; }
+/* ---------------------------------------------------------------------------------------------- *
+ * -------------------------------------- MÉTODOS PÚBLICOS -------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
 
-    java.awt.Font _font;
+    public java.awt.Font getFont() { return _font; }
 }

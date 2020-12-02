@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 import es.ucm.gdv.engine.Engine;
+import es.ucm.gdv.engine.AbstractGraphics;
 import es.ucm.gdv.engine.Font;
 import es.ucm.gdv.engine.Graphics;
 import es.ucm.gdv.engine.Input;
@@ -26,6 +27,7 @@ public class OffTheLineLogic implements Logic {
         if (e != null)
             System.out.println("Dedo usado: " + e.get(0)._fingerId + " Tipo de pulsación: "
                     + e.get(0)._type + " Coordenadas x: " + e.get(0)._x +" y: " + e.get(0)._y);
+
     };
 
     public void render(Graphics g)

@@ -12,10 +12,14 @@ import es.ucm.gdv.engine.Logic;
 
 public class Engine implements es.ucm.gdv.engine.Engine {
 
-
     private Graphics _graphics;
     private Input _input;
     private JFrame _ventana;
+
+
+/* ---------------------------------------------------------------------------------------------- *
+ * -------------------------------------- MÉTODOS PUBLICOS -------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
 
     /**
     * Método que crea la ventana e inicializa el Graphics del Engine
@@ -28,6 +32,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _ventana.setIgnoreRepaint(false);
         _ventana.setVisible(true);
+
         _graphics = new es.ucm.gdv.engine.windows.Graphics(this);
         _input = new Input(_ventana);
 
@@ -46,6 +51,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         long lastFrameTime = System.nanoTime();
 
         int intentos = 100;
+
         while(intentos-- > 0) {
             try {
                 _ventana.createBufferStrategy(2);
@@ -54,6 +60,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
             catch(Exception e) {
             }
         } // while pidiendo la creación de la buffeStrategy
+
         if (intentos == 0) {
             System.err.println("No pude crear la BufferStrategy");
             return;
@@ -70,7 +77,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
 
         if(!logic.init(this)) {
-            System.out.println("****Init de la lógica ha devuelto false****");
+            System.err.println("****Init de la lógica ha devuelto false****");
             return;
         }
 
@@ -100,8 +107,8 @@ public class Engine implements es.ucm.gdv.engine.Engine {
                 } while(strategy.contentsRestored());
                 strategy.show();
             } while(strategy.contentsLost());
-        }
-    }
+        }// while
+    } // run
 
     @Override
     public Graphics getGraphics() {

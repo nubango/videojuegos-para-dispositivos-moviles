@@ -1,21 +1,23 @@
 package es.ucm.gdv.engine.android;
 
-import android.graphics.Canvas;
-import android.util.Log;
-
 import es.ucm.gdv.engine.Logic;
 
-public class ActiveRendering implements Runnable {
+public class MainLoop implements Runnable {
 
     private Logic _logic;
     private boolean _running;
     private Thread _renderThread;
     private Engine _engine;
 
-    public ActiveRendering(Logic logic, Engine engine) {
+    public MainLoop(Logic logic, Engine engine) {
         _logic = logic;
         _engine = engine;
     }
+
+
+/* ---------------------------------------------------------------------------------------------- *
+ * -------------------------------------- MÉTODOS PÚBLICOS -------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
 
     /**
      * Método llamado para solicitar que se continue con el
@@ -81,7 +83,7 @@ public class ActiveRendering implements Runnable {
         // Antes de saltar a la simulación, confirmamos que tenemos
         // un tamaño mayor que 0. Si la hebra se pone en marcha
         // muy rápido, la vista podría todavía no estar inicializada.
-        while(_running && _engine.getWidth() == 0)
+        while(_running && _engine.getSurfaceView().getWidth() == 0)
             // Espera activa. Sería más elegante al menos dormir un poco.
             ;
 
@@ -91,11 +93,11 @@ public class ActiveRendering implements Runnable {
         int frames = 0;
 
         // Pintamos el frame
-        while (!_engine.getHolder().getSurface().isValid())
+        while (!_engine.getSurfaceView().getHolder().getSurface().isValid())
             ;
-        _engine.getGraphics().setCanvas(_engine.getHolder().lockCanvas());
-        _engine.getGraphics().setScaleFactor(_engine.getWidth(), _engine.getHeight());
-        _engine.getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
+        _engine.getGraphics().setCanvas(_engine.getSurfaceView().getHolder().lockCanvas());
+        _engine.getGraphics().setScaleFactor(_engine.getSurfaceView().getWidth(), _engine.getSurfaceView().getHeight());
+        _engine.getSurfaceView().getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
 
         _logic.init(_engine);
 
@@ -117,27 +119,14 @@ public class ActiveRendering implements Runnable {
             ++frames;
 
             // Pintamos el frame
-            while (!_engine.getHolder().getSurface().isValid())
+            while (!_engine.getSurfaceView().getHolder().getSurface().isValid())
                 ;
-            _engine.getGraphics().setCanvas(_engine.getHolder().lockCanvas());
+            _engine.getGraphics().setCanvas(_engine.getSurfaceView().getHolder().lockCanvas());
             _logic.render(_engine.getGraphics());
             _engine.getGraphics().renderBlackBars();
-            _engine.getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
-                /*
-                // Posibilidad: cedemos algo de tiempo. es una medida conflictiva...
-                try {
-                    Thread.sleep(1);
-                }
-                catch(Exception e) {}
-    			*/
+            _engine.getSurfaceView().getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
 
         } // while
 
-    }
-
-    /*
-    * Puede que esta clase tenga que coger por parámetro el objeto de tipo logic
-    * en el método run va el update y el render del juego
-    *
-    * */
+    } // run
 }

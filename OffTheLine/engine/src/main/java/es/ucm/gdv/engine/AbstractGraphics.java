@@ -4,6 +4,27 @@ import java.awt.Color;
 
 public abstract class AbstractGraphics implements Graphics {
 
+    private int _height = 680, _width = 640;
+
+    // lo que ocupa la barra de la ventana
+    private int _offsetBar;
+
+    // valor que indica el factor de escala con el que rescalaremos la pantalla
+    protected double scaleFactor;
+
+    // tamaño de las barras negras verticales y horizontales
+    protected int widthBlackBar, heightBlackBar;
+
+    // pixeles reales que ocupa la pantalla lógica (ya rescalada)
+    protected int widthSizeScreen, heightSizeScreen;
+
+    // dimensiones reales de la pantalla
+    protected int _wReal, _hReal;
+
+/* ---------------------------------------------------------------------------------------------- *
+ * -------------------------------------- MÉTODOS PUBLICOS -------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
+
     @Override
     public void setLogicSize(int w, int h) {
         _height = h;
@@ -19,6 +40,11 @@ public abstract class AbstractGraphics implements Graphics {
     public int getHeight() {
         return _height;
     }
+
+
+/* ---------------------------------------------------------------------------------------------- *
+ * -------------------------------------- MÉTODOS PRIVADOS -------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
 
     protected void renderBlackBars() {
         if (save()) {
@@ -70,21 +96,4 @@ public abstract class AbstractGraphics implements Graphics {
         translate(widthBlackBar, heightBlackBar);
         scale(scaleFactor, scaleFactor);
     }
-
-    private int _height = 680, _width = 640;
-
-    // lo que ocupa la barra de la ventana
-    private int _offsetBar;
-
-    // valor que indica el factor de escala con el que rescalaremos la pantalla
-    protected double scaleFactor;
-
-    // tamaño de las barras negras verticales y horizontales
-    protected int widthBlackBar, heightBlackBar;
-
-    // pixeles reales que ocupa la pantalla lógica (ya rescalada)
-    protected int widthSizeScreen, heightSizeScreen;
-
-    // dimensiones reales de la pantalla
-    protected int _wReal, _hReal;
 }
