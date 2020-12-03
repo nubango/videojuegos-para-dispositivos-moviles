@@ -1,0 +1,24 @@
+- name: por cada vez que se lee este campo se suma uno a la variable level
+- paths: caminos por los que va el jugador
+	- vertices: array de x, y
+	- directions: array de direcciones
+	- color: FFFFFF
+- items
+	- position
+	- color: FFEF00 
+	- rotacion
+- enemies
+	- position: x, y
+	- length: longitud del segmento
+	- angle: 0 horizontal, 90 vertical
+	- speed: Velocidad circular. Positiva al contrario del reloj y negativa a favor del reloj
+	- offset: longitud de lo que se mueve hacia arriba y hacia abajo
+	- time1: tiempo que está parado el enemigo
+	- time2: Tiempo que tarda en ir desde la posicion hasta el offset
+	- color: FF1D03
+- player
+	- position: primer vértice que se pinta	
+	- color: 0081F9
+	- vidas: 10
+	- rotacion
+	- direccion
