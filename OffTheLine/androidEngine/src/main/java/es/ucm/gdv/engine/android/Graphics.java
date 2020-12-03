@@ -51,7 +51,6 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
         Font f = new Font(_assetManager, filename, size, isBold);
-        setFont(f);
         return f;
     }
 

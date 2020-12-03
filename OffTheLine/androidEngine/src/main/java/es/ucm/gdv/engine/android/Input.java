@@ -19,6 +19,8 @@ public class Input extends es.ucm.gdv.engine.AbstractInput {
  * ------------------------------------- MÉTODOS PROTEGIDOS ------------------------------------- *
  * ---------------------------------------------------------------------------------------------- */
 
- protected List<TouchEvent> getListEvents(){ return _listTouchEvents; }
+    void addEvent(TouchEvent e) {
+        _listTouchEvents.add(e);
+    }
 
 }

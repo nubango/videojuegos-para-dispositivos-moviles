@@ -1,6 +1,7 @@
 package es.ucm.gdv.offtheline;
 
 import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import es.ucm.gdv.engine.Engine;
@@ -17,7 +18,11 @@ public class OffTheLineLogic implements Logic {
     @Override
     public boolean init(Engine e) {
         _engine = e;
-        _f = _engine.getGraphics().newFont("Bangers-Regular.ttf", 80, true);
+        try {
+            _f = _engine.getGraphics().newFont("Bangers-Regular.ttf", 80, true);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
         return true;
     }
 
@@ -39,8 +44,8 @@ public class OffTheLineLogic implements Logic {
 
 
         if(g.save()) {
-            g.scale(2, 2);
-            g.rotate(45);
+            //g.scale(2, 2);
+            // g.rotate(10);
         }
         g.setFont(_f);
         g.drawText("texto de prueba", 250,150);

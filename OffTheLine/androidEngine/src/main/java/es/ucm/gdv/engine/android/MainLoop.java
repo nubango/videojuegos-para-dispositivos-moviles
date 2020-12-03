@@ -92,14 +92,17 @@ public class MainLoop implements Runnable {
         long informePrevio = lastFrameTime; // Informes de FPS
         int frames = 0;
 
-        // Pintamos el frame
+
         while (!_engine.getSurfaceView().getHolder().getSurface().isValid())
             ;
         _engine.getGraphics().setCanvas(_engine.getSurfaceView().getHolder().lockCanvas());
         _engine.getGraphics().setScaleFactor(_engine.getSurfaceView().getWidth(), _engine.getSurfaceView().getHeight());
         _engine.getSurfaceView().getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
 
-        _logic.init(_engine);
+        if(!_logic.init(_engine)) {
+            System.err.println("****Init de la lógica ha devuelto false****");
+            return;
+        }
 
         // Bucle principal.
         while(_running) {
@@ -108,7 +111,9 @@ public class MainLoop implements Runnable {
             long nanoElapsedTime = currentTime - lastFrameTime;
             lastFrameTime = currentTime;
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
+
             _logic.update(elapsedTime);
+
             // Informe de FPS
             if (currentTime - informePrevio > 1000000000l) {
                 long fps = frames * 1000000000l / (currentTime - informePrevio);
@@ -122,7 +127,9 @@ public class MainLoop implements Runnable {
             while (!_engine.getSurfaceView().getHolder().getSurface().isValid())
                 ;
             _engine.getGraphics().setCanvas(_engine.getSurfaceView().getHolder().lockCanvas());
+
             _logic.render(_engine.getGraphics());
+
             _engine.getGraphics().renderBlackBars();
             _engine.getSurfaceView().getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
 

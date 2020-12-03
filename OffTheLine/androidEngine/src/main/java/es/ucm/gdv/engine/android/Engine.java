@@ -69,14 +69,8 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     }
 
     @Override
-    public InputStream openInputStream(String filename) {
-        try {
-            return _assetManager.open(filename);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("*****Ruta del fichero " + filename + " no encontrado*****");
-        return null;
+    public InputStream openInputStream(String filename) throws IOException {
+        return _assetManager.open(filename);
     }
 
 

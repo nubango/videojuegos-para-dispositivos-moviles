@@ -26,7 +26,7 @@ public class TouchEvents implements View.OnTouchListener  {
         int y = (int)event.getY();
         int fingerId = event.getActionIndex();
 
-        _input.getListEvents().add(new Input.TouchEvent(type, x, y, fingerId));
+        _input.addEvent(new Input.TouchEvent(type, x, y, fingerId));
 
         return true;
     }

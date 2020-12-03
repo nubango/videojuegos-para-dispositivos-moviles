@@ -5,11 +5,13 @@ package es.ucm.gdv.engine;
  */
 
 
+import java.io.FileNotFoundException;
+
 public interface Graphics {
 
     // Crea una nueva fuente del tamano especificado a partir de un fichero .ttf
     // Se indica si se desea o no la fuente en negrita
-     Font newFont(String filename, int size, boolean isBold);
+     Font newFont(String filename, int size, boolean isBold) throws FileNotFoundException;
 
     // Establece la fuente que se va a usar
      void setFont(Font f);

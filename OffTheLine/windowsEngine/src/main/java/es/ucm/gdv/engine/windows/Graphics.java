@@ -2,6 +2,7 @@ package es.ucm.gdv.engine.windows;
 
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -40,7 +41,14 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     // Se asigna la font creada por defecto al _graphics
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
-        Font f = new Font(filename, size, isBold, _engine);
+        Font f = null;
+
+        try {
+            f = new Font(filename, size, isBold, _engine);
+        } catch (FileNotFoundException e) {
+            System.out.println("Fuente no cargada: fichero .ttf no encontrado");
+        }
+
         return f;
     }
 
@@ -114,7 +122,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     public void drawText(String text, int x, int y)
     {
         if (_graphics.getFont() != null) {
-            _graphics.drawString(text, (int)x, y);
+            _graphics.drawString(text, x, y);
         }
         else {
             System.out.println("Establece una fuente con el método setFont(Font f)");
