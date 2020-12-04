@@ -20,7 +20,7 @@ public class Input extends es.ucm.gdv.engine.AbstractInput {
  * -------------------------------------- MÉTODOS PRIVADOS -------------------------------------- *
  * ---------------------------------------------------------------------------------------------- */
 
-    void addEvent(TouchEvent e){
+    synchronized void addEvent(TouchEvent e){
         _listTouchEvents.add(e);
     }
 

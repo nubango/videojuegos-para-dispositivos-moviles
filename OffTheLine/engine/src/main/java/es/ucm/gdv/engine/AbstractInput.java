@@ -19,7 +19,7 @@ public abstract class AbstractInput implements es.ucm.gdv.engine.Input {
      * Devuelve la lista de eventos. Si no hay eventos devuelve null.
      * */
     @Override
-    public List<TouchEvent> getTouchEvents() {
+    synchronized public List<TouchEvent> getTouchEvents() {
         if (_listTouchEvents.isEmpty())
             return null;
 

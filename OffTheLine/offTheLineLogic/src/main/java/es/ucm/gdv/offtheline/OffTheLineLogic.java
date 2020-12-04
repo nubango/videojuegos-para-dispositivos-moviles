@@ -1,11 +1,9 @@
 package es.ucm.gdv.offtheline;
 
-import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.util.List;
 
 import es.ucm.gdv.engine.Engine;
-import es.ucm.gdv.engine.AbstractGraphics;
 import es.ucm.gdv.engine.Font;
 import es.ucm.gdv.engine.Graphics;
 import es.ucm.gdv.engine.Input;
@@ -33,9 +31,17 @@ public class OffTheLineLogic implements Logic {
 
         return true;
     }
-    double angle = 0;
     public void update(double deltaTime)
     {
+        /*
+        * leerLever() devuelve un objeto level que contiene todoo lo del nivel (enemigos, items, caminos,...)
+        *
+        * if (levelPasado)
+        *   levelActualObject = leerLevel(++countLevel);
+        *
+        *  levelActualObject.update();
+        * */
+
         List<Input.TouchEvent> e = _engine.getInput().getTouchEvents();
         if (e != null)
             System.out.println("Dedo usado: " + e.get(0)._fingerId + " Tipo de pulsación: "
@@ -47,6 +53,11 @@ public class OffTheLineLogic implements Logic {
 
     public void render(Graphics g)
     {
+        /*
+        * levelActualObject.render()
+        * */
+
+
         _engine.getGraphics().clear(0xFF000000);
 
         it.render(g);
