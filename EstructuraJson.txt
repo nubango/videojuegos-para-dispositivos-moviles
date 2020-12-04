@@ -11,10 +11,10 @@
 	- position: x, y
 	- length: longitud del segmento
 	- angle: 0 horizontal, 90 vertical
-	- speed: Velocidad circular. Positiva al contrario del reloj y negativa a favor del reloj
+	- speed: velocidad circular. Positiva al contrario del reloj y negativa a favor del reloj
 	- offset: longitud de lo que se mueve hacia arriba y hacia abajo
 	- time1: tiempo que está parado el enemigo
-	- time2: Tiempo que tarda en ir desde la posicion hasta el offset
+	- time2: tiempo que tarda en ir desde la posicion hasta el offset
 	- color: FF1D03
 - player
 	- position: primer vértice que se pinta	

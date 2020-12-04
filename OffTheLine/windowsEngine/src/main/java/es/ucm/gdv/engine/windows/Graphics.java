@@ -83,7 +83,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     @Override
     public void rotate(double angle)
     {
-        _graphics.rotate(angle);
+        _graphics.rotate(Math.toRadians(angle));
     }
 
     @Override

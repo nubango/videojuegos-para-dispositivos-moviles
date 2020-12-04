@@ -28,7 +28,7 @@ public class OffTheLineLogic implements Logic {
         }
 
         it = new Item(100,100);
-        enemy = new Enemy(200,100,20,0,0,0,0,0);
+        enemy = new Enemy(200,100,20,90,50,100,1,2);
 
 
         return true;
@@ -42,6 +42,7 @@ public class OffTheLineLogic implements Logic {
                     + e.get(0)._type + " Coordenadas x: " + e.get(0)._x +" y: " + e.get(0)._y);
 
         it.update(deltaTime);
+        enemy.update(deltaTime);
     };
 
     public void render(Graphics g)
@@ -51,6 +52,24 @@ public class OffTheLineLogic implements Logic {
         it.render(g);
         enemy.render(g);
 
+
+
+/*
+        g.clear(0xFFFFFFFF);
+
+        g.setColor(0xFF123456);
+
+
+        if(g.save()) {
+            g.scale(2, 2);
+            g.rotate(10);
+        }
+        g.setFont(_f);
+        g.drawText("texto de prueba", 250,150);
+        g.fillRect(0,0, 100, 100);
+        g.drawLine(0,0, g.getWidth(), g.getHeight());
+
+        g.restore();*/
 
 
     };

@@ -22,6 +22,8 @@ public interface Graphics {
     // Metodos de control de la transformacion sobre el canvas
     void translate(int x, int y);
     void scale(double x, double y);
+    /**
+     * Rota "angle" ángulos en grados*/
     void rotate(double angle);
     boolean save();
     void restore();
