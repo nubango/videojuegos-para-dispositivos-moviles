@@ -1,6 +1,7 @@
 package es.ucm.gdv.offtheline;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.gdv.engine.Engine;
@@ -14,6 +15,8 @@ public class OffTheLineLogic implements Logic {
     Engine _engine;
     Item it;
     Enemy enemy;
+    Player player;
+    Path path;
 
     @Override
     public boolean init(Engine e) {
@@ -27,7 +30,22 @@ public class OffTheLineLogic implements Logic {
 
         it = new Item(100,100);
         enemy = new Enemy(200,100,20,90,50,100,1,2);
+        player = new Player(100, 200);
 
+        ArrayList<Integer> vertexes = new ArrayList<Integer>();
+
+        vertexes.add(-100);
+        vertexes.add(100);
+        vertexes.add(100);
+        vertexes.add(100);
+
+        vertexes.add(100);
+        vertexes.add(-100);
+        vertexes.add(-100);
+        vertexes.add(-100);
+
+
+        path = new Path(vertexes);
 
         return true;
     }
@@ -49,6 +67,7 @@ public class OffTheLineLogic implements Logic {
 
         it.update(deltaTime);
         enemy.update(deltaTime);
+        player.update(deltaTime);
     };
 
     public void render(Graphics g)
@@ -62,6 +81,8 @@ public class OffTheLineLogic implements Logic {
 
         it.render(g);
         enemy.render(g);
+        player.render(g);
+        path.render(g);
 
 
 

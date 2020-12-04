@@ -6,13 +6,15 @@ public class Enemy {
 
     double _x = 0, _y = 0;
     int _length = 5;        // Longitud del segmento
+    int _scale = 4;
     double _angle = 0;      // 0 horizontal, 90 vertical
+    int _color = 0xFFFF1D03;
+
     double _speed = 0;      // Velocidad circular. Positiva al contrario del reloj y negativa a favor del reloj
     double _offset = 0;     // Longitud de lo que se mueve hacia arriba y hacia abajo
     double _timeStop = 0;   // Tiempo que está parado el enemigo
     double _timeMoving = 0; // Tiempo que tarda en ir desde la posicion hasta el offset
-    int _color = 0xFFFF1D03;
-    int _scale = 4;
+
 
     double _velocity = 0;   // Velocidad de traslacion
     double _maxRight = 0;   // Límite de movimiento por la derecha
