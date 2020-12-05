@@ -75,47 +75,10 @@ public class OffTheLineLogic implements Logic {
 
         player.setCurrentPath(path.get(1));
 
-
-
         // cargamos los niveles
-        InputStream is = null;
-        try {
-            is = _engine.openInputStream("assets/levels.json");
 
+        JSONReader jsonReader = new JSONReader("assets/levels.json");
 
-            JSONParser jsonParser = new JSONParser();
-            try {
-                _levels = jsonParser.parse(new InputStreamReader(is));
-            } catch (ParseException ex) {
-                ex.printStackTrace();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        //JSONArray o = (JSONArray)_levels;
-
-       /* Iterator<String> iterator = o.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
-
-        */
-
-        JSONArray levels = (JSONArray) _levels;
-        //levels
-        //JSONObject level1 = (JSONObject) _levels;
-
-        /*JSONObject level1 = getJSONObject(_levels)
-
-
-        String name = level1.get("name").toString();
-        //int time = level1.get("time");
-        ArrayList items = (ArrayList)level1.get("items");
-
-        //level1.getJSONObject("data").getString("token");
-        System.out.println(items.get(0));
-        System.out.println(name);*/
         return true;
     }
 
