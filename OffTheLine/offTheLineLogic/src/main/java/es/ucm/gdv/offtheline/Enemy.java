@@ -4,7 +4,7 @@ import es.ucm.gdv.engine.Graphics;
 
 public class Enemy {
 
-    double _x = 0, _y = 0;
+    Utils.Point _position;
     int _length = 5;        // Longitud del segmento
     int _scale = 4;
     double _angle = 0;      // 0 horizontal, 90 vertical
@@ -17,13 +17,12 @@ public class Enemy {
 
 
     double _velocity = 0;   // Velocidad de traslacion
-    double _maxRight = 0;   // Límite de movimiento por la derecha
-    double _maxLeft = 0;    // Límite de movimiento por la izquierda
+    double _maxRight = 0;   // Limite de movimiento por la derecha
+    double _maxLeft = 0;    // Limite de movimiento por la izquierda
     double _timeStopped = 0;
 
     Enemy(double x, double y, int length, double angle, double speed, double offset, double timeStop, double timeMoving){
-        _x = x;
-        _y = y;
+        _position = new Utils.Point(x, y);;
         _length = length;
         _angle = angle;
         _speed = speed;
@@ -33,8 +32,8 @@ public class Enemy {
 
         if(timeMoving > 0)
             _velocity = _offset/timeMoving;
-        _maxLeft = _x ;
-        _maxRight = _x + _offset;
+        _maxLeft = x ;
+        _maxRight = x + _offset;
 
     }
 
@@ -44,17 +43,17 @@ public class Enemy {
 
         // Traslacion del enemigo. Si _offset o _timeMoving son 0 no se mueve
         if(_timeStopped >= _timeStop) {
-            _x += _velocity * deltaTime;
-            while (_x < _maxLeft || _x > _maxRight) {
+            _position.x += _velocity * deltaTime;
+            while (_position.x < _maxLeft || _position.x > _maxRight) {
                 // Vamos a pintar fuera del intervalo. Rectificamos e iniciamos la cuenta de parado
                 _timeStopped = 0;
-                if (_x < _maxLeft) {
+                if (_position.x < _maxLeft) {
                     // Nos salimos por la izquierda. Rebotamos.
-                    _x = 2 * _maxLeft - _x;
+                    _position.x = 2 * _maxLeft - _position.x;
                     _velocity *= -1;
-                } else if (_x > _maxRight) {
+                } else if (_position.x > _maxRight) {
                     // Nos salimos por la derecha. Rebotamos
-                    _x = 2 * _maxRight - _x;
+                    _position.x = 2 * _maxRight - _position.x;
                     _velocity *= -1;
                 }
             } // while
@@ -69,7 +68,7 @@ public class Enemy {
         g.setColor(_color);
 
         if(g.save()) {
-            g.translate((int)_x,(int)_y);
+            g.translate((int)_position.x,(int)_position.y);
             g.scale(_scale, _scale);
             g.rotate(_angle);
         }

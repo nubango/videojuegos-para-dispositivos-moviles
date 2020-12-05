@@ -1,7 +1,17 @@
 package es.ucm.gdv.offtheline;
 
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import es.ucm.gdv.engine.Engine;
@@ -16,12 +26,14 @@ public class OffTheLineLogic implements Logic {
     Item it;
     Enemy enemy;
     Player player;
-    Path path;
+    ArrayList<Path> path;
+    Object _levels;
 
     @Override
     public boolean init(Engine e) {
         _engine = e;
 
+        _engine.getGraphics().setLogicSize(640,480);
         try {
             _f = _engine.getGraphics().newFont("Bangers-Regular.ttf", 80, true);
         } catch (FileNotFoundException ex) {
@@ -32,23 +44,70 @@ public class OffTheLineLogic implements Logic {
         enemy = new Enemy(200,100,20,90,50,100,1,2);
         player = new Player(100, 200);
 
-        ArrayList<Integer> vertexes = new ArrayList<Integer>();
+        path = new ArrayList<Path>();
 
-        vertexes.add(-100);
-        vertexes.add(100);
-        vertexes.add(100);
-        vertexes.add(100);
+        ArrayList<Utils.Point> vertexes = new ArrayList<Utils.Point>();
 
-        vertexes.add(100);
-        vertexes.add(-100);
-        vertexes.add(-100);
-        vertexes.add(-100);
+        vertexes.add(new Utils.Point(-100,100));
+        vertexes.add(new Utils.Point(100,100));
+
+        vertexes.add(new Utils.Point(100,-100));
+        vertexes.add(new Utils.Point(-100,-100));
 
 
-        path = new Path(vertexes);
+        path.add(new Path(vertexes, null));
 
+        vertexes.clear();
+        int i = 100;
+        vertexes.add(new Utils.Point(-100+i,100+i));
+        vertexes.add(new Utils.Point(100+i,100+i));
+
+        vertexes.add(new Utils.Point(100+i,-100+i));
+        vertexes.add(new Utils.Point(-100+i,-100+i));
+        path.add(new Path(vertexes, null));
+
+        // cargamos los niveles
+        InputStream is = null;
+        try {
+            is = _engine.openInputStream("assets/levels.json");
+
+
+            JSONParser jsonParser = new JSONParser();
+            try {
+                _levels = jsonParser.parse(new InputStreamReader(is));
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        //JSONArray o = (JSONArray)_levels;
+
+       /* Iterator<String> iterator = o.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        */
+
+        JSONArray levels = (JSONArray) _levels;
+        //levels
+        //JSONObject level1 = (JSONObject) _levels;
+
+        /*JSONObject level1 = getJSONObject(_levels)
+
+
+        String name = level1.get("name").toString();
+        //int time = level1.get("time");
+        ArrayList items = (ArrayList)level1.get("items");
+
+        //level1.getJSONObject("data").getString("token");
+        System.out.println(items.get(0));
+        System.out.println(name);*/
         return true;
     }
+
     public void update(double deltaTime)
     {
         /*
@@ -82,9 +141,10 @@ public class OffTheLineLogic implements Logic {
         it.render(g);
         enemy.render(g);
         player.render(g);
-        path.render(g);
 
-
+        for (Path p:path) {
+            p.render(g);
+        }
 
 /*
         g.clear(0xFFFFFFFF);

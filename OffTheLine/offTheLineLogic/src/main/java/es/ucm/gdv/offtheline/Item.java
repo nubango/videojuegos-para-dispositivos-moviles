@@ -4,29 +4,27 @@ import es.ucm.gdv.engine.Graphics;
 
 public class Item {
 
-    double _x = 0, _y = 0;
-    int _tam = 20;           // Tamaño de los segmentos que forman el item
-    int _scale = 4;
+    Utils.Point _position;
+    int _tam = 8;           // Tamaño de los segmentos que forman el item
+    int _scale = 1;
     int _color = 0xFFFFEF00;
 
     double _speed = 150;    // Velocidad de rotacion
-    double _angle = 0;      // Ángulo de giro
+    double _angle = 0;      // Angulo de giro
 
     Item(double x, double y) {
-        _x = x;
-        _y = y;
+        _position = new Utils.Point(x, y);
     }
 
     void update(double deltaTime){
         _angle = (_angle + _speed * deltaTime) % 360;
-        //System.out.println("Angulo de giro: " + _angle);
     }
 
     void render(Graphics g) {
         g.setColor(_color);
 
         if(g.save()) {
-            g.translate((int)_x,(int)_y);
+            g.translate((int)_position.x,(int)_position.y);
             g.scale(_scale, _scale);
             g.rotate(_angle);
         }
