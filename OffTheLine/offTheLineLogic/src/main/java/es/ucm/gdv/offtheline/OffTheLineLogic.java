@@ -41,30 +41,41 @@ public class OffTheLineLogic implements Logic {
         }
 
         it = new Item(100,100);
-        enemy = new Enemy(200,100,20,90,50,100,1,2);
+        enemy = new Enemy(100,100,20,90,50,100,1,2);
         player = new Player(100, 200);
 
         path = new ArrayList<Path>();
 
+        int width = _engine.getGraphics().getWidth()/2;
+        int height = _engine.getGraphics().getHeight()/2;
+
         ArrayList<Utils.Point> vertexes = new ArrayList<Utils.Point>();
 
-        vertexes.add(new Utils.Point(-100,100));
-        vertexes.add(new Utils.Point(100,100));
+        vertexes.add(new Utils.Point(-100+width,100+height));
+        vertexes.add(new Utils.Point(100+width,100+height));
 
-        vertexes.add(new Utils.Point(100,-100));
-        vertexes.add(new Utils.Point(-100,-100));
-
-
+        vertexes.add(new Utils.Point(100+width,-100+height));
+        vertexes.add(new Utils.Point(-100+width,-100+height));
         path.add(new Path(vertexes, null));
+
 
         vertexes.clear();
-        int i = 100;
-        vertexes.add(new Utils.Point(-100+i,100+i));
-        vertexes.add(new Utils.Point(100+i,100+i));
-
-        vertexes.add(new Utils.Point(100+i,-100+i));
-        vertexes.add(new Utils.Point(-100+i,-100+i));
+        vertexes.add(new Utils.Point(-300+width,50+height));
+        vertexes.add(new Utils.Point(-225+width,0+height));
+        vertexes.add(new Utils.Point(-225+width,50+height));
+        vertexes.add(new Utils.Point(225+width,50+height));
+        vertexes.add(new Utils.Point(225+width,15+height));
+        vertexes.add(new Utils.Point(300+width,0+height));
+        vertexes.add(new Utils.Point(225+width,0+height));
+        vertexes.add(new Utils.Point(225+width,-50+height));
+        vertexes.add(new Utils.Point(-225+width,-50+height));
+        vertexes.add(new Utils.Point(-225+width,0+height));
         path.add(new Path(vertexes, null));
+
+
+        player.setCurrentPath(path.get(1));
+
+
 
         // cargamos los niveles
         InputStream is = null;
@@ -123,6 +134,7 @@ public class OffTheLineLogic implements Logic {
         if (e != null)
             System.out.println("Dedo usado: " + e.get(0)._fingerId + " Tipo de pulsación: "
                     + e.get(0)._type + " Coordenadas x: " + e.get(0)._x +" y: " + e.get(0)._y);
+
 
         it.update(deltaTime);
         enemy.update(deltaTime);

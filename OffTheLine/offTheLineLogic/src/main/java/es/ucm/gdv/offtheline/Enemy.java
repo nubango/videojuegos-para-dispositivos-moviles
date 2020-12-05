@@ -23,7 +23,7 @@ public class Enemy {
 
     Enemy(double x, double y, int length, double angle, double speed, double offset, double timeStop, double timeMoving){
         _position = new Utils.Point(x, y);;
-        _length = length;
+        _length = length/2;
         _angle = angle;
         _speed = speed;
         _offset = offset;
@@ -67,14 +67,16 @@ public class Enemy {
     void render(Graphics g) {
         g.setColor(_color);
 
-        if(g.save()) {
-            g.translate((int)_position.x,(int)_position.y);
-            g.scale(_scale, _scale);
-            g.rotate(_angle);
+        if(!g.save()) {
+            return;
         }
 
+        g.translate((int)_position.x, (int)_position.y);
+        g.scale(_scale, _scale);
+        g.rotate(_angle);
 
-        g.drawLine(-_length/2,0, _length/2,0);
+
+        g.drawLine(-_length,0, _length,0);
 
 
         g.restore();
