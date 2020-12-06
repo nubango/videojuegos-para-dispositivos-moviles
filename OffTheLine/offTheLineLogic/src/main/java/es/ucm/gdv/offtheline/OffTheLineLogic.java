@@ -77,7 +77,7 @@ public class OffTheLineLogic implements Logic {
 
         // cargamos los niveles
 
-        JSONReader jsonReader = new JSONReader("assets/levels.json");
+        //JSONReader jsonReader = new JSONReader("assets/levels.json");
 
         return true;
     }
