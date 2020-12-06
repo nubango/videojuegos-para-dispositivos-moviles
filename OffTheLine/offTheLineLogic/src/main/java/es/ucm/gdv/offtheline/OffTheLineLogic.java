@@ -70,10 +70,10 @@ public class OffTheLineLogic implements Logic {
         vertexes.add(new Utils.Point(225+width,-50+height));
         vertexes.add(new Utils.Point(-225+width,-50+height));
         vertexes.add(new Utils.Point(-225+width,0+height));
-        path.add(new Path(vertexes, null));
+       // path.add(new Path(vertexes, null));
 
 
-        player.setCurrentPath(path.get(1));
+        player.setCurrentPath(path.get(0));
 
 
 
@@ -119,6 +119,17 @@ public class OffTheLineLogic implements Logic {
         return true;
     }
 
+    public void handleInput() {
+        List<Input.TouchEvent> e = _engine.getInput().getTouchEvents();
+        /*if (e != null)
+            System.out.println("Dedo usado: " + e.get(0)._fingerId + " Tipo de pulsación: "
+                    + e.get(0)._type + " Coordenadas x: " + e.get(0)._x +" y: " + e.get(0)._y);
+         */
+
+        player.handleInput(e);
+
+    }
+
     public void update(double deltaTime)
     {
         /*
@@ -130,10 +141,7 @@ public class OffTheLineLogic implements Logic {
         *  levelActualObject.update();
         * */
 
-        List<Input.TouchEvent> e = _engine.getInput().getTouchEvents();
-        if (e != null)
-            System.out.println("Dedo usado: " + e.get(0)._fingerId + " Tipo de pulsación: "
-                    + e.get(0)._type + " Coordenadas x: " + e.get(0)._x +" y: " + e.get(0)._y);
+
 
 
         it.update(deltaTime);

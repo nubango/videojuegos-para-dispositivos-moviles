@@ -19,7 +19,27 @@ public class Path {
         if(directions != null)
             _directions = new ArrayList<>(directions);
         else{
-            // inicializar las direcciones por defecto
+            _directions = new ArrayList<>();
+            for (int i = 0; i < _vertexes.size(); i++) {
+
+                double xOrigin = _vertexes.get(i).getX();
+                double yOrigin = _vertexes.get(i).getY();
+                double xDest = _vertexes.get((i+1)%_vertexes.size()).getX();
+                double yDest = _vertexes.get((i+1)%_vertexes.size()).getY();;
+
+                // Hallamos coordenadas del vector direccion
+                double xDir = xDest - xOrigin;
+                double yDir = yDest - yOrigin;
+
+                // Normalizamos coordenadas del vector
+                double length = Math.sqrt( xDir*xDir + yDir*yDir );
+                if (length != 0) {
+                    xDir = xDir/length;
+                    yDir = yDir/length;
+                }
+
+                _directions.add(new Utils.Point(xDir, yDir));
+            }
         }
     }
 

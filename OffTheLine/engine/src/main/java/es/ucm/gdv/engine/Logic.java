@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public interface Logic {
     boolean init(Engine engine);
+    void handleInput();
     void update(double deltaTime);
     void render(Graphics g);
 
