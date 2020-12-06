@@ -10,91 +10,154 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class JSONReader {
 
-    JSONArray jsonArray = null;
+    JSONArray jsonFile = null;
     JSONObject level = null;
+    JSONParser jsonParser = null;
+    Reader jsonReader =null;
 
-    public JSONReader(String path){
-        JSONParser jsonParser = new JSONParser();
+    public JSONReader(){
+        jsonParser = new JSONParser();
+    }
 
-        Reader jsonReader = null;
+    private String getName(){
+        String name = (String) level.get("name");
+        //System.out.println("NOMBRE: " + name);
+        return name;
+    }
+
+    private ArrayList<Path> getPaths(){
+        JSONArray paths = (JSONArray) level.get("paths");
+        ArrayList<Path> pathArray = new ArrayList<>();
+
+        for (int i = 0; i < paths.size(); i++) {
+            ArrayList<Utils.Point> vertices = new ArrayList<Utils.Point>();
+            ArrayList<Utils.Point> directions = null;
+
+            JSONObject path = (JSONObject) paths.get(i);
+
+            JSONArray vertArray = (JSONArray) path.get("vertices");
+            for (int j = 0; j < vertArray.size(); j++) {
+                JSONObject vertex = (JSONObject) vertArray.get(j);
+
+                double x = Double.parseDouble(vertex.get("x").toString());
+                double y = Double.parseDouble(vertex.get("y").toString());
+
+                vertices.add(new Utils.Point(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2));
+            }
+
+            JSONArray dirArray = (JSONArray) path.get("direction");
+            if(dirArray != null){
+                directions = new ArrayList<Utils.Point>();
+                for (int j = 0; j < dirArray.size(); j++) {
+                    JSONObject direction = (JSONObject) dirArray.get(j);
+
+                    double x = Double.parseDouble(direction.get("x").toString());
+                    double y = Double.parseDouble(direction.get("y").toString());
+
+                    directions.add(new Utils.Point(x, y));
+                }
+            }
+            pathArray.add(new Path(vertices,directions));
+        }
+
+        return pathArray;
+    }
+
+    private ArrayList<Item> getItems() {
+        JSONArray items = (JSONArray) level.get("items");
+        ArrayList<Item> itemArray = new ArrayList<>();
+
+        for (int j = 0; j < items.size(); j++) {
+            JSONObject item = (JSONObject) items.get(j);
+            double x = Double.parseDouble(item.get("x").toString());
+            double y = Double.parseDouble(item.get("y").toString());
+            itemArray.add(new Item(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2));
+        }
+
+        return itemArray;
+    }
+
+    private ArrayList<Enemy> getEnemies(){
+        JSONArray enemies = (JSONArray) level.get("enemies");
+        if(enemies == null) return null;
+        ArrayList<Enemy> enemyArray = new ArrayList<>();
+
+        for (int i = 0; i < enemies.size(); i++) {
+            JSONObject enemy = (JSONObject) enemies.get(i);
+            double x = Double.parseDouble(enemy.get("x").toString());
+            double y = Double.parseDouble(enemy.get("y").toString());
+            double length = Double.parseDouble(enemy.get("length").toString());
+            double angle = Double.parseDouble(enemy.get("angle").toString());
+
+            Utils.Point offset = null;
+            JSONObject offsetArray = (JSONObject) enemy.get("offset");
+            if(offsetArray != null)
+            {
+                double offsetX = Double.parseDouble(enemy.get("x").toString());
+                double offsetY = Double.parseDouble(enemy.get("y").toString());
+                offset = new Utils.Point(offsetX, offsetY);
+            }
+
+            // opcionales
+
+            double time1 = 0;
+            Object o1 = enemy.get("time1");
+            if(o1!= null){
+                time1 = Double.parseDouble(enemy.get("time1").toString());
+            }
+
+            double time2 = 0;
+            Object o2 = enemy.get("time2");
+            if(o2!= null){
+                time2 = Double.parseDouble(enemy.get("time2").toString());
+            }
+
+            double speed = 0;
+            Object o3 =  enemy.get("speed");
+            if(o3 != null){
+                speed = Double.parseDouble(enemy.get("speed").toString());
+            }
+
+            enemyArray.add(new Enemy(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2, (int)length, angle, speed, offset, time1, time2));
+        }
+
+        return enemyArray;
+    }
+
+    public ArrayList<Level> parserLevels(String path){
+        ArrayList<Level> levels = null;
         try {
             jsonReader = new FileReader(path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         try {
-            jsonArray = (JSONArray) jsonParser.parse(jsonReader);
+            jsonFile = (JSONArray) jsonParser.parse(jsonReader);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        for (Object o : jsonArray)
-        {
-            level = (JSONObject) o;
-            // TESTEO PARA SABER QUE NIVEL ES
-            System.out.println("QUE NIVEL ES?");
-            if(this.getName().equals("THE BOX"))
-                System.out.println("ES EL NIVEL 1");
-        }
+        levels = new ArrayList<>();
+        // jsonFile.size() es el numero de niveles que hay
+        for(int i = 0; i < jsonFile.size(); i++) {
+            level = (JSONObject) jsonFile.get(i);
 
+            String n = getName();
+            ArrayList<Path> p = getPaths();
+            ArrayList<Item> itm = getItems();
+
+            levels.add(new Level(i, n, p, itm));
+            ArrayList<Enemy> en = getEnemies();
+            if (en != null)
+                levels.get(i).addEnemies(getEnemies());
+
+        }
+        return levels;
     }
-
-    String getName(){
-        String name = (String) level.get("name");
-        System.out.println("NOMBRE: " + name);
-        return name;
-    }
-
-    ArrayList<Path> getPaths(){
-        JSONArray path = (JSONArray) level.get("path");
-        Iterator<Path> itr = path.listIterator();
-        while(itr.hasNext()){
-            System.out.println(itr.next());
-        }
-        /* EQUIVALENTE AL ITERADOR
-        for (Object p : path)
-        {
-            System.out.println(p+"");
-        }
-         */
-        return path;
-    }
-
-    ArrayList<Item> getItems(){
-        JSONArray items = (JSONArray) level.get("items");
-        Iterator<Item> itr = items.listIterator();
-        while(itr.hasNext()){
-            System.out.println(itr.next());
-        }
-        /* EQUIVALENTE AL ITERADOR
-        for (Object i : items)
-        {
-            System.out.println(i+"");
-        }
-         */
-        return items;
-    }
-
-    ArrayList<Enemy> getEnemies(){
-        JSONArray enemies = (JSONArray) level.get("enemies");
-        Iterator<Item> itr = enemies.listIterator();
-        while(itr.hasNext()){
-            System.out.println(itr.next());
-        }
-        /* EQUIVALENTE AL ITERADOR
-        for (Object e : enemies)
-        {
-            System.out.println(e+"");
-        }
-         */
-        return enemies;
-    }
-
 
 }

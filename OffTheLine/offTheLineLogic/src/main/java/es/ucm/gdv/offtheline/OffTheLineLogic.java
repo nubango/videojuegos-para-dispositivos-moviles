@@ -27,21 +27,25 @@ public class OffTheLineLogic implements Logic {
     Enemy enemy;
     Player player;
     ArrayList<Path> path;
+    ArrayList<Level> levels;
     Object _levels;
+
+    static final int LOGIC_WIDTH = 640;
+    static final int LOGIC_HEIGHT = 480;
 
     @Override
     public boolean init(Engine e) {
         _engine = e;
 
-        _engine.getGraphics().setLogicSize(640,480);
+        _engine.getGraphics().setLogicSize(LOGIC_WIDTH,LOGIC_HEIGHT);
         try {
             _f = _engine.getGraphics().newFont("Bangers-Regular.ttf", 80, true);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
-
+/*
         it = new Item(100,100);
-        enemy = new Enemy(100,100,20,90,50,100,1,2);
+        //enemy = new Enemy(100,100,20,90,50,100,1,2);
         player = new Player(100, 200);
 
         path = new ArrayList<Path>();
@@ -74,10 +78,13 @@ public class OffTheLineLogic implements Logic {
 
 
         player.setCurrentPath(path.get(0));
+    */
 
         // cargamos los niveles
 
-        //JSONReader jsonReader = new JSONReader("assets/levels.json");
+        JSONReader jsonReader = new JSONReader();
+
+        levels = jsonReader.parserLevels("assets/levels.json");
 
         return true;
     }
@@ -89,7 +96,7 @@ public class OffTheLineLogic implements Logic {
                     + e.get(0)._type + " Coordenadas x: " + e.get(0)._x +" y: " + e.get(0)._y);
          */
 
-        player.handleInput(e);
+        //player.handleInput(e);
 
     }
 
@@ -104,12 +111,12 @@ public class OffTheLineLogic implements Logic {
         *  levelActualObject.update();
         * */
 
+        levels.get(2).update(deltaTime);
 
 
-
-        it.update(deltaTime);
-        enemy.update(deltaTime);
-        player.update(deltaTime);
+        //it.update(deltaTime);
+        //enemy.update(deltaTime);
+        //player.update(deltaTime);
     };
 
     public void render(Graphics g)
@@ -121,15 +128,20 @@ public class OffTheLineLogic implements Logic {
 
         _engine.getGraphics().clear(0xFF000000);
 
-        it.render(g);
-        enemy.render(g);
-        player.render(g);
+        levels.get(2).render(g);
 
+        //it.render(g);
+        //enemy.render(g);
+        //player.render(g);
+
+        /*
         for (Path p:path) {
             p.render(g);
         }
 
-/*
+         */
+
+        /*
         g.clear(0xFFFFFFFF);
 
         g.setColor(0xFF123456);
@@ -144,7 +156,8 @@ public class OffTheLineLogic implements Logic {
         g.fillRect(0,0, 100, 100);
         g.drawLine(0,0, g.getWidth(), g.getHeight());
 
-        g.restore();*/
+        g.restore();
+        */
 
 
     };
