@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Queue;
 
-
 public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     java.awt.Graphics2D _graphics;

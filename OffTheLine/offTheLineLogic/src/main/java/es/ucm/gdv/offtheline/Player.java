@@ -21,7 +21,6 @@ public class Player {
     double _translateVelocity = 200;
     double _jumpVelocity = 1000;
     Utils.Point _direction;  // Velocidad de traslacion
-    //Utils.Point _vOrigin;  // Vertice origen, de donde vengo
     Utils.Point _vDest;    // Vertice destino, a donde voy
     int _dir = 1;
 
@@ -38,7 +37,6 @@ public class Player {
         _originJumpPosition = new Utils.Point(x, y);
 
          _direction = new Utils.Point(1,1);
-         //_vOrigin = new Utils.Point(x,y);
          _vDest = new Utils.Point(x,y);
 
          _velocity = _translateVelocity;
@@ -78,21 +76,12 @@ public class Player {
         _direction.x = xDir;
         _direction.y = yDir;
 
-        //_vOrigin.x = xOrigin;
-        //_vOrigin.y = yOrigin;
-
-
     }
 
     void updateJumpCoordinates(){
         // actualizo los valores necerarios para que se mueva correctamente
         _originJumpPosition.x = _position.x;
         _originJumpPosition.y = _position.y;
-
-        // direccion de salto
-        /*double x = -_direction.x * (_dir);
-        _direction.x = _direction.y;
-        _direction.y = x;*/
 
         _direction.x = _currentPath._directions.get(_currentLine).getX();
         _direction.y = _currentPath._directions.get(_currentLine).getY();
@@ -103,53 +92,6 @@ public class Player {
         // velocidad de salto
         _velocity = _jumpVelocity;
 
-
-        /*
-        // interseccion entre un punto y un segmento
-
-        double ax = _originJumpPosition.x;
-        double ay = _originJumpPosition.y;
-        double bx = _originJumpPosition.x+_direction.x;
-        double by = _originJumpPosition.x+_direction.y;
-
-        for (int i = 0; i < _currentPath._vertexes.size(); i++) {
-            if (i == 2) {
-                _currentLine = i;
-                double cx = _currentPath._vertexes.get(i).x;
-                double cy = _currentPath._vertexes.get(i).y;
-
-                double dx = _currentPath._vertexes.get((i + 1) % _currentPath._vertexes.size()).x;
-                double dy = _currentPath._vertexes.get((i + 1) % _currentPath._vertexes.size()).y;
-
-                double dx_cx = dx - cx,
-                        dy_cy = dy - cy,
-                        bx_ax = bx - ax,
-                        by_ay = by - ay;
-
-                double de = (bx_ax) * (dy_cy) - (by_ay) * (dx_cx);
-
-                double L1IntersectPos = 0;
-                double L2IntersectPos = 0;
-
-                if (Math.abs(de)<0.01)
-                    return;
-
-                double ax_cx = ax - cx;
-                double ay_cy = ay - cy;
-                double r = ((ay_cy) * (dx_cx) - (ax_cx) * (dy_cy)) / de;
-                double s = ((ay_cy) * (bx_ax) - (ax_cx) * (by_ay)) / de;
-                double px = ax + r * (bx_ax);
-                double py = ay + r * (by_ay);
-
-                _vDest.x = px;
-                _vDest.y = py;
-
-                L1IntersectPos = r;
-                L2IntersectPos = s;
-
-            } // if
-        } // for
-         */
     } // updateJumpCoordinates()
 
     Utils.Point checkCollision(){
