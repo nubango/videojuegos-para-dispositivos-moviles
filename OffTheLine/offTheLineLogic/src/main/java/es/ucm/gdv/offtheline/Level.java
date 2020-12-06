@@ -16,7 +16,6 @@ public class Level {
         _name = name;
         _paths = new ArrayList<>(paths);
         _items = new ArrayList<>(items);
-
     }
 
     void addEnemies(ArrayList<Enemy> enemies){

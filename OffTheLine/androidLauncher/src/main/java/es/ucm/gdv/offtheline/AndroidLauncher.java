@@ -8,7 +8,7 @@ import es.ucm.gdv.engine.android.Engine;
 
 public class AndroidLauncher extends AppCompatActivity {
 
-    Engine _engine;
+    private Engine _engine;
     /**
      * Método llamado por Android como parte del ciclo de vida de
      * la actividad. Se llama en el momento de lanzarla.
@@ -22,8 +22,8 @@ public class AndroidLauncher extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _engine = new Engine(this, new OffTheLineLogic());
-        setContentView(_engine.getSurfaceView());
+        set_engine(new Engine(this, new OffTheLineLogic()));
+        setContentView(get_engine().getSurfaceView());
     }
 
     /**
@@ -42,7 +42,7 @@ public class AndroidLauncher extends AppCompatActivity {
         // Avisamos a la vista (que es la encargada del active render)
         // de lo que está pasando.
         super.onResume();
-        _engine.resume();
+        get_engine().resume();
 
     } // onResume
 
@@ -60,8 +60,15 @@ public class AndroidLauncher extends AppCompatActivity {
         // Avisamos a la vista (que es la encargada del active render)
         // de lo que está pasando.
         super.onPause();
-        _engine.pause();
+        get_engine().pause();
 
     } // onPause
 
+    public Engine get_engine() {
+        return _engine;
+    }
+
+    public void set_engine(Engine _engine) {
+        this._engine = _engine;
+    }
 }
