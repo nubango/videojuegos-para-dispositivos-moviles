@@ -32,8 +32,11 @@ public class Level {
             i.update(deltaTime);
         }
 
-        for (Enemy e: _enemies) {
-            e.update(deltaTime);
+        if(_enemies != null)
+        {
+            for (Enemy e: _enemies) {
+                e.update(deltaTime);
+            }
         }
 
     }
@@ -51,8 +54,10 @@ public class Level {
             i.render(g);
         }
 
-        for (Enemy e: _enemies) {
-            e.render(g);
+        if(_enemies != null) {
+            for (Enemy e : _enemies) {
+                e.render(g);
+            }
         }
     }
 }
