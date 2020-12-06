@@ -115,15 +115,6 @@ public class MainLoop implements Runnable {
             _logic.handleInput();
             _logic.update(elapsedTime);
 
-            // Informe de FPS
-            if (currentTime - informePrevio > 1000000000l) {
-                long fps = frames * 1000000000l / (currentTime - informePrevio);
-                System.out.println("" + fps + " fps");
-                frames = 0;
-                informePrevio = currentTime;
-            }
-            ++frames;
-
             // Pintamos el frame
             while (!_engine.getSurfaceView().getHolder().getSurface().isValid())
                 ;
