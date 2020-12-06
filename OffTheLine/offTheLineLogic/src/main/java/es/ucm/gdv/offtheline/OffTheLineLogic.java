@@ -1,17 +1,8 @@
 package es.ucm.gdv.offtheline;
 
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import es.ucm.gdv.engine.Engine;
@@ -21,58 +12,93 @@ import es.ucm.gdv.engine.Input;
 import es.ucm.gdv.engine.Logic;
 
 public class OffTheLineLogic implements Logic {
-    Font _f;
-    Engine _engine;
-    Item it;
-    Enemy enemy;
-    Player player;
-    ArrayList<Path> path;
-    ArrayList<Level> levels;
-    int currentLevel = 5;
+    private Font _f;
+    private Engine _engine;
+    private Player player;
+    private ArrayList<Level> levels;
+    private int currentLevel = 5;
 
     static final int LOGIC_WIDTH = 640;
     static final int LOGIC_HEIGHT = 480;
 
     @Override
     public boolean init(Engine e) {
-        _engine = e;
+        set_engine(e);
 
-        _engine.getGraphics().setLogicSize(LOGIC_WIDTH,LOGIC_HEIGHT);
+        get_engine().getGraphics().setLogicSize(LOGIC_WIDTH,LOGIC_HEIGHT);
         try {
-            _f = _engine.getGraphics().newFont("fonts/Bungee-Regular.ttf", 80, true);
+            set_f(get_engine().getGraphics().newFont("fonts/Bungee-Regular.ttf", 80, true));
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
 
-        JSONReader jsonReader = new JSONReader(_engine);
-        levels = jsonReader.parserLevels("levels.json");
+        JSONReader jsonReader = new JSONReader(get_engine());
+        setLevels(jsonReader.parserLevels("levels.json"));
 
-        player = new Player(100, 200);
-        player.setCurrentLevel(levels.get(currentLevel));
-        player.setCurrentPath(levels.get(currentLevel)._paths.get(0));
+        setPlayer(new Player(100, 200));
+        getPlayer().setCurrentLevel(getLevels().get(getCurrentLevel()));
+        getPlayer().setCurrentPath(getLevels().get(getCurrentLevel())._paths.get(0));
 
         return true;
     }
 
     public void handleInput() {
-        List<Input.TouchEvent> e = _engine.getInput().getTouchEvents();
+        List<Input.TouchEvent> e = get_engine().getInput().getTouchEvents();
 
-        player.handleInput(e);
+        getPlayer().handleInput(e);
     }
 
-    public void update(double deltaTime)
-    {
-        levels.get(currentLevel).update(deltaTime);
+    public void update(double deltaTime) {
+        getLevels().get(getCurrentLevel()).update(deltaTime);
 
-        player.update(deltaTime);
+        getPlayer().update(deltaTime);
     };
 
-    public void render(Graphics g)
-    {
-        _engine.getGraphics().clear(0xFF000000);
+    public void render(Graphics g) {
+        get_engine().getGraphics().clear(0xFF000000);
 
-        levels.get(currentLevel).render(g);
+        getLevels().get(getCurrentLevel()).render(g);
 
-        player.render(g);
+        getPlayer().render(g);
     };
+
+    public Font get_f() {
+        return _f;
+    }
+
+    public void set_f(Font _f) {
+        this._f = _f;
+    }
+
+    public Engine get_engine() {
+        return _engine;
+    }
+
+    public void set_engine(Engine _engine) {
+        this._engine = _engine;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public ArrayList<Level> getLevels() {
+        return levels;
+    }
+
+    public void setLevels(ArrayList<Level> levels) {
+        this.levels = levels;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
 }

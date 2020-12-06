@@ -5,10 +5,10 @@ import java.awt.event.MouseMotionListener;
 
 public class MotionEvents implements MouseMotionListener {
 
-    Input _input;
+    private Input _input;
 
     MotionEvents(Input input){
-        _input = input;
+        set_input(input);
     }
 
 /* ---------------------------------------------------------------------------------------------- *
@@ -20,11 +20,19 @@ public class MotionEvents implements MouseMotionListener {
      */
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-        _input.addEvent(new Input.TouchEvent(Input.Type.displace, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
+        get_input().addEvent(new Input.TouchEvent(Input.Type.displace, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
     }
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
 
+    }
+
+    public Input get_input() {
+        return _input;
+    }
+
+    public void set_input(Input _input) {
+        this._input = _input;
     }
 }

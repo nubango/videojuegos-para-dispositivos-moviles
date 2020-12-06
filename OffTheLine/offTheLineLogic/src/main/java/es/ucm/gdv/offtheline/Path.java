@@ -7,14 +7,13 @@ import es.ucm.gdv.engine.Graphics;
 
 public class Path {
 
-    List<Utils.Point> _vertexes;    // Lista de puntos que son los vercices de las lineas
-    List<Utils.Point> _directions;
+    private List<Utils.Point> _vertexes;    // Lista de puntos que son los vercices de las lineas
+    private List<Utils.Point> _directions;
     private int _scale = 1;
     private int _color = 0xFFFFFFFF;
 
     // El contructor hay que hacerlo de otra forma porque ahora solo pintaría bien los niveles que tienen un único camino
     Path(List<Utils.Point> vertexes, List<Utils.Point> directions){
-    //Path(List<Integer> vertexes){
         _vertexes = new ArrayList<>(vertexes);
         if(directions != null)
             _directions = new ArrayList<>(directions);
@@ -63,15 +62,30 @@ public class Path {
 
         // Comprobamos que el tamaño de la lista es múltiplo de 2 y recorremos la lista de vértices de 2 en 2.
         // Cuando llegamos al ultimo vértice lo que hacemos es unirlo con el primero por eso hacemos % size()
-        for (int i = 0; i < _vertexes.size(); i++){
+        for (int i = 0; i < get_vertexes().size(); i++){
                 // dividimos entre la escala porque queremos escalar solo el grosor de la linea, no las posiciones
-                g.drawLine((int)_vertexes.get(i).x/_scale,(int)_vertexes.get(i).y/_scale,
-                        (int)_vertexes.get((i+1)%_vertexes.size()).x/_scale,
-                        (int)_vertexes.get((i+1)%_vertexes.size()).y/_scale);
+                g.drawLine((int) get_vertexes().get(i).x/_scale,(int) get_vertexes().get(i).y/_scale,
+                        (int) get_vertexes().get((i+1)% get_vertexes().size()).x/_scale,
+                        (int) get_vertexes().get((i+1)% get_vertexes().size()).y/_scale);
         }
 
         g.restore();
 
     } // render
 
+    public List<Utils.Point> get_vertexes() {
+        return _vertexes;
+    }
+
+    public void set_vertexes(List<Utils.Point> _vertexes) {
+        this._vertexes = _vertexes;
+    }
+
+    public List<Utils.Point> get_directions() {
+        return _directions;
+    }
+
+    public void set_directions(List<Utils.Point> _directions) {
+        this._directions = _directions;
+    }
 }

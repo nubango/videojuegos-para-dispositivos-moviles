@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 public class Font implements es.ucm.gdv.engine.Font {
 
-    java.awt.Font _font;
+    private java.awt.Font _font;
 
     Font(String filename, int size, boolean isBold, Engine engine) throws FileNotFoundException {
 
@@ -25,8 +25,8 @@ public class Font implements es.ucm.gdv.engine.Font {
         // baseFont contiene el tipo de letra base en tamaño 1. La
         // usamos como punto de partida para crear la nuestra, más
         // grande y en negrita.
-        if(isBold) _font = baseFont.deriveFont(java.awt.Font.BOLD, size);
-        else _font = baseFont.deriveFont(java.awt.Font.PLAIN, size);
+        if(isBold) set_font(baseFont.deriveFont(java.awt.Font.BOLD, size));
+        else set_font(baseFont.deriveFont(java.awt.Font.PLAIN, size));
 
     }
 
@@ -34,5 +34,13 @@ public class Font implements es.ucm.gdv.engine.Font {
  * -------------------------------------- MÉTODOS PÚBLICOS -------------------------------------- *
  * ---------------------------------------------------------------------------------------------- */
 
-    public java.awt.Font getFont() { return _font; }
+    public java.awt.Font getFont() { return get_font(); }
+
+    public java.awt.Font get_font() {
+        return _font;
+    }
+
+    public void set_font(java.awt.Font _font) {
+        this._font = _font;
+    }
 }

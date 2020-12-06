@@ -2,14 +2,13 @@ package es.ucm.gdv.engine.windows;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 public class ClickEvents implements MouseListener {
 
-    Input _input;
+    private Input _input;
 
     ClickEvents(Input input) {
-        _input = input;
+        set_input(input);
     }
 
 /* ---------------------------------------------------------------------------------------------- *
@@ -30,7 +29,7 @@ public class ClickEvents implements MouseListener {
      * */
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        _input.addEvent(new Input.TouchEvent(Input.Type.press, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
+        get_input().addEvent(new Input.TouchEvent(Input.Type.press, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
     }
 
     /**
@@ -38,7 +37,7 @@ public class ClickEvents implements MouseListener {
      */
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        _input.addEvent(new Input.TouchEvent(Input.Type.release, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
+        get_input().addEvent(new Input.TouchEvent(Input.Type.release, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
     }
 
     @Override
@@ -49,5 +48,13 @@ public class ClickEvents implements MouseListener {
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
 
+    }
+
+    public Input get_input() {
+        return _input;
+    }
+
+    public void set_input(Input _input) {
+        this._input = _input;
     }
 }

@@ -8,8 +8,8 @@ import java.util.Queue;
 
 public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
-    java.awt.Graphics2D _graphics;
-    Queue<AffineTransform> _transformQueue;
+    private java.awt.Graphics2D _graphics;
+    private Queue<AffineTransform> _transformQueue;
     private Engine _engine;
 
 
@@ -25,16 +25,16 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     public void setGraphics(java.awt.Graphics2D graphics)
     {
-        _graphics = graphics;
+        set_graphics(graphics);
 
         // Pintamos el fondo de negro
-        _graphics.setBackground(Color.black);
-        _graphics.clearRect(0,0, _wReal, _hReal);
+        get_graphics().setBackground(Color.black);
+        get_graphics().clearRect(0,0, _wReal, _hReal);
     }
 
     public void dispose()
     {
-        _graphics.dispose();
+        get_graphics().dispose();
     }
 
     // Se asigna la font creada por defecto al _graphics
@@ -53,75 +53,75 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     @Override
     public void setFont(es.ucm.gdv.engine.Font f) {
-        if (_graphics == null){
+        if (get_graphics() == null){
             System.out.println("Parte de Graphics sin inicializar: accediendo a _graphics antes de hacer run(Logic logic) ");
             return;
         }
-        _graphics.setFont(((Font)f).getFont());
+        get_graphics().setFont(((Font)f).getFont());
     }
 
     @Override
     public void clear(int color) {
         Color c = new Color(color);
-        _graphics.setBackground(c);
-        _graphics.clearRect(0, 0, getWidth(), getHeight());
+        get_graphics().setBackground(c);
+        get_graphics().clearRect(0, 0, getWidth(), getHeight());
     }
 
     @Override
     public void translate(int x, int y)
     {
-        _graphics.translate(x, y);
+        get_graphics().translate(x, y);
     }
 
     @Override
     public void scale(double x, double y)
     {
-        _graphics.scale(x, y);
+        get_graphics().scale(x, y);
     }
 
     @Override
     public void rotate(double angle)
     {
-        _graphics.rotate(Math.toRadians(angle));
+        get_graphics().rotate(Math.toRadians(angle));
     }
 
     @Override
     public boolean save()
     {
-        return _transformQueue.offer(_graphics.getTransform());
+        return get_transformQueue().offer(get_graphics().getTransform());
     }
 
     @Override
     public void restore()
     {
-        AffineTransform t = _transformQueue.poll();
+        AffineTransform t = get_transformQueue().poll();
         if (t != null)
-            _graphics.setTransform(t);
+            get_graphics().setTransform(t);
     }
 
     @Override
     public void setColor(int color) {
         Color c = new Color(color);
-        _graphics.setColor(c);
+        get_graphics().setColor(c);
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2)
     {
-        _graphics.drawLine(x1, y1, x2, y2);
+        get_graphics().drawLine(x1, y1, x2, y2);
     }
 
     @Override
     public void fillRect(int x1, int y1, int x2, int y2)
     {
-        _graphics.fillRect(x1, y1, x2, y2);
+        get_graphics().fillRect(x1, y1, x2, y2);
     }
 
     @Override
     public void drawText(String text, int x, int y)
     {
-        if (_graphics.getFont() != null) {
-            _graphics.drawString(text, x, y);
+        if (get_graphics().getFont() != null) {
+            get_graphics().drawString(text, x, y);
         }
         else {
             System.out.println("Establece una fuente con el método setFont(Font f)");
@@ -143,5 +143,20 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         super.setScaleFactor(wReal, hReal);
     }
 
+    public java.awt.Graphics2D get_graphics() {
+        return _graphics;
+    }
+
+    public void set_graphics(java.awt.Graphics2D _graphics) {
+        this._graphics = _graphics;
+    }
+
+    public Queue<AffineTransform> get_transformQueue() {
+        return _transformQueue;
+    }
+
+    public void set_transformQueue(Queue<AffineTransform> _transformQueue) {
+        this._transformQueue = _transformQueue;
+    }
 }
 
