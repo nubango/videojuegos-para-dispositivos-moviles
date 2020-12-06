@@ -27,7 +27,7 @@ public class OffTheLineLogic implements Logic {
 
         get_engine().getGraphics().setLogicSize(LOGIC_WIDTH,LOGIC_HEIGHT);
         try {
-            set_f(get_engine().getGraphics().newFont("fonts/Bungee-Regular.ttf", 80, true));
+            set_f(get_engine().getGraphics().newFont("fonts/BungeeHairline-Regular.ttf", 10, true));
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
@@ -45,6 +45,9 @@ public class OffTheLineLogic implements Logic {
     public void handleInput() {
         List<Input.TouchEvent> e = get_engine().getInput().getTouchEvents();
 
+        if(e == null)
+            return;
+
         getPlayer().handleInput(e);
     }
 
@@ -60,6 +63,14 @@ public class OffTheLineLogic implements Logic {
         getLevels().get(getCurrentLevel()).render(g);
 
         getPlayer().render(g);
+
+        get_engine().getGraphics().setColor(0xFFFFFFFF);
+        g.save();
+        g.translate(0, 0);
+        int level = currentLevel+1;
+        g.setFont(_f);
+        g.drawText("Level " + level + " - " + levels.get(currentLevel)._name,100, 50);
+        g.restore();
     };
 
     public Font get_f() {
