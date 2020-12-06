@@ -23,7 +23,7 @@ public class Player {
     Utils.Point _direction;  // Velocidad de traslacion
     //Utils.Point _vOrigin;  // Vertice origen, de donde vengo
     Utils.Point _vDest;    // Vertice destino, a donde voy
-    int _dir = -1;
+    int _dir = 1;
 
     Path _currentPath;
     int _currentLine = 0;
@@ -50,7 +50,7 @@ public class Player {
         if(_dir < 0) {
             dest = _currentLine;
             orig = (_currentLine + 1) % _currentPath._vertexes.size();
-        }else{
+        } else {
             orig = _currentLine;
             dest = (_currentLine + 1) % _currentPath._vertexes.size();
         }
@@ -65,8 +65,18 @@ public class Player {
         _position.x = xOrigin;
         _position.y = yOrigin;
 
-        _direction.x = _currentPath._directions.get(_currentLine).getX()*_dir;
-        _direction.y = _currentPath._directions.get(_currentLine).getY()*_dir;
+        double xDir = _vDest.x - xOrigin;
+        double yDir = _vDest.y - yOrigin;
+
+        // Normalizamos coordenadas del vector
+        double length = Math.sqrt( xDir*xDir + yDir*yDir );
+        if (length != 0) {
+            xDir = xDir/length;
+            yDir = yDir/length;
+        }
+
+        _direction.x = xDir;
+        _direction.y = yDir;
 
         //_vOrigin.x = xOrigin;
         //_vOrigin.y = yOrigin;
@@ -80,11 +90,14 @@ public class Player {
         _originJumpPosition.y = _position.y;
 
         // direccion de salto
-        double x = _direction.x*(-_dir);
+        /*double x = -_direction.x * (_dir);
         _direction.x = _direction.y;
-        _direction.y = x;
+        _direction.y = x;*/
 
-        // cambio la direaccion de traslacion
+        _direction.x = _currentPath._directions.get(_currentLine).getX();
+        _direction.y = _currentPath._directions.get(_currentLine).getY();
+
+        // cambio la direccion de traslacion
         _dir = -_dir;
 
         // velocidad de salto
@@ -143,7 +156,7 @@ public class Player {
 
         Utils.Point p = null;
         for (int i = 0; i < _currentPath._vertexes.size() && p == null; i++) {
-            if(i != _currentLine) {
+            if (i != _currentLine) {
                 double xori = _currentPath._vertexes.get(i).x;
                 double yori = _currentPath._vertexes.get(i).y;
                 double xdest = _currentPath._vertexes.get((i + 1) % _currentPath._vertexes.size()).x;
@@ -183,8 +196,8 @@ public class Player {
         _angle = (_angle + _speed * deltaTime) % 360;
 
         // Traslacion del player
-        _lastPosition.x = _position.x;
-        _lastPosition.y = _position.y;
+        _lastPosition.x = _position.getX();
+        _lastPosition.y = _position.getY();
         _position.x += _direction.x * _velocity * deltaTime;
         _position.y += _direction.y * _velocity * deltaTime;
 
@@ -202,19 +215,11 @@ public class Player {
             if (p != null) {
                 _jumping = false;
                 _velocity = _translateVelocity;
+
+                updatePathCoordinates();
+
                 _position.x = (int)p.x;
                 _position.y = (int)p.y;
-
-                if(_dir > 0) {
-                    _vDest.x = _currentPath._vertexes.get((_currentLine+1)%_currentPath._vertexes.size()).getX();
-                    _vDest.y = _currentPath._vertexes.get((_currentLine+1)%_currentPath._vertexes.size()).getY();
-                }else{
-                    _vDest.x = _currentPath._vertexes.get(_currentLine).getX();
-                    _vDest.y = _currentPath._vertexes.get(_currentLine).getY();
-                }
-
-                _direction.x = _currentPath._directions.get(_currentLine).x * _dir;
-                _direction.y = _currentPath._directions.get(_currentLine).y * _dir;
             }
         }
         else if(!_jumping) {

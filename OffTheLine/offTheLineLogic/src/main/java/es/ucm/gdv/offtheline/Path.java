@@ -38,6 +38,11 @@ public class Path {
                     yDir = yDir/length;
                 }
 
+                // direccion de salto
+                double x = -xDir;
+                xDir = yDir;
+                yDir = x;
+
                 _directions.add(new Utils.Point(xDir, yDir));
             }
         }

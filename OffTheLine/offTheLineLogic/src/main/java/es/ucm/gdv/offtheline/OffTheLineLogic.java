@@ -60,7 +60,7 @@ public class OffTheLineLogic implements Logic {
 
         vertexes.add(new Utils.Point(100+width,-100+height));
         vertexes.add(new Utils.Point(-100+width,-100+height));
-        path.add(new Path(vertexes, null));
+        //path.add(new Path(vertexes, null));
 
 
         vertexes.clear();
@@ -74,7 +74,7 @@ public class OffTheLineLogic implements Logic {
         vertexes.add(new Utils.Point(225+width,-50+height));
         vertexes.add(new Utils.Point(-225+width,-50+height));
         vertexes.add(new Utils.Point(-225+width,0+height));
-       // path.add(new Path(vertexes, null));
+        path.add(new Path(vertexes, null));
 
 
         player.setCurrentPath(path.get(0));
