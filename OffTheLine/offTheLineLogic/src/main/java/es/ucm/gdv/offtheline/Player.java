@@ -30,6 +30,7 @@ public class Player {
     boolean _jump = false;
     boolean _jumping = false;
 
+    Level currentLevel;
 
     Player(double x, double y){
         _lastPosition = new Utils.Point(x, y);
@@ -94,27 +95,30 @@ public class Player {
 
     } // updateJumpCoordinates()
 
-    Utils.Point checkCollision(){
+    Utils.Point checkCollision() {
 
         Utils.Point p = null;
-        for (int i = 0; i < _currentPath._vertexes.size() && p == null; i++) {
-            if (i != _currentLine) {
-                double xori = _currentPath._vertexes.get(i).x;
-                double yori = _currentPath._vertexes.get(i).y;
-                double xdest = _currentPath._vertexes.get((i + 1) % _currentPath._vertexes.size()).x;
-                double ydest = _currentPath._vertexes.get((i + 1) % _currentPath._vertexes.size()).y;
+        for (int j = 0; j < currentLevel._paths.size(); j++) {
+            for (int i = 0; i < currentLevel._paths.get(j)._vertexes.size() && p == null; i++) {
+                if (_currentPath == currentLevel._paths.get(j)) {
+                    if (_currentLine != i) {
+                        continue;
+                    }
+                    double xori = _currentPath._vertexes.get(i).x;
+                    double yori = _currentPath._vertexes.get(i).y;
+                    double xdest = _currentPath._vertexes.get((i + 1) % _currentPath._vertexes.size()).x;
+                    double ydest = _currentPath._vertexes.get((i + 1) % _currentPath._vertexes.size()).y;
+                    p = Utils.segmentsIntersection(_lastPosition.x, _lastPosition.y, _position.x, _position.y, xori, yori, xdest, ydest);
 
-                p = Utils.segmentsIntersection(_lastPosition.x, _lastPosition.y, _position.x, _position.y, xori, yori, xdest, ydest);
-
-                if (p != null) {
-                    _currentLine = i;
+                    if (p != null) {
+                        _currentLine = i;
+                    }
                 }
+
             }
         }
-
         return p;
     }
-
 
     void setCurrentPath(Path path){
         _currentPath = path;
@@ -185,6 +189,11 @@ public class Player {
             }
         }
 
+        // COSA CERDA
+        System.out.println("CURRENT LINE: " + _currentLine);
+
+        System.out.println("CURRENT PATH: " + _currentPath);
+        
     }
 
     void render(Graphics g){
@@ -210,5 +219,9 @@ public class Player {
         g.drawLine(-_tam,_tam, -_tam,-_tam);
 
         g.restore();
+    }
+
+    void setCurrentLevel (Level level){
+        currentLevel = level;
     }
 }

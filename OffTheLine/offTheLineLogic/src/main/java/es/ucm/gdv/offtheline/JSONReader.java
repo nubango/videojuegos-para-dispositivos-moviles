@@ -8,18 +8,23 @@ import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
-public class JSONReader {
+import es.ucm.gdv.engine.Engine;
 
+public class JSONReader {
+    Engine engine = null;
     JSONArray jsonFile = null;
     JSONObject level = null;
     JSONParser jsonParser = null;
-    Reader jsonReader =null;
+    InputStream jsonReader =null;
 
-    public JSONReader(){
+    public JSONReader(Engine e){
         jsonParser = new JSONParser();
+        engine = e;
     }
 
     private String getName(){
@@ -129,13 +134,15 @@ public class JSONReader {
 
     public ArrayList<Level> parserLevels(String path){
         ArrayList<Level> levels = null;
+
         try {
-            jsonReader = new FileReader(path);
-        } catch (FileNotFoundException e) {
+            jsonReader = engine.openInputStream(path);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         try {
-            jsonFile = (JSONArray) jsonParser.parse(jsonReader);
+            jsonFile = (JSONArray) jsonParser.parse(new InputStreamReader(jsonReader));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {

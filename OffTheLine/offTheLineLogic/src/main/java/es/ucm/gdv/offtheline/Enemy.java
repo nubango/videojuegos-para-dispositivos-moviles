@@ -6,7 +6,7 @@ public class Enemy {
 
     Utils.Point _position;
     int _length = 5;        // Longitud del segmento
-    int _scale = 4;
+    int _scale = 1;
     double _angle = 0;      // 0 horizontal, 90 vertical
     int _color = 0xFFFF1D03;
 
@@ -49,6 +49,7 @@ public class Enemy {
     }
 
     void update(double deltaTime){
+        /*
         // Rotacion del enemigo. Si _speed es 0 no rota
         _angle = (_angle + _speed * deltaTime) % 360;
 
@@ -87,7 +88,7 @@ public class Enemy {
         else{
             _timeStopped += deltaTime;
         }
-
+         */
     }
 
     void render(Graphics g) {
@@ -101,9 +102,7 @@ public class Enemy {
         g.scale(_scale, _scale);
         g.rotate(_angle);
 
-
         g.drawLine(-_length,0, _length,0);
-
 
         g.restore();
     }
