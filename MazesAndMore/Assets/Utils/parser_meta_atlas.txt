@@ -1,0 +1,97 @@
+___________________________________
+.ATLAS
+nombre
+	bool rotacion
+	num pos x, y
+	num tam x, y
+	num origen x, y
+	num offset x, y
+	num index
+___________________________________
+.META
+
+...
+
+internalIDToNameTable:
+- first:
+		213: **************
+	second: *******
+- first:
+		// id
+		213: **************
+	// nombre
+	second: *******
+...
+
+- serializedVersion: *
+    buildTarget: ***********
+    maxTextureSize: ***
+    resizeAlgorithm: *
+    textureFormat: *
+    textureCompression: *
+    compressionQuality: **
+    crunchedCompression: *
+    allowsAlphaSplitting: *
+    overridden: *
+    androidETC2FallbackOverride: *
+    forceMaximumCompressionQuality_BC6H_BC7: *
+
+- serializedVersion: *
+    buildTarget: ***********
+    maxTextureSize: ***
+    resizeAlgorithm: *
+    textureFormat: *
+    textureCompression: *
+    compressionQuality: **
+    crunchedCompression: *
+    allowsAlphaSplitting: *
+    overridden: *
+    androidETC2FallbackOverride: *
+    forceMaximumCompressionQuality_BC6H_BC7: *
+...
+
+	sprites:
+	- serializedVersion: *
+	name: *******
+	rect:
+		serializedVersion: *
+		x: *
+		y: *
+		width: ****
+		height: ****
+	alignment: *
+	pivot: {x: *, y: *}
+	border: {x: *, y: *, z: *, w: *}
+	outline: []
+	physicsShape: []
+	tessellationDetail: *
+	bones: []
+	spriteID: ************************
+	internalID: *********************
+	vertices: []
+	indices:
+	edges: []
+	weights: []
+	- serializedVersion: *
+	name: *******
+	rect:
+		serializedVersion: *
+		x: *
+		y: *
+		width: ****
+		height: ****
+	alignment: *
+	pivot: {x: *, y: *}
+	border: {x: *, y: *, z: *, w: *}
+	outline: []
+	physicsShape: []
+	tessellationDetail: *
+	bones: []
+	spriteID: ************************
+	internalID: *********************
+	vertices: []
+	indices:
+	edges: []
+	weights: []
+
+...

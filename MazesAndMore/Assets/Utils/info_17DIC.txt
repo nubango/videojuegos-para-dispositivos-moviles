@@ -1,0 +1,27 @@
+GameManager
+	transicion entre escenas
+	conoce los lotes entre niveles y que niveles tiene
+	gestion de progreso
+	sobrevive entre escenas asi que NO tiene que lidiar con la parte visual del nivel
+	pasa la info entre escenas
+	NO sabe a que se juega, es mas o menos abstracto
+	gestiona la aplicacion aunque se llame "game" manage
+	dont destroy on load singleton
+
+BoardManager -no es un singleton-
+	se encarga de trabajar con los tiles
+	se encarga de avisar que el jugador llega al final
+	al escalar el board manager sus hijos mantienen sus posiciones 
+	al mover el board manager sus hijos se desplazan
+	
+LevelManager -no es un singleton-
+	hace funcionar la escena del nivel al que se juega
+	usa el board manager
+	tendra una parte de API para el BoardManager y otra parte para el GameManager
+
+
+-------------
+
+el board manager o alguien que le ayude tendrá que escalar algo porque habra que poner bandas negras
+
+en cuanto a los niveles, no se puede usar Resources porque no hay gestion de recursos. tampoco se debe usar StreamingAssets. hay que usar scriptableObjects.
