@@ -12,104 +12,104 @@ import es.ucm.gdv.engine.Input;
 import es.ucm.gdv.engine.Logic;
 
 public class OffTheLineLogic implements Logic {
-    private Font _f;
+    private Font _font;
     private Engine _engine;
-    private Player player;
-    private ArrayList<Level> levels;
-    private int currentLevel = 5;
+    private Player _player;
+    private ArrayList<Level> _levels;
+    private int _currentLevel = 5;
 
     static final int LOGIC_WIDTH = 640;
     static final int LOGIC_HEIGHT = 480;
 
     @Override
     public boolean init(Engine e) {
-        set_engine(e);
+        _engine = e;
 
-        get_engine().getGraphics().setLogicSize(LOGIC_WIDTH,LOGIC_HEIGHT);
+        _engine.getGraphics().setLogicSize(LOGIC_WIDTH,LOGIC_HEIGHT);
         try {
-            set_f(get_engine().getGraphics().newFont("fonts/BungeeHairline-Regular.ttf", 10, true));
+            _font = _engine.getGraphics().newFont("fonts/BungeeHairline-Regular.ttf", 10, true);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
 
-        JSONReader jsonReader = new JSONReader(get_engine());
-        setLevels(jsonReader.parserLevels("levels.json"));
+        JSONReader jsonReader = new JSONReader(_engine);
+        _levels = jsonReader.parserLevels("levels.json");
 
-        setPlayer(new Player(100, 200));
-        getPlayer().setCurrentLevel(getLevels().get(getCurrentLevel()));
-        getPlayer().setCurrentPath(getLevels().get(getCurrentLevel())._paths.get(0));
+        _player = new Player(100, 200);
+        _player.setCurrentLevel(getLevels().get(getCurrentLevel()));
+        _player.setCurrentPath(getLevels().get(getCurrentLevel())._paths.get(0));
 
         return true;
     }
 
     public void handleInput() {
-        List<Input.TouchEvent> e = get_engine().getInput().getTouchEvents();
+        List<Input.TouchEvent> e = _engine.getInput().getTouchEvents();
 
         if(e == null)
             return;
 
-        getPlayer().handleInput(e);
+        _player.handleInput(e);
     }
 
     public void update(double deltaTime) {
-        getLevels().get(getCurrentLevel()).update(deltaTime);
+        _levels.get(getCurrentLevel()).update(deltaTime);
 
-        getPlayer().update(deltaTime);
+        _player.update(deltaTime);
     };
 
     public void render(Graphics g) {
-        get_engine().getGraphics().clear(0xFF000000);
+        _engine.getGraphics().clear(0xFF000000);
 
-        getLevels().get(getCurrentLevel()).render(g);
+        _levels.get(getCurrentLevel()).render(g);
 
-        getPlayer().render(g);
+        _player.render(g);
 
-        get_engine().getGraphics().setColor(0xFFFFFFFF);
+        _engine.getGraphics().setColor(0xFFFFFFFF);
         g.save();
         g.translate(0, 0);
-        int level = currentLevel+1;
-        g.setFont(_f);
-        g.drawText("Level " + level + " - " + levels.get(currentLevel)._name,100, 50);
+        int level = _currentLevel +1;
+        g.setFont(_font);
+        g.drawText("Level " + level + " - " + _levels.get(_currentLevel)._name,100, 50);
         g.restore();
     };
 
-    public Font get_f() {
-        return _f;
+    public Font getFont() {
+        return _font;
     }
 
-    public void set_f(Font _f) {
-        this._f = _f;
+    public void setFont(Font font) {
+        _font = font;
     }
 
-    public Engine get_engine() {
+    public Engine getEngine() {
         return _engine;
     }
 
-    public void set_engine(Engine _engine) {
-        this._engine = _engine;
+    public void setEngine(Engine engine) {
+        _engine = engine;
     }
 
     public Player getPlayer() {
-        return player;
+        return _player;
     }
 
     public void setPlayer(Player player) {
-        this.player = player;
+        this._player = player;
     }
 
     public ArrayList<Level> getLevels() {
-        return levels;
+        return _levels;
     }
 
     public void setLevels(ArrayList<Level> levels) {
-        this.levels = levels;
+        _levels = levels;
     }
 
     public int getCurrentLevel() {
-        return currentLevel;
+        return _currentLevel;
     }
 
     public void setCurrentLevel(int currentLevel) {
-        this.currentLevel = currentLevel;
+        _currentLevel = currentLevel;
     }
 }

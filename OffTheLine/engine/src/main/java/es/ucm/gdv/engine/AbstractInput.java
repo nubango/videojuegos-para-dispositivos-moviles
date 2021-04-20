@@ -28,4 +28,8 @@ public abstract class AbstractInput implements es.ucm.gdv.engine.Input {
 
         return touchEvents;
     }
+
+    synchronized protected void addEvent(TouchEvent e){
+        _listTouchEvents.add(e);
+    }
 }

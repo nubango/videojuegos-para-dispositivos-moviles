@@ -112,7 +112,6 @@ public class MainLoop implements Runnable {
             lastFrameTime = currentTime;
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
 
-            _logic.handleInput();
             _logic.update(elapsedTime);
 
             // Pintamos el frame

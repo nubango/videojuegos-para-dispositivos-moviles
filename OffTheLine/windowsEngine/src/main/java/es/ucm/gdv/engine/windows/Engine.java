@@ -87,7 +87,6 @@ public class Engine implements es.ucm.gdv.engine.Engine {
             long nanoDelta = currentTime - lastFrameTime;
             lastFrameTime = currentTime;
 
-            logic.handleInput();
             logic.update(nanoDelta / 1.0E9);
 
             do {
