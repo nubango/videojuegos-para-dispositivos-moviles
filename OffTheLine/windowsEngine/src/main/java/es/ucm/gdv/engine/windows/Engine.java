@@ -15,6 +15,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     private Graphics _graphics;
     private Input _input;
     private JFrame _ventana;
+    private Logic _logic;
 
 
 /* ---------------------------------------------------------------------------------------------- *
@@ -43,7 +44,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     * Método que contiene el bucle principal del juego (lógica)
     *
     */
-    public void run(Logic logic)
+    public void run()
     {
         if(_ventana == null || _graphics == null)
             return;
@@ -76,7 +77,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
         _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
 
-        if(!logic.init(this)) {
+        if(!_logic.init(this)) {
             System.err.println("****Init de la lógica ha devuelto false****");
             return;
         }
@@ -87,7 +88,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
             long nanoDelta = currentTime - lastFrameTime;
             lastFrameTime = currentTime;
 
-            logic.update(nanoDelta / 1.0E9);
+            _logic.update(nanoDelta / 1.0E9);
 
             do {
                 do {
@@ -97,7 +98,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
                     // un listener -> futuro
                     _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
                     try {
-                        logic.render(_graphics);
+                        _logic.render(_graphics);
                         _graphics.renderBlackBars();
                     }
                     finally {
@@ -123,5 +124,8 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         InputStream is = new FileInputStream(filename);
         return is;
     }
+
+    @Override
+    public void setLogic(Logic l){ _logic = l; }
 
 }

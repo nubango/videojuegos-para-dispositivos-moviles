@@ -4,13 +4,11 @@ import es.ucm.gdv.engine.Logic;
 
 public class MainLoop implements Runnable {
 
-    private Logic _logic;
     private boolean _running;
     private Thread _renderThread;
     private Engine _engine;
 
-    public MainLoop(Logic logic, Engine engine) {
-        _logic = logic;
+    public MainLoop(Engine engine) {
         _engine = engine;
     }
 
@@ -99,7 +97,7 @@ public class MainLoop implements Runnable {
         _engine.getGraphics().setScaleFactor(_engine.getSurfaceView().getWidth(), _engine.getSurfaceView().getHeight());
         _engine.getSurfaceView().getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
 
-        if(!_logic.init(_engine)) {
+        if(!_engine.getLogic().init(_engine)) {
             System.err.println("****Init de la lógica ha devuelto false****");
             return;
         }
@@ -112,14 +110,14 @@ public class MainLoop implements Runnable {
             lastFrameTime = currentTime;
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
 
-            _logic.update(elapsedTime);
+            _engine.getLogic().update(elapsedTime);
 
             // Pintamos el frame
             while (!_engine.getSurfaceView().getHolder().getSurface().isValid())
                 ;
             _engine.getGraphics().setCanvas(_engine.getSurfaceView().getHolder().lockCanvas());
 
-            _logic.render(_engine.getGraphics());
+            _engine.getLogic().render(_engine.getGraphics());
 
             _engine.getGraphics().renderBlackBars();
             _engine.getSurfaceView().getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());

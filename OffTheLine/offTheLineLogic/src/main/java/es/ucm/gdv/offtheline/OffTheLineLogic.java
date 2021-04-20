@@ -52,6 +52,10 @@ public class OffTheLineLogic implements Logic {
     }
 
     public void update(double deltaTime) {
+        // ESTO NO VA AQUI, EL HANDLEINPUT TIENE QUE DESAPARECER
+        handleInput();
+        // ESTO NO VA AQUI, EL HANDLEINPUT TIENE QUE DESAPARECER
+
         _levels.get(getCurrentLevel()).update(deltaTime);
 
         _player.update(deltaTime);

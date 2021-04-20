@@ -7,7 +7,7 @@ public class WindowsLauncher {
     {
         Engine e = new Engine();
         e.createWindow("test", 2080, 1500);
-        OffTheLineLogic logic = new OffTheLineLogic();
-        e.run(logic);
+        e.setLogic(new OffTheLineLogic());
+        e.run();
     }
 }

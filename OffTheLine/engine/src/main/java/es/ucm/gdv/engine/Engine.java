@@ -19,4 +19,6 @@ public interface Engine {
 
     // Devuelve un stream de lectura de un fichero
     InputStream openInputStream(String filename) throws IOException;
+
+    void setLogic(Logic l);
 }

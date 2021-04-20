@@ -22,8 +22,9 @@ public class AndroidLauncher extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        set_engine(new Engine(this, new OffTheLineLogic()));
-        setContentView(get_engine().getSurfaceView());
+        _engine = new Engine(this);
+        _engine.setLogic(new OffTheLineLogic());
+        setContentView(_engine.getSurfaceView());
     }
 
     /**
@@ -42,7 +43,7 @@ public class AndroidLauncher extends AppCompatActivity {
         // Avisamos a la vista (que es la encargada del active render)
         // de lo que está pasando.
         super.onResume();
-        get_engine().resume();
+        _engine.resume();
 
     } // onResume
 
@@ -60,15 +61,8 @@ public class AndroidLauncher extends AppCompatActivity {
         // Avisamos a la vista (que es la encargada del active render)
         // de lo que está pasando.
         super.onPause();
-        get_engine().pause();
+        _engine.pause();
 
     } // onPause
 
-    public Engine get_engine() {
-        return _engine;
-    }
-
-    public void set_engine(Engine _engine) {
-        this._engine = _engine;
-    }
 }

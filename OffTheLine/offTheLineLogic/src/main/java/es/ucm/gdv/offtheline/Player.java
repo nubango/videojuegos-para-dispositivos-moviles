@@ -223,7 +223,7 @@ public class Player {
         if(is_jumping())
             g.drawLine((int) get_position().x, (int) get_position().y, (int) get_originJumpPosition().x, (int) get_originJumpPosition().y);
 
-        g.translate((int) get_position().x, (int) get_position().y);
+        g.translate(get_position().x, get_position().y);
         g.scale(get_scale(), get_scale());
         g.rotate(get_angle());
 

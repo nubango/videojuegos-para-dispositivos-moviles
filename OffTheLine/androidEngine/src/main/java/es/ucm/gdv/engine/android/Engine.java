@@ -16,6 +16,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     private Graphics _graphics;
     private Input _input;
     private AssetManager _assetManager;
+    private Logic _logic;
 
     /**
      * Constructor.
@@ -23,13 +24,19 @@ public class Engine implements es.ucm.gdv.engine.Engine {
      * @param context Contexto en el que se integrará la vista
      *                (normalmente una actividad).
      */
-    public Engine(Context context,  Logic logic) {
+    public Engine(Context context) {
         _surfaceView = new SurfaceView(context);
         _assetManager = context.getAssets();
-        _mainLoop = new MainLoop(logic, this);
+        _mainLoop = new MainLoop(this);
         _graphics = new Graphics(_assetManager);
         _input = new Input(_surfaceView);
     } // Engine
+
+/* ---------------------------------------------------------------------------------------------- *
+ * ------------------------------------- MÉTODOS PROTEGIDOS ------------------------------------- *
+ * ---------------------------------------------------------------------------------------------- */
+
+    protected Logic getLogic(){ return _logic; }
 
 /* ---------------------------------------------------------------------------------------------- *
  * -------------------------------------- MÉTODOS PÚBLICOS -------------------------------------- *
@@ -73,7 +80,9 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         return _assetManager.open(filename);
     }
 
-
     public SurfaceView getSurfaceView(){ return _surfaceView; }
+
+    @Override
+    public void setLogic(Logic l){ _logic = l; }
 
 }
