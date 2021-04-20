@@ -20,7 +20,7 @@ public interface Graphics {
     void clear(int color);
 
     // Metodos de control de la transformacion sobre el canvas
-    void translate(int x, int y);
+    void translate(double x, double y);
     void scale(double x, double y);
     /**
      * Rota "angle" ángulos en grados*/

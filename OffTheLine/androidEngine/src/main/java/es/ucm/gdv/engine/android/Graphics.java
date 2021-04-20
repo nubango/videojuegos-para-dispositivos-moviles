@@ -19,7 +19,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     private AssetManager _assetManager;
 
     public Graphics(AssetManager assetManager) {
-        set_assetManager(assetManager);
+        _assetManager = assetManager;
     }
 
 
@@ -34,22 +34,22 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     * */
     public void setCanvas(Canvas canvas)
     {
-        set_canvas(canvas);
+        _canvas = canvas;
         // decimos el grosor de la linea
-        get_paint().setStrokeWidth(1f);
+        _paint.setStrokeWidth(1f);
         // Pintamos el fondo de negro
-        get_canvas().drawRGB(0xFF,0xFF,0xFF);
+        _canvas.drawRGB(0xFF,0xFF,0xFF);
 
         // aplicamos la traslación y el escalado
         translate(widthBlackBar, heightBlackBar);
         scale(scaleFactor, scaleFactor);
     }
 
-    public Canvas getCanvas(){ return get_canvas(); }
+    public Canvas getCanvas(){ return _canvas; }
 
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
-        Font f = new Font(get_assetManager(), filename, size, isBold);
+        Font f = new Font(_assetManager, filename, size, isBold);
         return f;
     }
 
@@ -59,70 +59,70 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
             // Tenemos fuente. Vamos a escribir texto.
             // Preparamos la configuración de formato en el
             // objeto _paint que utilizaremos en cada frame.
-            get_paint().setTypeface(((Font) f).getFont());
-            get_paint().setFakeBoldText(((Font) f).isBold());
-            get_paint().setTextSize(((Font) f).getSize());
+            _paint.setTypeface(((Font) f).getFont());
+            _paint.setFakeBoldText(((Font) f).isBold());
+            _paint.setTextSize(((Font) f).getSize());
         }
     }
 
     @Override
-    public void translate(int x, int y) {
-        get_canvas().translate(x, y);
+    public void translate(double x, double y) {
+        _canvas.translate((float)x, (float)y);
     }
 
     @Override
     public void scale(double x, double y) {
-        get_canvas().scale((float)x, (float)y);
+        _canvas.scale((float)x, (float)y);
     }
 
     @Override
     public void rotate(double angle) {
-        get_canvas().rotate((float)angle);
+        _canvas.rotate((float)angle);
     }
 
     @Override
     public boolean save() {
-        if(get_canvas() == null)
+        if(_canvas == null)
             return false;
 
-        get_canvas().save();
+        _canvas.save();
         return true;
     }
 
     @Override
     public void restore() {
-        if(get_canvas() != null)
-            get_canvas().restore();
+        if(_canvas != null)
+            _canvas.restore();
         else
             System.out.println("***********EL OBJETO '_canvas' ES NULL. NO SE PUEDE HACER EL RESTORE***********");
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-        get_canvas().drawLine(x1, y1, x2, y2, get_paint());
+        _canvas.drawLine(x1, y1, x2, y2, _paint);
     }
 
     @Override
     public void fillRect(int x1, int y1, int x2, int y2) {
-        float g = get_paint().getStrokeWidth();
-        get_paint().setStrokeWidth(0);
-        get_canvas().drawRect(x1, y1, x2, y2, get_paint());
-        get_paint().setStrokeWidth(g);
+        float g = _paint.getStrokeWidth();
+        _paint.setStrokeWidth(0);
+        _canvas.drawRect(x1, y1, x2, y2, _paint);
+        _paint.setStrokeWidth(g);
     }
 
     @Override
     public void drawText(String text, int x, int y) {
-        get_canvas().drawText(text, x, y, get_paint());
+        _canvas.drawText(text, x, y, _paint);
     }
 
     @Override
     public void setColor(int color) {
-        get_paint().setColor(color);
+        _paint.setColor(color);
     }
 
     @Override
     public void clear(int color) {
-        get_canvas().drawRGB((color & 0xff0000) >> 16,
+        _canvas.drawRGB((color & 0xff0000) >> 16,
                 (color & 0xff00) >> 8,
                 (color & 0xff));
     }
@@ -149,27 +149,4 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
         super.setScaleFactor(wReal, hReal);
     }
 
-    public Canvas get_canvas() {
-        return _canvas;
-    }
-
-    public void set_canvas(Canvas _canvas) {
-        this._canvas = _canvas;
-    }
-
-    public Paint get_paint() {
-        return _paint;
-    }
-
-    public void set_paint(Paint _paint) {
-        this._paint = _paint;
-    }
-
-    public AssetManager get_assetManager() {
-        return _assetManager;
-    }
-
-    public void set_assetManager(AssetManager _assetManager) {
-        this._assetManager = _assetManager;
-    }
 }
