@@ -20,17 +20,17 @@ public class JSONReader {
     private InputStream jsonReader =null;
 
     public JSONReader(Engine e){
-        setJsonParser(new JSONParser());
-        setEngine(e);
+        jsonParser = new JSONParser();
+        engine = e;
     }
 
     private String getName(){
-        String name = (String) getLevel().get("name");
+        String name = (String) level.get("name");
         return name;
     }
 
     private ArrayList<Path> getPaths(){
-        JSONArray paths = (JSONArray) getLevel().get("paths");
+        JSONArray paths = (JSONArray) level.get("paths");
         ArrayList<Path> pathArray = new ArrayList<>();
 
         for (int i = 0; i < paths.size(); i++) {
@@ -46,7 +46,8 @@ public class JSONReader {
                 double x = Double.parseDouble(vertex.get("x").toString());
                 double y = Double.parseDouble(vertex.get("y").toString());
 
-                vertices.add(new Utils.Point(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2));
+                vertices.add(new Utils.Point(x, y));
+                //vertices.add(new Utils.Point(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2));
             }
 
             JSONArray dirArray = (JSONArray) path.get("direction");
@@ -68,21 +69,22 @@ public class JSONReader {
     }
 
     private ArrayList<Item> getItems() {
-        JSONArray items = (JSONArray) getLevel().get("items");
+        JSONArray items = (JSONArray) level.get("items");
         ArrayList<Item> itemArray = new ArrayList<>();
 
         for (int j = 0; j < items.size(); j++) {
             JSONObject item = (JSONObject) items.get(j);
             double x = Double.parseDouble(item.get("x").toString());
             double y = Double.parseDouble(item.get("y").toString());
-            itemArray.add(new Item(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2));
+            itemArray.add(new Item(x, y));
+            //itemArray.add(new Item(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2));
         }
 
         return itemArray;
     }
 
     private ArrayList<Enemy> getEnemies(){
-        JSONArray enemies = (JSONArray) getLevel().get("enemies");
+        JSONArray enemies = (JSONArray) level.get("enemies");
         if(enemies == null) return null;
         ArrayList<Enemy> enemyArray = new ArrayList<>();
 
@@ -122,33 +124,32 @@ public class JSONReader {
                 speed = Double.parseDouble(enemy.get("speed").toString());
             }
 
-            enemyArray.add(new Enemy(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2, (int)length, angle, speed, offset, time1, time2));
+            enemyArray.add(new Enemy(x, y, (int)length, angle, speed, offset, time1, time2));
+            //enemyArray.add(new Enemy(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2, (int)length, angle, speed, offset, time1, time2));
         }
 
         return enemyArray;
     }
 
     public ArrayList<Level> parserLevels(String path){
-        ArrayList<Level> levels = null;
-
         try {
-            setJsonReader(getEngine().openInputStream(path));
+            jsonReader = engine.openInputStream(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            setJsonFile((JSONArray) getJsonParser().parse(new InputStreamReader(getJsonReader())));
+            jsonFile = (JSONArray) jsonParser.parse(new InputStreamReader(jsonReader));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        levels = new ArrayList<>();
+        ArrayList<Level> levels = new ArrayList<>();
         // jsonFile.size() es el numero de niveles que hay
-        for(int i = 0; i < getJsonFile().size(); i++) {
-            setLevel((JSONObject) getJsonFile().get(i));
+        for(int i = 0; i < jsonFile.size(); i++) {
+            level = (JSONObject) jsonFile.get(i);
 
             String n = getName();
             ArrayList<Path> p = getPaths();
@@ -161,45 +162,5 @@ public class JSONReader {
 
         }
         return levels;
-    }
-
-    public Engine getEngine() {
-        return engine;
-    }
-
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-    }
-
-    public JSONArray getJsonFile() {
-        return jsonFile;
-    }
-
-    public void setJsonFile(JSONArray jsonFile) {
-        this.jsonFile = jsonFile;
-    }
-
-    public JSONObject getLevel() {
-        return level;
-    }
-
-    public void setLevel(JSONObject level) {
-        this.level = level;
-    }
-
-    public JSONParser getJsonParser() {
-        return jsonParser;
-    }
-
-    public void setJsonParser(JSONParser jsonParser) {
-        this.jsonParser = jsonParser;
-    }
-
-    public InputStream getJsonReader() {
-        return jsonReader;
-    }
-
-    public void setJsonReader(InputStream jsonReader) {
-        this.jsonReader = jsonReader;
     }
 }

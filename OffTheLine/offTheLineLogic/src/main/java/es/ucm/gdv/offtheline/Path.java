@@ -55,37 +55,28 @@ public class Path {
 
         g.setColor(_color);
 
-        if(g.save()) {
-            g.translate(0, 0);
-            g.scale(_scale, _scale);
-        }
+        if(!g.save())
+            return;
+        g.translate(OffTheLineLogic.LOGIC_WIDTH / 2, OffTheLineLogic.LOGIC_HEIGHT / 2);
+        g.scale(_scale, -_scale);
 
         // Comprobamos que el tamaño de la lista es múltiplo de 2 y recorremos la lista de vértices de 2 en 2.
         // Cuando llegamos al ultimo vértice lo que hacemos es unirlo con el primero por eso hacemos % size()
-        for (int i = 0; i < get_vertexes().size(); i++){
+        for (int i = 0; i < _vertexes.size(); i++){
                 // dividimos entre la escala porque queremos escalar solo el grosor de la linea, no las posiciones
-                g.drawLine((int) get_vertexes().get(i).x/_scale,(int) get_vertexes().get(i).y/_scale,
-                        (int) get_vertexes().get((i+1)% get_vertexes().size()).x/_scale,
-                        (int) get_vertexes().get((i+1)% get_vertexes().size()).y/_scale);
+                g.drawLine((int) _vertexes.get(i).x/_scale,(int) _vertexes.get(i).y/_scale,
+                        (int) _vertexes.get((i+1)% _vertexes.size()).x/_scale,
+                        (int) _vertexes.get((i+1)% _vertexes.size()).y/_scale);
         }
-
         g.restore();
 
     } // render
 
-    public List<Utils.Point> get_vertexes() {
+    public List<Utils.Point> getVertexes() {
         return _vertexes;
     }
 
-    public void set_vertexes(List<Utils.Point> _vertexes) {
-        this._vertexes = _vertexes;
-    }
-
-    public List<Utils.Point> get_directions() {
+    public List<Utils.Point> getDirections() {
         return _directions;
-    }
-
-    public void set_directions(List<Utils.Point> _directions) {
-        this._directions = _directions;
     }
 }

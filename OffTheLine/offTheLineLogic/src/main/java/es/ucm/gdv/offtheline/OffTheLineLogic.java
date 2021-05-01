@@ -16,7 +16,7 @@ public class OffTheLineLogic implements Logic {
     private Engine _engine;
     private Player _player;
     private ArrayList<Level> _levels;
-    private int _currentLevel = 5;
+    private int _currentLevel = 0;
 
     static final int LOGIC_WIDTH = 640;
     static final int LOGIC_HEIGHT = 480;
@@ -35,8 +35,7 @@ public class OffTheLineLogic implements Logic {
         JSONReader jsonReader = new JSONReader(_engine);
         _levels = jsonReader.parserLevels("levels.json");
 
-        _player = new Player(100, 200);
-        _player.setCurrentLevel(getLevels().get(getCurrentLevel()));
+        _player = new Player();
         _player.setCurrentPath(getLevels().get(getCurrentLevel())._paths.get(0));
 
         return true;
