@@ -16,7 +16,7 @@ public class OffTheLineLogic implements Logic {
     private Engine _engine;
     private Player _player;
     private ArrayList<Level> _levels;
-    private int _currentLevel = 0;
+    private int _currentLevel = 5;
 
     static final int LOGIC_WIDTH = 640;
     static final int LOGIC_HEIGHT = 480;
@@ -27,7 +27,8 @@ public class OffTheLineLogic implements Logic {
 
         _engine.getGraphics().setLogicSize(LOGIC_WIDTH,LOGIC_HEIGHT);
         try {
-            _font = _engine.getGraphics().newFont("fonts/BungeeHairline-Regular.ttf", 10, true);
+            _font = _engine.getGraphics().newFont("fonts/BungeeHairline-Regular.ttf",
+                    10, true);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
@@ -36,7 +37,7 @@ public class OffTheLineLogic implements Logic {
         _levels = jsonReader.parserLevels("levels.json");
 
         _player = new Player();
-        _player.setCurrentPath(getLevels().get(getCurrentLevel())._paths.get(0));
+        _player.setCurrentPath(_levels.get(_currentLevel)._paths.get(0));
 
         return true;
     }
@@ -55,64 +56,20 @@ public class OffTheLineLogic implements Logic {
         handleInput();
         // ESTO NO VA AQUI, EL HANDLEINPUT TIENE QUE DESAPARECER
 
-        _levels.get(getCurrentLevel()).update(deltaTime);
+        _levels.get(_currentLevel).update(deltaTime);
+        _levels.get(_currentLevel).setFont(_font);
 
         _player.update(deltaTime);
     };
 
     public void render(Graphics g) {
-        _engine.getGraphics().clear(0xFF000000);
+        g.clear(0xFF000000);
 
-        _levels.get(getCurrentLevel()).render(g);
+        _levels.get(_currentLevel).render(g);
 
         _player.render(g);
 
-        _engine.getGraphics().setColor(0xFFFFFFFF);
-        g.save();
-        g.translate(0, 0);
-        int level = _currentLevel +1;
-        g.setFont(_font);
-        g.drawText("Level " + level + " - " + _levels.get(_currentLevel)._name,100, 50);
-        g.restore();
+
+
     };
-
-    public Font getFont() {
-        return _font;
-    }
-
-    public void setFont(Font font) {
-        _font = font;
-    }
-
-    public Engine getEngine() {
-        return _engine;
-    }
-
-    public void setEngine(Engine engine) {
-        _engine = engine;
-    }
-
-    public Player getPlayer() {
-        return _player;
-    }
-
-    public void setPlayer(Player player) {
-        this._player = player;
-    }
-
-    public ArrayList<Level> getLevels() {
-        return _levels;
-    }
-
-    public void setLevels(ArrayList<Level> levels) {
-        _levels = levels;
-    }
-
-    public int getCurrentLevel() {
-        return _currentLevel;
-    }
-
-    public void setCurrentLevel(int currentLevel) {
-        _currentLevel = currentLevel;
-    }
 }

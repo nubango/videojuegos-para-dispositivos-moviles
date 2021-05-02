@@ -75,7 +75,6 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         BufferStrategy strategy = _ventana.getBufferStrategy();
 
         _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
-        _graphics.setScaleFactor(_ventana.getSize().width, _ventana.getSize().height);
 
         if(!_logic.init(this)) {
             System.err.println("****Init de la lógica ha devuelto false****");

@@ -1,7 +1,10 @@
 package es.ucm.gdv.offtheline;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 import java.util.ArrayList;
 
+import es.ucm.gdv.engine.Font;
 import es.ucm.gdv.engine.Graphics;
 
 public class Level {
@@ -10,13 +13,17 @@ public class Level {
     ArrayList<Path> _paths;
     ArrayList<Item> _items;
     ArrayList<Enemy> _enemies;
+    Font _font;
 
     Level(int numLevel, String name, ArrayList<Path> paths, ArrayList<Item> items){
         _numLevel = numLevel;
         _name = name;
         _paths = new ArrayList<>(paths);
         _items = new ArrayList<>(items);
+        _font = null;
     }
+
+    void setFont(Font f){ _font = f; }
 
     void addEnemies(ArrayList<Enemy> enemies){
         _enemies = new ArrayList<>(enemies);
@@ -41,9 +48,8 @@ public class Level {
     }
 
     void render(Graphics g){
-        // asignar la fuente
-        // pintar el nombre
-        g.drawText(_name, 10, 10);
+
+        drawText(g);
 
         for (Path p: _paths) {
             p.render(g);
@@ -58,5 +64,12 @@ public class Level {
                 e.render(g);
             }
         }
+    }
+
+    private void drawText(Graphics g){
+        g.setColor(0xFFFFFFFF);
+        int level = _numLevel + 1;
+        g.setFont(_font);
+        g.drawText("Level " + level + " - " + _name,60, 10);
     }
 }

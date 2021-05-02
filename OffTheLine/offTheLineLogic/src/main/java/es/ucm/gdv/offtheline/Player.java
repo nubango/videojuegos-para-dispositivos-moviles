@@ -13,7 +13,7 @@ public class Player {
     private Utils.Point _originJumpPosition;
 
     private int _tam = 6;           // Tamaño de los segmentos que forman el item
-    private int _scale = 2;
+    private int _scale = 1;
     private int _lifes = 10;        // Vidas del jugador
     private int _color = 0xFF0081F9;
 
@@ -220,16 +220,30 @@ public class Player {
             return;
         }
 
-        g.translate(_position.x + OffTheLineLogic.LOGIC_WIDTH / 2, _position.y +
+        /*g.translate(OffTheLineLogic.LOGIC_WIDTH / 2,OffTheLineLogic.LOGIC_HEIGHT / 2);
+
+        int drawPosXp = (int)_position.x + _tam;
+        int drawPosXn = (int)_position.x - _tam;
+        int drawPosYp = (int)_position.y + _tam;
+        int drawPosYn = (int)_position.y - _tam;
+
+        g.drawLine(drawPosXn,drawPosYn,drawPosXp,drawPosYn);
+        g.drawLine(drawPosXp, drawPosYn,drawPosXp,drawPosYp);
+        g.drawLine(drawPosXp, drawPosYp,drawPosXn,drawPosYp);
+        g.drawLine(drawPosXn,drawPosYp,drawPosXn,drawPosYn);*/
+
+        g.translate(_position.x + OffTheLineLogic.LOGIC_WIDTH / 2, -_position.y +
                 OffTheLineLogic.LOGIC_HEIGHT / 2);
 
         g.scale(_scale, _scale);
         g.rotate(_angle);
 
-        g.drawLine(-_tam/_scale,-_tam/_scale, _tam/_scale,-_tam/_scale);
-        g.drawLine(_tam/_scale,-_tam/_scale,_tam/_scale, _tam/_scale);
-        g.drawLine(_tam/_scale,_tam/_scale, -_tam/_scale,_tam/_scale);
-        g.drawLine(-_tam/_scale,_tam/_scale, -_tam/_scale,-_tam/_scale);
+        int side = _tam/_scale;
+
+        g.drawLine(-side, -side, side, -side);
+        g.drawLine(side, -side, side, side);
+        g.drawLine(side, side, -side, side);
+        g.drawLine(-side, side, -side, -side);
 
         g.restore();
 
@@ -242,7 +256,7 @@ public class Player {
             return;
         }
         g.translate((OffTheLineLogic.LOGIC_WIDTH / 2),OffTheLineLogic.LOGIC_HEIGHT / 2);
-        g.scale(_scale, _scale);
+        g.scale(_scale, -_scale);
 
         if(_jumping)
             g.drawLine((int)_position.x/_scale, (int)_position.y/_scale,

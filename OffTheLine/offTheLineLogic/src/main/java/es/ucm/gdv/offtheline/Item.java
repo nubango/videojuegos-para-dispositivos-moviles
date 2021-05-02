@@ -39,15 +39,17 @@ public class Item {
         */
         if(!g.save())
             return;
-        g.translate((int)_position.x + OffTheLineLogic.LOGIC_WIDTH / 2,(int)_position.y +
+        g.translate((int)_position.x + OffTheLineLogic.LOGIC_WIDTH / 2,-(int)_position.y +
                 OffTheLineLogic.LOGIC_HEIGHT / 2);
         g.scale(_scale, _scale);
         g.rotate(_angle);
 
-        g.drawLine(-_tam/_scale,-_tam/_scale, _tam/_scale,-_tam/_scale);
-        g.drawLine(_tam/_scale,-_tam/_scale,_tam/_scale, _tam/_scale);
-        g.drawLine(_tam/_scale,_tam/_scale, -_tam/_scale,_tam/_scale);
-        g.drawLine(-_tam/_scale,_tam/_scale, -_tam/_scale,-_tam/_scale);
+        int side = _tam/_scale;
+
+        g.drawLine(-side,-side, side,-side);
+        g.drawLine(side,-side,side, side);
+        g.drawLine(side,side, -side,side);
+        g.drawLine(-side,side, -side,-side);
 
         g.restore();
     }

@@ -6,9 +6,6 @@ public abstract class AbstractGraphics implements Graphics {
 
     private int _height = 680, _width = 640;
 
-    // lo que ocupa la barra de la ventana
-    private int _offsetBar;
-
     // valor que indica el factor de escala con el que rescalaremos la pantalla
     protected double scaleFactor;
 
@@ -71,21 +68,21 @@ public abstract class AbstractGraphics implements Graphics {
         double wFactor, hFactor;
 
         // getWidth y getHeight son el tamaño lógico de la pantalla (setLogicSize)
-        wFactor = (double) wReal / (double) getWidth();
-        hFactor = (double) hReal / (double) getHeight();
+        wFactor = (double) wReal / (double) _width;
+        hFactor = (double) hReal / (double) _height;
 
         // si hemos escogido el wFactor, el width de la pantalla ocupa el width de la ventana entero
         if (wFactor < hFactor) {
             scaleFactor = wFactor;
 
             widthSizeScreen = wReal;
-            heightSizeScreen = ((wReal * getHeight()) / getWidth());
+            heightSizeScreen = ((wReal * _height) / _width);
         }
         // si hemos escogido el hFactor, el height de la pantalla ocupa el height de la ventana entero
         else {
             scaleFactor = hFactor;
 
-            widthSizeScreen = (hReal * getWidth()) / getHeight();
+            widthSizeScreen = (hReal * _width) / _height;
             heightSizeScreen = hReal;
         }
 

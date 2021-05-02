@@ -11,6 +11,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     private java.awt.Graphics2D _graphics;
     private Queue<AffineTransform> _transformQueue;
     private Engine _engine;
+    private int hightBarOffset = 58;
 
 
     public Graphics(Engine engine)
@@ -26,10 +27,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     public void setGraphics(java.awt.Graphics2D graphics)
     {
         _graphics = graphics;
-
-        // Pintamos el fondo de negro
-        _graphics.setBackground(Color.black);
-        _graphics.clearRect(0,0, _wReal, _hReal);
+        translate(0,hightBarOffset);
     }
 
     public void dispose()
@@ -140,7 +138,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
 
     @Override
     protected void setScaleFactor(int wReal, int hReal) {
-        super.setScaleFactor(wReal, hReal);
+        super.setScaleFactor(wReal, hReal - hightBarOffset);
     }
 
 }
