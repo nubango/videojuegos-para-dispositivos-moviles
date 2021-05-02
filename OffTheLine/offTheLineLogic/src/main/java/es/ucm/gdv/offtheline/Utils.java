@@ -9,8 +9,9 @@ public class Utils {
         double x;
         double y;
 
-        public double getX(){return x;}
-        public double getY(){return y;}
+        public double magnitud() {
+            return Math.sqrt(x*x + y*y);
+        };
     }
 
     // interseccion de segmentos

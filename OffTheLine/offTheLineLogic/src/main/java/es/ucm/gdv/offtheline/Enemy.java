@@ -50,46 +50,46 @@ public class Enemy {
     }
 
     void update(double deltaTime){
-        /*
+
         // Rotacion del enemigo. Si _speed es 0 no rota
         _angle = (_angle + _speed * deltaTime) % 360;
 
-        // Traslacion del enemigo. Si _offset o _timeMoving son 0 no se mueve
-        if(_timeStopped >= _timeStop) {
-            _position.x += _velocity * deltaTime;
-            while (_position.x < _maxLeft || _position.x > _maxRight) {
-                // Vamos a pintar fuera del intervalo. Rectificamos e iniciamos la cuenta de parado
-                _timeStopped = 0;
-                if (_position.x < _maxLeft) {
-                    // Nos salimos por la izquierda. Rebotamos.
-                    _position.x = 2 * _maxLeft - _position.x;
-                    _velocity *= -1;
-                } else if (_position.x > _maxRight) {
-                    // Nos salimos por la derecha. Rebotamos
-                    _position.x = 2 * _maxRight - _position.x;
-                    _velocity *= -1;
-                }
-            } // while
+//        // Traslacion del enemigo. Si _offset o _timeMoving son 0 no se mueve
+//            if(_timeStopped >= _timeStop) {
+//                _position.x += _velocity * deltaTime;
+//                while (_position.x < _maxLeft || _position.x > _maxRight) {
+//                    // Vamos a pintar fuera del intervalo. Rectificamos e iniciamos la cuenta de parado
+//                    _timeStopped = 0;
+//                    if (_position.x < _maxLeft) {
+//                        // Nos salimos por la izquierda. Rebotamos.
+//                        _position.x = 2 * _maxLeft - _position.x;
+//                        _velocity *= -1;
+//                    } else if (_position.x > _maxRight) {
+//                        // Nos salimos por la derecha. Rebotamos
+//                        _position.x = 2 * _maxRight - _position.x;
+//                        _velocity *= -1;
+//                    }
+//                } // while
+//
+//                _position.y += _velocity * deltaTime;
+//                while (_position.y < _maxUp || _position.y > _maxDown) {
+//                    // Vamos a pintar fuera del intervalo. Rectificamos e iniciamos la cuenta de parado
+//                    _timeStopped = 0;
+//                    if (_position.y < _maxUp) {
+//                        // Nos salimos por la izquierda. Rebotamos.
+//                        _position.y = 2 * _maxUp - _position.y;
+//                        _velocity *= -1;
+//                    } else if (_position.y > _maxDown) {
+//                        // Nos salimos por la derecha. Rebotamos
+//                        _position.y = 2 * _maxDown - _position.y;
+//                        _velocity *= -1;
+//                    }
+//                } // while
+//            } // if (_timeStopped > _timeStop)
+//            else{
+//                _timeStopped += deltaTime;
+//        }
 
-            _position.y += _velocity * deltaTime;
-            while (_position.y < _maxUp || _position.y > _maxDown) {
-                // Vamos a pintar fuera del intervalo. Rectificamos e iniciamos la cuenta de parado
-                _timeStopped = 0;
-                if (_position.y < _maxUp) {
-                    // Nos salimos por la izquierda. Rebotamos.
-                    _position.y = 2 * _maxUp - _position.y;
-                    _velocity *= -1;
-                } else if (_position.y > _maxDown) {
-                    // Nos salimos por la derecha. Rebotamos
-                    _position.y = 2 * _maxDown - _position.y;
-                    _velocity *= -1;
-                }
-            } // while
-        } // if (_timeStopped > _timeStop)
-        else{
-            _timeStopped += deltaTime;
-        }
-         */
     }
 
     void render(Graphics g) {

@@ -16,7 +16,7 @@ public class OffTheLineLogic implements Logic {
     private Engine _engine;
     private Player _player;
     private ArrayList<Level> _levels;
-    private int _currentLevel = 5;
+    private int _currentLevel = 4;
 
     static final int LOGIC_WIDTH = 640;
     static final int LOGIC_HEIGHT = 480;
@@ -38,6 +38,7 @@ public class OffTheLineLogic implements Logic {
 
         _player = new Player();
         _player.setCurrentPath(_levels.get(_currentLevel)._paths.get(0));
+        _levels.get(_currentLevel).setFont(_font);
 
         return true;
     }
@@ -57,7 +58,6 @@ public class OffTheLineLogic implements Logic {
         // ESTO NO VA AQUI, EL HANDLEINPUT TIENE QUE DESAPARECER
 
         _levels.get(_currentLevel).update(deltaTime);
-        _levels.get(_currentLevel).setFont(_font);
 
         _player.update(deltaTime);
     };

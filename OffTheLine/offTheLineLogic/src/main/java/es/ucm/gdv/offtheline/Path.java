@@ -12,19 +12,20 @@ public class Path {
     private int _scale = 1;
     private int _color = 0xFFFFFFFF;
 
-    // El contructor hay que hacerlo de otra forma porque ahora solo pintaría bien los niveles que tienen un único camino
     Path(List<Utils.Point> vertexes, List<Utils.Point> directions){
         _vertexes = new ArrayList<>(vertexes);
+
+        // Hallamos la direccion de salto de los caminos
         if(directions != null)
             _directions = new ArrayList<>(directions);
         else{
             _directions = new ArrayList<>();
             for (int i = 0; i < _vertexes.size(); i++) {
 
-                double xOrigin = _vertexes.get(i).getX();
-                double yOrigin = _vertexes.get(i).getY();
-                double xDest = _vertexes.get((i+1)%_vertexes.size()).getX();
-                double yDest = _vertexes.get((i+1)%_vertexes.size()).getY();;
+                double xOrigin = _vertexes.get(i).x;
+                double yOrigin = _vertexes.get(i).y;
+                double xDest = _vertexes.get((i+1)%_vertexes.size()).x;
+                double yDest = _vertexes.get((i+1)%_vertexes.size()).y;;
 
                 // Hallamos coordenadas del vector direccion
                 double xDir = xDest - xOrigin;
