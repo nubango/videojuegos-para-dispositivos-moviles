@@ -36,7 +36,6 @@ public class Player {
     private Level _currentLevel = null;
     private Path _currentPath = null;           // Trazo en el que está el player
     private int _currentLineIndex;              // Id de la linea en la que esta el player
-    //private int _realCurrentLineIndex;          // Id de la linea en la que esta el player
     private int _currentPathIndex = 0;          // Id del trazo en el que esta el player
 
     private boolean _jumping = false;           // Determina si se encuentra saltando
@@ -56,64 +55,7 @@ public class Player {
 
         _velocity = _translateVelocity;
         _currentLineIndex = -_orientation;
-        //_realCurrentLineIndex = -_orientation;
     }
-
-//    void updatePathCoordinates(){
-//        int destId, origId;
-//        if(_dir < 0) {
-//            destId = _currentLine;
-//            origId = (_currentLine + 1) % _currentPath.getVertexes().size();
-//        } else {
-//            origId = _currentLine;
-//            destId = (_currentLine + 1) % _currentPath.getVertexes().size();
-//        }
-//
-//        // Asignamos los valores
-//        double xOrig = _currentPath.getVertexes().get(origId).getX();
-//        double yOrig = _currentPath.getVertexes().get(origId).getY();
-//
-//        _vDest.x = _currentPath.getVertexes().get(destId).getX();
-//        _vDest.y = _currentPath.getVertexes().get(destId).getY();
-//
-//        _position.x = xOrig;
-//        _position.y = yOrig;
-//
-//        double xDir = _vDest.x - xOrig;
-//        double yDir = _vDest.y - yOrig;
-//
-//        // Normalizamos coordenadas del vector
-//        double length = Math.sqrt( xDir*xDir + yDir*yDir );
-//        if (length != 0) {
-//            xDir = xDir/length;
-//            yDir = yDir/length;
-//        }
-//
-//        _direction.x = xDir;
-//        _direction.y = yDir;
-//
-//    }
-
-//    Utils.Point checkCollision(){
-//
-//        Utils.Point p = null;
-//        for (int i = 0; i < _currentPath.getVertexes().size() && p == null; i++) {
-//            if (i != _currentLine) {
-//                double xori = _currentPath.getVertexes().get(i).x;
-//                double yori = _currentPath.getVertexes().get(i).y;
-//                double xdest = _currentPath.getVertexes().get((i + 1) % _currentPath.getVertexes().size()).x;
-//                double ydest = _currentPath.getVertexes().get((i + 1) % _currentPath.getVertexes().size()).y;
-//
-//                p = Utils.segmentsIntersection(_lastPosition.x, _lastPosition.y, _position.x, _position.y, xori, yori, xdest, ydest);
-//
-//                if (p != null) {
-//                    _currentLine = i;
-//                }
-//            }
-//        }
-//
-//        return p;
-//    }
 
     void setCurrentLevel(Level level){
         _currentLevel = level;
@@ -126,25 +68,28 @@ public class Player {
      * */
     private void updateCurSeg(){
 
-        int dest = 0, orig = 0;
+        int dest = 0, orig = 0, nextLineIndex = 0;
         // Calculamos ids de los puntos origen y destino del siguiente segmento en funcion
         // de la orientacion que hay que seguir
         if(_orientation == 1) {
-            _currentLineIndex = (_currentLineIndex + 1) % _currentPath.getVertexes().size();
-            orig = _currentLineIndex;
-            dest = (_currentLineIndex + 1) % _currentPath.getVertexes().size();
-            //_realCurrentLineIndex = orig;
+            nextLineIndex = (_currentLineIndex + 1) % _currentPath.getVertexes().size();
+            orig = nextLineIndex;
+            dest = (nextLineIndex + 1) % _currentPath.getVertexes().size();
         }
         else if(_orientation == -1){
             orig = _currentLineIndex;
-            _currentLineIndex = _currentLineIndex - 1 < 0 ? _currentPath.getVertexes().size()-1 : _currentLineIndex - 1;
-            dest = _currentLineIndex;
-            //_realCurrentLineIndex = dest;
+            nextLineIndex = _currentLineIndex - 1 < 0 ? _currentPath.getVertexes().size()-1 : _currentLineIndex - 1;
+            dest = nextLineIndex;
         }
 
         // Asignamos los valores calculados
-        int origId = orig;
-        int destId = dest;
+        _currentLineIndex = nextLineIndex;
+
+        // Hago el % otra vez porque hay un supuesto en el que si pulsas muy rápido
+        // el boton de salto, el valor de orig es 4 y se produce una excepcion
+        int origId = orig % _currentPath.getVertexes().size();
+        int destId = dest % _currentPath.getVertexes().size();
+
 
         // Creamos los puntos origen y destino del primer segmento del trazo
         double xOrig = _currentPath.getVertexes().get(origId).x;
@@ -169,7 +114,6 @@ public class Player {
         _pPosition.y = _pOrig.y;
 
         System.out.println("Segmento: " + _currentLineIndex);
-        //System.out.println("Segmento Real: " + _realCurrentLineIndex);
     }
 
     /**
@@ -192,7 +136,7 @@ public class Player {
         _velocity = _jumpVelocity;
     }
 
-    private Utils.Point checkCollision() {
+    private Utils.Point checkPathsCollision() {
 
         Utils.Point p = null;
         // recorremos todas las lineas de los trazos del nivel
@@ -243,44 +187,7 @@ public class Player {
         _angle = (_angle + _speed * deltaTime) % 360;
 
         updatePosition(deltaTime);
-
-        checkCollision();
-
-//        else if(_jumping) {
-//
-//            Utils.Point p = checkCollision();
-//            // comprobar colision con linea
-//            //if (xPosition > xDestination || yPosition > yDestination) {
-//            if (p != null) {
-//                _jumping = false;
-//                _velocity = _translateVelocity;
-//
-//                updatePathCoordinates();
-//
-//                _position.x = (int)p.x;
-//                _position.y = (int)p.y;
-//            }
-//        }
-//        else if(!_jumping) {
-//
-//            // Multiplicamos los valores por la direccion para poder compararlos
-//            double xPosition = _position.x * _direction.x;
-//            double yPosition = _position.y * _direction.y;
-//            double xDestination = _vDest.x * _direction.x;
-//            double yDestination = _vDest.y * _direction.y;
-//
-//            // Si el player se sale del camino marcado por _vOrigin-_vDest
-//            if (xPosition > xDestination || yPosition > yDestination) {
-//
-//                _currentLine = _currentLine + _dir;
-//                if(_currentLine < 0)
-//                    _currentLine = _currentPath.getVertexes().size() - 1;
-//                else if(_currentLine >= _currentPath.getVertexes().size())
-//                    _currentLine = _currentLine % _currentPath.getVertexes().size();
-//
-//                updatePathCoordinates();
-//            }
-//        }
+        checkPathsCollision();
     }
 
     private void updatePosition(double deltaTime){
@@ -325,7 +232,7 @@ public class Player {
 
         g.restore();
 
-        jumpLineDebug(g);
+        //jumpLineDebug(g);
     }
 
     void jumpLineDebug(Graphics g){
