@@ -50,7 +50,7 @@ public class JSONReader {
                 //vertices.add(new Utils.Point(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2));
             }
 
-            JSONArray dirArray = (JSONArray) path.get("direction");
+            JSONArray dirArray = (JSONArray) path.get("directions");
             if(dirArray != null){
                 directions = new ArrayList<Utils.Point>();
                 for (int j = 0; j < dirArray.size(); j++) {

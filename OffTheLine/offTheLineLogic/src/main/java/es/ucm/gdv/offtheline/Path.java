@@ -7,7 +7,7 @@ import es.ucm.gdv.engine.Graphics;
 
 public class Path {
 
-    private List<Utils.Point> _vertexes;    // Lista de puntos que son los vercices de las lineas
+    private List<Utils.Point> _vertexes;    // Lista de puntos que son los vertices de las lineas
     private List<Utils.Point> _directions;
     private int _scale = 1;
     private int _color = 0xFFFFFFFF;
