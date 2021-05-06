@@ -8,19 +8,18 @@ import es.ucm.gdv.engine.Font;
 import es.ucm.gdv.engine.Graphics;
 
 public class Level {
-    int _numLevel;
-    String _name;
-    ArrayList<Path> _paths;
-    ArrayList<Item> _items;
-    ArrayList<Enemy> _enemies;
-    Font _font;
+    private int _numLevel;
+    private String _name;
+    private ArrayList<Path> _paths;
+    private ArrayList<Item> _items;
+    private ArrayList<Enemy> _enemies = null;
+    private Font _font = null;
 
     Level(int numLevel, String name, ArrayList<Path> paths, ArrayList<Item> items){
         _numLevel = numLevel;
         _name = name;
         _paths = new ArrayList<>(paths);
         _items = new ArrayList<>(items);
-        _font = null;
     }
 
     void setFont(Font f){ _font = f; }
@@ -44,7 +43,6 @@ public class Level {
                 e.update(deltaTime);
             }
         }
-
     }
 
     void render(Graphics g){
@@ -72,4 +70,7 @@ public class Level {
         g.setFont(_font);
         g.drawText("Level " + level + " - " + _name,60, 10);
     }
+    ArrayList<Path> getPaths(){ return _paths; }
+    ArrayList<Item> getItems(){ return _items; }
+    ArrayList<Enemy> getEnemies(){ return _enemies; }
 }

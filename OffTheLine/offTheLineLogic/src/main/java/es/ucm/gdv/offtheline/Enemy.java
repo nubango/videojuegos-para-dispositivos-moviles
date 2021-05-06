@@ -102,7 +102,7 @@ public class Enemy {
         g.translate((int)_position.x + OffTheLineLogic.LOGIC_WIDTH / 2,-(int)_position.y +
                 OffTheLineLogic.LOGIC_HEIGHT / 2);
         g.scale(_scale, _scale);
-        g.rotate(_angle);
+        g.rotate(-_angle);
 
         g.drawLine(-_length,0, _length,0);
 
