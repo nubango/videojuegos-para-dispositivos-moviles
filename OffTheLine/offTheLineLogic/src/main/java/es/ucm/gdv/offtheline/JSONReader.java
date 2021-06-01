@@ -95,13 +95,13 @@ public class JSONReader {
             double length = Double.parseDouble(enemy.get("length").toString());
             double angle = Double.parseDouble(enemy.get("angle").toString());
 
-            Utils.Point offset = null;
+            Utils.Vector offset = null;
             JSONObject offsetArray = (JSONObject) enemy.get("offset");
             if(offsetArray != null)
             {
-                double offsetX = Double.parseDouble(enemy.get("x").toString());
-                double offsetY = Double.parseDouble(enemy.get("y").toString());
-                offset = new Utils.Point(offsetX, offsetY);
+                double offsetX = Double.parseDouble(offsetArray.get("x").toString());
+                double offsetY = Double.parseDouble(offsetArray.get("y").toString());
+                offset = new Utils.Vector(offsetX, offsetY);
             }
 
             // opcionales
