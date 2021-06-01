@@ -8,7 +8,7 @@ import es.ucm.gdv.engine.Graphics;
 public class Path {
 
     private List<Utils.Point> _vertexes;    // Lista de puntos que son los vertices de las lineas
-    private List<Utils.Point> _directions;
+    private List<Utils.Point> _jumpDirections;
     private int _scale = 1;
     private int _color = 0xFFFFFFFF;
 
@@ -17,9 +17,9 @@ public class Path {
 
         // Hallamos la direccion de salto de los caminos
         if(directions != null)
-            _directions = new ArrayList<>(directions);
+            _jumpDirections = new ArrayList<>(directions);
         else{
-            _directions = new ArrayList<>();
+            _jumpDirections = new ArrayList<>();
             for (int i = 0; i < _vertexes.size(); i++) {
 
                 double xOrigin = _vertexes.get(i).x;
@@ -43,7 +43,7 @@ public class Path {
                 xDir = yDir;
                 yDir = x;
 
-                _directions.add(new Utils.Point(xDir, yDir));
+                _jumpDirections.add(new Utils.Point(xDir, yDir));
             }
         }
     }
@@ -77,7 +77,7 @@ public class Path {
         return _vertexes;
     }
 
-    public List<Utils.Point> getDirections() {
-        return _directions;
+    public List<Utils.Point> getJumpDirections() {
+        return _jumpDirections;
     }
 }

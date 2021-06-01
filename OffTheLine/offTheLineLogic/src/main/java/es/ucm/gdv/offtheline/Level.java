@@ -34,7 +34,8 @@ public class Level {
         }
 
         for (Item i: _items) {
-            i.update(deltaTime);
+            if(!i._taken)
+                i.update(deltaTime);
         }
 
         if(_enemies != null)
@@ -54,7 +55,8 @@ public class Level {
         }
 
         for (Item i: _items) {
-            i.render(g);
+            if(!i._taken)
+                i.render(g);
         }
 
         if(_enemies != null) {

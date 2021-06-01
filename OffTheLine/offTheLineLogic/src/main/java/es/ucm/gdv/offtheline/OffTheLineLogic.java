@@ -16,7 +16,7 @@ public class OffTheLineLogic implements Logic {
     private Engine _engine;
     private Player _player;
     private ArrayList<Level> _levels;
-    private int _currentLevel = 16;
+    private int _currentLevel = 1;
 
     static final int LOGIC_WIDTH = 640;
     static final int LOGIC_HEIGHT = 480;

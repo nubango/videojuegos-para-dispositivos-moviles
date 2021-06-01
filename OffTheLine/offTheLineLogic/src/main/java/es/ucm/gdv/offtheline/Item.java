@@ -12,6 +12,8 @@ public class Item {
     private double _speed = 150;    // Velocidad de rotacion
     private double _angle = 0;      // Angulo de giro
 
+    boolean _taken = false;
+
     Item(double x, double y) {
         _position = new Utils.Point(x, y);
     }
@@ -53,4 +55,6 @@ public class Item {
 
         g.restore();
     }
+
+    public Utils.Point getPosition(){ return _position; }
 }

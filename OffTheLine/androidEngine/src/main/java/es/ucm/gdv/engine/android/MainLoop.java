@@ -1,7 +1,5 @@
 package es.ucm.gdv.engine.android;
 
-import es.ucm.gdv.engine.Logic;
-
 public class MainLoop implements Runnable {
 
     private boolean _running;
