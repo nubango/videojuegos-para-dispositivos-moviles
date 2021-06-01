@@ -14,12 +14,18 @@ public class Level {
     private ArrayList<Item> _items;
     private ArrayList<Enemy> _enemies = null;
     private Font _font = null;
+    private int _numItems = 0;
+    private OffTheLineLogic _logic = null;
+
+    private double _timeAnim = 1;
+    private double _elapsedTime = 0;
 
     Level(int numLevel, String name, ArrayList<Path> paths, ArrayList<Item> items){
         _numLevel = numLevel;
         _name = name;
         _paths = new ArrayList<>(paths);
         _items = new ArrayList<>(items);
+        _numItems = _items.size();
     }
 
     void setFont(Font f){ _font = f; }
@@ -34,7 +40,7 @@ public class Level {
         }
 
         for (Item i: _items) {
-            if(!i._taken)
+            if(i.isAnimated() || !i.isTaken())
                 i.update(deltaTime);
         }
 
@@ -43,6 +49,14 @@ public class Level {
             for (Enemy e: _enemies) {
                 e.update(deltaTime);
             }
+        }
+
+        if(_numItems == 0){
+            if(_elapsedTime > _timeAnim){
+                _elapsedTime = 0;
+                _logic.setNextLevel();
+            }
+            _elapsedTime += deltaTime;
         }
     }
 
@@ -55,7 +69,7 @@ public class Level {
         }
 
         for (Item i: _items) {
-            if(!i._taken)
+            if(i.isAnimated() || !i.isTaken())
                 i.render(g);
         }
 
@@ -73,6 +87,18 @@ public class Level {
         g.drawText("Level " + level + " - " + _name,60, 10);
     }
     ArrayList<Path> getPaths(){ return _paths; }
+
     ArrayList<Item> getItems(){ return _items; }
+
+    int getNumItems(){ return _numItems; }
+
+    void takeItem(){
+        _numItems--;
+    }
+
+    void setLogic(OffTheLineLogic l){
+        _logic = l;
+    }
+
     ArrayList<Enemy> getEnemies(){ return _enemies; }
 }

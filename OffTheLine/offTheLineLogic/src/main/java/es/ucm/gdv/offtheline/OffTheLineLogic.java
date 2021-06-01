@@ -37,10 +37,19 @@ public class OffTheLineLogic implements Logic {
         _levels = jsonReader.parserLevels("levels.json");
 
         _player = new Player();
+
+        _levels.get(_currentLevel).setLogic(this);
         _player.setCurrentLevel(_levels.get(_currentLevel));
         _levels.get(_currentLevel).setFont(_font);
 
         return true;
+    }
+
+    void setNextLevel(){
+        _currentLevel = (_currentLevel + 1) % _levels.size();
+        _levels.get(_currentLevel).setLogic(this);
+        _player.setCurrentLevel(_levels.get(_currentLevel));
+        _levels.get(_currentLevel).setFont(_font);
     }
 
     public void handleInput() {

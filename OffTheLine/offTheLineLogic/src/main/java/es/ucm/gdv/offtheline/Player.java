@@ -41,7 +41,7 @@ public class Player {
     private int _currentPathIndex = 0;          // Id del trazo en el que esta el player
 
     private boolean _jumping = false;           // Determina si se encuentra saltando
-    private double _jumpVelocity = 1000;        // Velocidad de salto
+    private double _jumpVelocity = 1500;        // Velocidad de salto
     private Utils.Point _originJumpPosition;    // Posicion desde donde se ha saltado
 
 
@@ -57,12 +57,20 @@ public class Player {
         _vLastDir = new Utils.Vector(0,0);
 
         _velocity = _translateVelocity;
-        _currentLineIndex = -_orientation;
+        _currentLineIndex = -1;
     }
 
     void setCurrentLevel(Level level){
         _currentLevel = level;
         _currentPath = _currentLevel.getPaths().get(0);
+        // reseteamos los valores
+
+        _currentPathIndex = 0;
+        _currentLineIndex = -1;
+        _orientation = 1;
+        _velocity = _translateVelocity;
+        _jumping = false;
+
         nextSegment();
     }
 
@@ -89,8 +97,10 @@ public class Player {
         for (int j = 0; j < _currentLevel.getItems().size(); j++) {
             double distItem = Utils.sqrDistancePointSegment(_pLastPosition, _pPosition,
                     _currentLevel.getItems().get(j).getPosition());
-            if(distItem <= umbralItemCollision * umbralItemCollision)
-                _currentLevel.getItems().get(j)._taken = true;
+            if(distItem <= umbralItemCollision * umbralItemCollision) {
+                _currentLevel.getItems().get(j).takeItem(_currentLevel);
+
+            }
         }
     }
 
@@ -193,7 +203,7 @@ public class Player {
             checkItemsCollision();
         }
 
-        System.out.println("Segmento: " + _currentLineIndex);
+        //System.out.println("Segmento: " + _currentLineIndex);
     }
 
     private void updatePosition(double deltaTime){
@@ -248,27 +258,35 @@ public class Player {
         // Creamos los puntos origen y destino del primer segmento del trazo
         double xV1 = _currentPath.getVertexes().get(v1Index).x;
         double yV1 = _currentPath.getVertexes().get(v1Index).y;
-        _pV1 = new Utils.Point(xV1, yV1);
+        _pV1.x = xV1;
+        _pV1.y = yV1;
 
         double xV2 = _currentPath.getVertexes().get(v2Index).x;
         double yV2 = _currentPath.getVertexes().get(v2Index).y;
-        _pV2 = new Utils.Point(xV2, yV2);
+        _pV2.x = xV2;
+        _pV2.y = yV2;
 
         updateDir();
 
         // System.out.println("Segmento: " + _currentLineIndex);
     }
 
+    /**
+     * Actualiza la direccion en funcion de la orientacion y del segmento en el que se encuentre
+     *
+     * */
     private void updateDir(){
         // Creamos el vector del segmento
 
         double x = _orientation == 1 ? _pV2.x - _pV1.x : _pV1.x - _pV2.x;
         double y = _orientation == 1 ? _pV2.y - _pV1.y : _pV1.y - _pV2.y;
 
-        _vCurSeg = new Utils.Vector(x, y);
+        _vCurSeg.x = x;
+        _vCurSeg.y = y;
 
         // Creamos y normalizamos el vector direccion
-        _vDir = new Utils.Vector(_vCurSeg.x, _vCurSeg.y);
+        _vDir.x = x;
+        _vDir.y = y;
         _vDir.normalize();
 
         _pPosition.x = _orientation == 1 ? _pV1.x : _pV2.x;

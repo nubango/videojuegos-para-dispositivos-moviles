@@ -5,21 +5,54 @@ import es.ucm.gdv.engine.Graphics;
 public class Item {
 
     private Utils.Point _position;
-    private int _tam = 4;           // Tamaño de los segmentos que forman el item
+    private int _initTam = 4;           // Tamaño inicial de los segmentos que forman el item
+    private int _initScale = 2;
+    private int _tam = 4;           // Tamaño actual de los segmentos que forman el item
     private int _scale = 2;
     private int _color = 0xFFFFEF00;
 
     private double _speed = 150;    // Velocidad de rotacion
     private double _angle = 0;      // Angulo de giro
 
-    boolean _taken = false;
+    private boolean _taken = false;
+    private boolean _isAnimated = false;
+    private boolean _animationStart = false;
+
+    private int _maxTamAnim = 15;
+    private double _tamAnim;
+    private double _velocityAnim = 75;
+
+    private double _timeAnim = 0.4;
+    private double _elapsedTime = 0;
+
+    private Level _currentLevel = null;
 
     Item(double x, double y) {
         _position = new Utils.Point(x, y);
+        _tamAnim = _tam;
     }
 
     void update(double deltaTime){
         _angle = (_angle + _speed * deltaTime) % 360;
+        if(_animationStart){
+            if(_tam <= _maxTamAnim){
+                _tamAnim += _velocityAnim*deltaTime;
+                _tam = (int)_tamAnim;
+                _scale = _tam/2;
+            }
+            else
+                _animationStart = false;
+        }
+
+        if(_isAnimated){
+            if(_elapsedTime > _timeAnim){
+                _isAnimated = false;
+                _elapsedTime = 0;
+                _tam = _initTam;
+                _scale = _initScale;
+            }
+            _elapsedTime += deltaTime;
+        }
     }
 
     void render(Graphics g) {
@@ -56,5 +89,33 @@ public class Item {
         g.restore();
     }
 
-    public Utils.Point getPosition(){ return _position; }
+    Utils.Point getPosition(){ return _position; }
+
+    void takeItem(Level l) {
+        if(!_taken){
+            _taken = true;
+            _animationStart = true;
+            _isAnimated = true;
+            l.takeItem();
+        }
+    }
+
+    boolean isTaken(){ return _taken; }
+    boolean isAnimated(){ return _isAnimated; }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
