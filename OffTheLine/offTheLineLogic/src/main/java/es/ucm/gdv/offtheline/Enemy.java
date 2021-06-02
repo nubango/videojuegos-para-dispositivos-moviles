@@ -7,7 +7,6 @@ public class Enemy {
     private Utils.Point _pPosition;
     private Utils.Point _pLastPosition;
     private Utils.Vector _vDir;         // Direccion en la que se traslada
-    private int _orientation = 1;       // Orientacion normal o invertida
 
     private Utils.Point _pPosInit;      // Posicion inicial de movimiento
     private Utils.Point _pPosEnd;      // Posicion inicial de movimiento
@@ -19,8 +18,6 @@ public class Enemy {
     private int _color = 0xFFFF1D03;
 
     private double _speed = 0;          // Velocidad circular. Positiva al contrario del reloj y negativa a favor del reloj
-    private double _translateTime = 0;  // Tiempo actual que lleva trasladandose
-
 
     private double _timeMoving = 0;     // Tiempo que tarda en ir desde la posicion hasta el offset
     private double _timeStop = 0;       // Tiempo que está parado el enemigo
@@ -59,10 +56,16 @@ public class Enemy {
             if (timeMoving > 0) {
                 _velocity = moduleOffsetVector / timeMoving;
             }
-            _maxLeft = x;
-            _maxRight = x + moduleOffsetVector;
-            _maxUp = y;
-            _maxDown = y + moduleOffsetVector;
+            double aux1, aux2;
+            aux1 = x;
+            aux2 = x + _pOffset.x;
+            _maxLeft = Math.min(aux1, aux2);
+            _maxRight = Math.max(aux1, aux2);
+
+            aux1 = y;
+            aux2 = y + _pOffset.y;
+            _maxUp = Math.min(aux1, aux2);
+            _maxDown = Math.max(aux1, aux2);
         }
     }
 
@@ -70,47 +73,6 @@ public class Enemy {
 
         // Rotacion del enemigo. Si _speed es 0 no rota
         _angle = (_angle + _speed * deltaTime) % 360;
-
-//        if(_translateTime <= _timeMoving) {
-//
-//            double percent = _translateTime / _timeMoving;
-//            // Posicion relativa donde tiene que estar en funcion del tiempo que ha pasado
-//            double x = percent * _pOffset.x;
-//            double y = percent * _pOffset.y;
-//
-//            // Se la sumamos al punto inicial
-//            x += _pPosInit.x;
-//            y += _pPosInit.y;
-//
-//            _pLastPosition.x = _pPosition.x;
-//            _pLastPosition.y = _pPosition.y;
-//            _pPosition.x = x;
-//            _pPosition.y = y;
-//
-////            // Hallamos distancia recorrida orig-position
-////            Utils.Vector vDistRecor;
-////            if (_orientation == 1)
-////                vDistRecor = new Utils.Vector(_pPosition.x - _pPosInit.x, _pPosition.y - _pPosInit.y);
-////            else
-////                vDistRecor = new Utils.Vector(_pPosition.x - _pPosEnd.x, _pPosition.y - _pPosEnd.y);
-////
-////            // comprobando que el enemigo no se sale del segmento de movimiento
-////            if (_pOffset.module() - vDistRecor.module() < 0) {
-////                _orientation *= -1;
-////                _vDir.x *= -1;
-////                _vDir.y *= -1;
-////            }
-//        }
-//        else
-//            _orientation = -1;
-//
-//        if(_pPosition.x > _pPosInit.x + _pOffset.x || _pPosition.y > _pPosInit.y + _pOffset.y)
-//            _orientation = -1;
-//        else if(_pPosition.x < _pPosInit.x || _pPosition.y > _pPosInit.y)
-//            _orientation = 1;
-//
-//
-//        _translateTime += deltaTime*_orientation;
 
 
         if(_pOffset != null) {
