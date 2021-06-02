@@ -9,10 +9,6 @@ public class Player {
 
     private int _lifes = 10;        // Vidas del jugador
 
-
-
-
-
     // Nuevo-----------------------------------------------
     private Utils.Point _pPosition;             // Posicion actual
     private Utils.Point _pLastPosition;         // Posicion anterior
@@ -24,7 +20,7 @@ public class Player {
 
     private double _velocity = 0;               // Velocidad actual
     private double _translateVelocity = 200;    // Velocidad de traslacion del player
-    private int _orientation = 1;              // Sentido de movimiento
+    private int _orientation = 1;               // Sentido de movimiento
 
     private double _angle = 0;                  // Angulo de rotacion
     private double _speed = 150;                // Velocidad de rotacion
@@ -44,6 +40,17 @@ public class Player {
     private double _jumpVelocity = 1500;        // Velocidad de salto
     private Utils.Point _originJumpPosition;    // Posicion desde donde se ha saltado
 
+    private boolean _deathAnimation = false;    // Saber si el player ha muerto o no
+    private boolean _deathOutBounds = false;    // Saber si el player ha muerto o no
+    private int _numLinesAnimation = 10;        // cantidad de lineas que salen al morir
+    private Utils.Vector[] _linesAnimationDir;  // una direccion por cada linea
+    private Utils.Vector[] _linesAnimationPos;  // una posicion por cada linea
+    private double[] _linesAnimationAngle;      // angulo de rotacion por cada linea
+    private double _lineVelocityDeathAnimation = 15;    // velocidad de traslacion de las lineas
+    private double _lineSpeedDeathAnimation = 50;       // velocidad de rotacion de las lineas
+    private double _elapsedTime = 0;                    // tiempo transcurrido para controlar la animacion
+    private double _deathAnimationTime = 3;             // tiempo que dura la animacion de muerte
+
 
     Player(){
         _pLastPosition = new Utils.Point(0, 0);
@@ -58,7 +65,12 @@ public class Player {
 
         _velocity = _translateVelocity;
         _currentLineIndex = -1;
+        _linesAnimationDir = new Utils.Vector[_numLinesAnimation];
+        _linesAnimationPos = new Utils.Vector[_numLinesAnimation];
+        _linesAnimationAngle = new double[_numLinesAnimation];
     }
+
+    boolean isDeath(){ return _deathAnimation || _deathOutBounds; }
 
     void setCurrentLevel(Level level){
         _currentLevel = level;
@@ -104,16 +116,54 @@ public class Player {
         }
     }
 
-    private void checkEnemiesCollision(){
-        for (int j = 0; j < _currentLevel.getEnemies().size(); j++) {
-            Utils.Point p = Utils.segmentsIntersection(_pLastPosition, _pPosition,
-                    _currentLevel.getEnemies().get(j)._pV1, _currentLevel.getEnemies().get(j)._pV2);
-            if(p != null) {
-                // Iniciamos animacion del personaje
-                // Cuando acabe la animacion reseteamos el nivel completo
-
-            }
+    private void startDeathAction(){
+        _deathAnimation = true;
+        _elapsedTime = 0;
+        for(int i = 0; i < _numLinesAnimation; i++){
+            _linesAnimationAngle[i] = Math.random()*360;
+            _linesAnimationDir[i] = new Utils.Vector(Math.random(), Math.random());
+            _linesAnimationPos[i] = new Utils.Vector(0, 0);
         }
+    }
+
+    private boolean deathAnimation(double deltaTime){
+        _elapsedTime += deltaTime;
+        if(_deathAnimation)
+            for (int i = 0; i < _numLinesAnimation; i++) {
+                _linesAnimationAngle[i] += _lineSpeedDeathAnimation * deltaTime;
+                _linesAnimationPos[i].x += _linesAnimationDir[i].x * _lineVelocityDeathAnimation * deltaTime;
+                _linesAnimationPos[i].y += _linesAnimationDir[i].y * _lineVelocityDeathAnimation * deltaTime;
+            }
+
+        if(_elapsedTime > _deathAnimationTime)
+            return true;
+        return false;
+    }
+
+    private void endDeathAction(){
+        _deathAnimation = false;
+        _deathOutBounds = false;
+        setCurrentLevel(_currentLevel);
+        _currentLevel.resetLevel();
+        // lamamos a el metodo correspondiente de level
+    }
+
+    private void checkEnemiesCollision() {
+        if (_pPosition.x > OffTheLineLogic.LOGIC_WIDTH / 1.9 || _pPosition.x < -OffTheLineLogic.LOGIC_WIDTH / 1.9 ||
+                _pPosition.y > OffTheLineLogic.LOGIC_HEIGHT / 1.9 || _pPosition.y < -OffTheLineLogic.LOGIC_HEIGHT / 1.9) {
+            _deathOutBounds = true;
+            _elapsedTime = 0;
+        }
+//        else for (int j = 0; j < _currentLevel.getEnemies().size(); j++) {
+//            Utils.Point p = Utils.segmentsIntersection(_pLastPosition, _pPosition,
+//                    _currentLevel.getEnemies().get(j).getPoint1(), _currentLevel.getEnemies().get(j).getPoint2());
+//            if(p != null) {
+//                // Iniciamos animacion del personaje
+//                startDeathAction();
+//                // Cuando acabe la animacion reseteamos el nivel completo
+//
+//            }
+//        }
     }
 
     /**
@@ -210,22 +260,28 @@ public class Player {
         for (Input.TouchEvent e:events) {
             if(!_jumping &&e._type == Input.Type.press){
                 jump();
+                //startDeathAction();
             }
         }
     }
 
-    void update(double deltaTime){
-        // Actualizamos la rotacion
-        _angle = (_angle + _speed * deltaTime) % 360;
+    void update(double deltaTime) {
 
-        updatePosition(deltaTime);
+        if (!_deathAnimation && !_deathOutBounds) {
+            // Actualizamos la rotacion
+            _angle = (_angle + _speed * deltaTime) % 360;
+            updatePosition(deltaTime);
 
-        if(_jumping) {
-            checkPathsCollision();
-            checkItemsCollision();
+            if (_jumping) {
+                checkPathsCollision();
+                checkItemsCollision();
+            }
+
+            checkEnemiesCollision();
         }
-
-        checkEnemiesCollision();
+        else if(deathAnimation(deltaTime)){
+            endDeathAction();
+        }
     }
 
     private void updatePosition(double deltaTime){
@@ -318,24 +374,46 @@ public class Player {
     void render(Graphics g){
         g.setColor(_color);
 
-        if(!g.save()) {
-            return;
+        int side = _tam / _scale;
+
+
+        if(!_deathAnimation) {
+            if(!g.save()) {
+                return;
+            }
+
+            g.translate(_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2, -_pPosition.y +
+                    OffTheLineLogic.LOGIC_HEIGHT / 2);
+
+            g.scale(_scale, _scale);
+            g.rotate(_angle);
+
+
+            g.drawLine(-side, -side, side, -side);
+            g.drawLine(side, -side, side, side);
+            g.drawLine(side, side, -side, side);
+            g.drawLine(-side, side, -side, -side);
+
+            g.restore();
         }
+        else{
 
-        g.translate(_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2, -_pPosition.y +
-                OffTheLineLogic.LOGIC_HEIGHT / 2);
+            for (int i = 0; i < _numLinesAnimation; i++) {
+                if(!g.save()) {
+                    return;
+                }
 
-        g.scale(_scale, _scale);
-        g.rotate(_angle);
+                g.translate(_linesAnimationPos[i].x+_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2, _linesAnimationPos[i].y-_pPosition.y +
+                        OffTheLineLogic.LOGIC_HEIGHT / 2);
 
-        int side = _tam/_scale;
+                g.scale(_scale, _scale);
+                g.rotate(_linesAnimationAngle[i]);
 
-        g.drawLine(-side, -side, side, -side);
-        g.drawLine(side, -side, side, side);
-        g.drawLine(side, side, -side, side);
-        g.drawLine(-side, side, -side, -side);
+                g.drawLine(-side, -side, side, -side);
 
-        g.restore();
+                g.restore();
+            }
+        }
 
         //jumpLineDebug(g);
     }

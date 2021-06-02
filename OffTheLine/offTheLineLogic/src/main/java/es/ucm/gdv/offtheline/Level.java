@@ -15,7 +15,7 @@ public class Level {
     private int _numItems = 0;
     private OffTheLineLogic _logic = null;
 
-    private double _timeWaitToNextLevel = 1;    // Tiempo de espera hasta que pasa al siguente nivel (en segundos)
+    private double _timeWaitToNextLevel = 2;    // Tiempo de espera hasta que pasa al siguente nivel (en segundos)
     private double _elapsedTime = 0;
 
     Level(int numLevel, String name, ArrayList<Path> paths, ArrayList<Item> items){
@@ -52,7 +52,8 @@ public class Level {
         if(_numItems == 0){
             if(_elapsedTime > _timeWaitToNextLevel){
                 _elapsedTime = 0;
-                _logic.setNextLevel();
+                if(_logic.playerIsAlive())
+                    _logic.setNextLevel();
             }
             _elapsedTime += deltaTime;
         }
@@ -84,6 +85,22 @@ public class Level {
         g.setFont(_font);
         g.drawText("Level " + level + " - " + _name,60, 10);
     }
+
+    void resetLevel(){
+        _numItems = _items.size();
+        _elapsedTime = 0;
+        for (Item i: _items) {
+            i.reset();
+        }
+
+        if(_enemies != null) {
+            for (Enemy e : _enemies) {
+                e.reset();
+            }
+        }
+
+    }
+
     ArrayList<Path> getPaths(){ return _paths; }
 
     ArrayList<Item> getItems(){ return _items; }

@@ -4,22 +4,19 @@ import es.ucm.gdv.engine.Graphics;
 
 public class Enemy {
 
+    private Utils.Point _pInitPosition;
     private Utils.Point _pPosition;
     private Utils.Vector _vDir;         // Direccion en la que se traslada
     private Utils.Vector _pOffset;      // Vector de movimiento
-
-    Utils.Point _pV1;                   // Un extremo del segmento enemigo
-    Utils.Point _pV2;                   // El otro extremo del segmento enemigo
 
     private int _length;                // Longitud del segmento
     private int _scale = 1;
     private double _angle = 0;          // 0 horizontal, 90 vertical
     private int _color = 0xFFFF1D03;
 
-    private double _speed = 0;          // Velocidad circular. Positiva al contrario del reloj y negativa a favor del reloj
+    private double _speed;          // Velocidad circular. Positiva al contrario del reloj y negativa a favor del reloj
 
-    private double _timeMoving = 0;     // Tiempo que tarda en ir desde la posicion hasta el offset
-    private double _timeStop = 0;       // Tiempo que está parado el enemigo
+    private double _timeStop;       // Tiempo que está parado el enemigo
     private double _velocity = 0;       // Velocidad de traslacion
     private double _maxRight = 0;       // Limite de movimiento por la derecha
     private double _maxLeft = 0;        // Limite de movimiento por la izquierda
@@ -29,9 +26,8 @@ public class Enemy {
 
     Enemy(double x, double y, int length, double angle, double speed, Utils.Vector offset,
           double timeMoving, double timeStop){
-        _pV1 = new Utils.Point(0,0);
-        _pV2 = new Utils.Point(0,0);
 
+        _pInitPosition = new Utils.Point(x, y);
         _pPosition = new Utils.Point(x, y);
         _vDir = new Utils.Vector(0, 0);
 
@@ -40,7 +36,6 @@ public class Enemy {
         _speed = speed;
         _pOffset = offset;
         _timeStop = timeStop;
-        _timeMoving = timeMoving;
 
         if(_pOffset != null) {
 
@@ -136,5 +131,11 @@ public class Enemy {
 
     Utils.Point getPoint2(){
         return null;
+    }
+
+    void reset(){
+        _pPosition.x = _pInitPosition.x;
+        _pPosition.y = _pInitPosition.y;
+        _timeStopped = 0;
     }
 }

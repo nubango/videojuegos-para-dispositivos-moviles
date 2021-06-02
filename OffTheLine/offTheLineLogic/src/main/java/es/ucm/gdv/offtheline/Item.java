@@ -102,6 +102,14 @@ public class Item {
 
     boolean isTaken(){ return _taken; }
     boolean isAnimated(){ return _isAnimated; }
+
+    void reset(){
+        _taken = false;
+        _isAnimated = false;
+        _animationStart = false;
+        _scale = _initScale;
+        _tam = _initTam;
+    }
 }
 
 

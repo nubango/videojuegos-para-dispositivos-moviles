@@ -16,7 +16,7 @@ public class OffTheLineLogic implements Logic {
     private Engine _engine;
     private Player _player;
     private ArrayList<Level> _levels;
-    private int _currentLevel = 9;
+    private int _currentLevel = 6;
 
     static final int LOGIC_WIDTH = 640;
     static final int LOGIC_HEIGHT = 480;
@@ -50,6 +50,10 @@ public class OffTheLineLogic implements Logic {
         _levels.get(_currentLevel).setLogic(this);
         _player.setCurrentLevel(_levels.get(_currentLevel));
         _levels.get(_currentLevel).setFont(_font);
+    }
+
+    boolean playerIsAlive(){
+        return !_player.isDeath();
     }
 
     public void handleInput() {
