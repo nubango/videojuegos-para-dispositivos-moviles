@@ -5,12 +5,11 @@ import es.ucm.gdv.engine.Graphics;
 public class Enemy {
 
     private Utils.Point _pPosition;
-    private Utils.Point _pLastPosition;
     private Utils.Vector _vDir;         // Direccion en la que se traslada
-
-    private Utils.Point _pPosInit;      // Posicion inicial de movimiento
-    private Utils.Point _pPosEnd;      // Posicion inicial de movimiento
     private Utils.Vector _pOffset;      // Vector de movimiento
+
+    Utils.Point _pV1;                   // Un extremo del segmento enemigo
+    Utils.Point _pV2;                   // El otro extremo del segmento enemigo
 
     private int _length;                // Longitud del segmento
     private int _scale = 1;
@@ -30,8 +29,10 @@ public class Enemy {
 
     Enemy(double x, double y, int length, double angle, double speed, Utils.Vector offset,
           double timeMoving, double timeStop){
+        _pV1 = new Utils.Point(0,0);
+        _pV2 = new Utils.Point(0,0);
+
         _pPosition = new Utils.Point(x, y);
-        _pLastPosition = new Utils.Point(x, y);
         _vDir = new Utils.Vector(0, 0);
 
         _length = length/2;
@@ -42,9 +43,6 @@ public class Enemy {
         _timeMoving = timeMoving;
 
         if(_pOffset != null) {
-
-            _pPosInit = new Utils.Point(x, y);
-            _pPosEnd = new Utils.Point(x + _pOffset.x, y + _pOffset.y);
 
             _vDir.x = _pOffset.x;
             _vDir.y = _pOffset.y;
@@ -130,5 +128,13 @@ public class Enemy {
         g.drawLine(-_length,0, _length,0);
 
         g.restore();
+    }
+
+    Utils.Point getPoint1(){
+        return null;
+    }
+
+    Utils.Point getPoint2(){
+        return null;
     }
 }

@@ -104,19 +104,41 @@ public class Player {
         }
     }
 
+    private void checkEnemiesCollision(){
+        for (int j = 0; j < _currentLevel.getEnemies().size(); j++) {
+            Utils.Point p = Utils.segmentsIntersection(_pLastPosition, _pPosition,
+                    _currentLevel.getEnemies().get(j)._pV1, _currentLevel.getEnemies().get(j)._pV2);
+            if(p != null) {
+                // Iniciamos animacion del personaje
+                // Cuando acabe la animacion reseteamos el nivel completo
+
+            }
+        }
+    }
+
+    /**
+     * Compruba si colisiona con algun segmento
+     * recorre todos los segmentos de todos los caminos del nivel
+     * los segmentos vienen dados por dos puntos, el inicial y el final
+     *
+     * Se comprueba si hay interseccion entre el segmento y el vector formado por la posicion
+     * anterior y la actual del player
+     *
+     * Si devuelve un punto es que ha habido interseccion y se actualizan los valores necesarios
+     * para cambiar la direccion y el segmento que tiene que seguir a partir de ahora
+     *
+     * */
     private Utils.Point checkPathsCollision() {
 
         Utils.Point p = null;
         // recorremos todas las lineas de los trazos del nivel
-        for (int j = 0; j < _currentLevel.getPaths().size(); j++) {
+        for (int j = 0; j < _currentLevel.getPaths().size() && p == null; j++) {
             for (int i = 0; i < _currentLevel.getPaths().get(j).getVertexes().size() && p == null; i++) {
-                // nos saltamos el trazo y linea en la que está el player
-//                boolean sameLine = _currentLineIndex == i || Math.abs(i-1) == _currentLineIndex ||
-//                        i == Math.abs(_currentLineIndex - 1);
                 Utils.Point iPointV1 = _currentLevel.getPaths().get(j).getVertexes().get(i);
                 Utils.Point iPointV2 = _currentLevel.getPaths().get(j).getVertexes().
                         get((i+1) % _currentLevel.getPaths().get(j).getVertexes().size());
 
+                // nos saltamos la linea en la que está el player
                 boolean sameLine = iPointV1.samePoint(_pV1) && iPointV2.samePoint(_pV2)||
                         iPointV1.samePoint(_pV2) && iPointV2.samePoint(_pV1);;
                 if (_currentPathIndex == j && sameLine) {
@@ -203,7 +225,7 @@ public class Player {
             checkItemsCollision();
         }
 
-        //System.out.println("Segmento: " + _currentLineIndex);
+        checkEnemiesCollision();
     }
 
     private void updatePosition(double deltaTime){

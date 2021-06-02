@@ -15,7 +15,7 @@ public class Level {
     private int _numItems = 0;
     private OffTheLineLogic _logic = null;
 
-    private double _timeAnim = 1;
+    private double _timeWaitToNextLevel = 1;    // Tiempo de espera hasta que pasa al siguente nivel (en segundos)
     private double _elapsedTime = 0;
 
     Level(int numLevel, String name, ArrayList<Path> paths, ArrayList<Item> items){
@@ -50,7 +50,7 @@ public class Level {
         }
 
         if(_numItems == 0){
-            if(_elapsedTime > _timeAnim){
+            if(_elapsedTime > _timeWaitToNextLevel){
                 _elapsedTime = 0;
                 _logic.setNextLevel();
             }
