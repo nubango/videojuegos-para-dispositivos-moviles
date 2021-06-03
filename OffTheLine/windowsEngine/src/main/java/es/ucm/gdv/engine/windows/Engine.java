@@ -16,6 +16,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     private Input _input;
     private JFrame _ventana;
     private Logic _logic;
+    private boolean _initLogic = false;
 
 
 /* ---------------------------------------------------------------------------------------------- *
@@ -76,13 +77,15 @@ public class Engine implements es.ucm.gdv.engine.Engine {
 
         _graphics.setGraphics((Graphics2D)strategy.getDrawGraphics());
 
-        if(!_logic.init(this)) {
-            System.err.println("****Init de la lógica ha devuelto false****");
-            return;
-        }
-
         while(true)
         {
+            if(_initLogic) {
+                _initLogic = false;
+                if (!_logic.init(this)) {
+                    System.err.println("****Init de la lógica ha devuelto false****");
+                    return;
+                }
+            }
             long currentTime = System.nanoTime();
             long nanoDelta = currentTime - lastFrameTime;
             lastFrameTime = currentTime;
@@ -125,6 +128,6 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     }
 
     @Override
-    public void setLogic(Logic l){ _logic = l; }
+    public void setLogic(Logic l){ _logic = l; _initLogic = true; }
 
 }

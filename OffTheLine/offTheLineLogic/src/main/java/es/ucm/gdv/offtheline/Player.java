@@ -154,16 +154,19 @@ public class Player {
             _deathOutBounds = true;
             _elapsedTime = 0;
         }
-//        else for (int j = 0; j < _currentLevel.getEnemies().size(); j++) {
-//            Utils.Point p = Utils.segmentsIntersection(_pLastPosition, _pPosition,
-//                    _currentLevel.getEnemies().get(j).getPoint1(), _currentLevel.getEnemies().get(j).getPoint2());
-//            if(p != null) {
-//                // Iniciamos animacion del personaje
-//                startDeathAction();
-//                // Cuando acabe la animacion reseteamos el nivel completo
-//
-//            }
-//        }
+        else if(_currentLevel.getEnemies()!=null)
+            for (int j = 0; j < _currentLevel.getEnemies().size(); j++) {
+                Utils.Point[] points = _currentLevel.getEnemies().get(j).getExtremPoints();
+                if(points[0] != null && points[1] != null){
+                    Utils.Point p = Utils.segmentsIntersection(_pLastPosition, _pPosition, points[0], points[1]);
+                    if(p != null) {
+                        // Iniciamos animacion del personaje
+                        startDeathAction();
+                        // Cuando acabe la animacion reseteamos el nivel completo
+
+                    }
+                }
+            }
     }
 
     /**

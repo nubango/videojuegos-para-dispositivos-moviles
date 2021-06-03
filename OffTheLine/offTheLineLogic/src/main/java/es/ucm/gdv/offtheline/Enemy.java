@@ -6,6 +6,8 @@ public class Enemy {
 
     private Utils.Point _pInitPosition;
     private Utils.Point _pPosition;
+    private Utils.Point _pPosExtrem1;   // Posicion de un extremo del segmento (real)
+    private Utils.Point _pPosExtrem2;   // Posicion de un extremo del segmento (real)
     private Utils.Vector _vDir;         // Direccion en la que se traslada
     private Utils.Vector _pOffset;      // Vector de movimiento
 
@@ -59,11 +61,14 @@ public class Enemy {
             aux2 = y + _pOffset.y;
             _maxUp = Math.min(aux1, aux2);
             _maxDown = Math.max(aux1, aux2);
+
+            calculatePoints();
         }
     }
 
     void update(double deltaTime){
 
+        calculatePoints();
         // Rotacion del enemigo. Si _speed es 0 no rota
         _angle = (_angle + _speed * deltaTime) % 360;
 
@@ -109,6 +114,11 @@ public class Enemy {
     }
 
     void render(Graphics g) {
+        if(_pPosExtrem1 != null && _pPosExtrem2 != null) {
+            g.setColor(0x0F1D1DF3);
+            g.drawLine((int) _pPosExtrem1.x, (int) _pPosExtrem1.y, (int) _pPosExtrem2.x, (int) _pPosExtrem2.y);
+        }
+
         g.setColor(_color);
 
         if(!g.save()) {
@@ -123,14 +133,55 @@ public class Enemy {
         g.drawLine(-_length,0, _length,0);
 
         g.restore();
+
+
     }
 
-    Utils.Point getPoint1(){
-        return null;
+    private void calculatePoints(){
+
+//        _pPosExtrem1 = new Utils.Point((_pPosition.x + _length)*Math.cos(_angle) - _pPosition.y *Math.sin(_angle),
+//                (_pPosition.x + _length)*Math.sin(_angle) + _pPosition.y*Math.cos(_angle));
+//        _pPosExtrem2 = new Utils.Point((_pPosition.x - _length)*Math.cos(_angle) - _pPosition.y *Math.sin(_angle),
+//                (_pPosition.x - _length)*Math.sin(_angle) + _pPosition.y*Math.cos(_angle));
+
+
+        if(_angle == 0) {
+            _pPosExtrem1 = new Utils.Point(_pPosition.x + _length + OffTheLineLogic.LOGIC_WIDTH / 2, -_pPosition.y + OffTheLineLogic.LOGIC_HEIGHT / 2);
+            _pPosExtrem2 = new Utils.Point(_pPosition.x - _length + OffTheLineLogic.LOGIC_WIDTH / 2, -_pPosition.y + OffTheLineLogic.LOGIC_HEIGHT / 2);
+        }else{
+            _pPosExtrem1 = new Utils.Point(_pPosition.x + (_length * Math.cos(_angle * (Math.PI/180))) + OffTheLineLogic.LOGIC_WIDTH / 2,
+                    -_pPosition.y + (_length * Math.cos(_angle * (Math.PI / 180))) + OffTheLineLogic.LOGIC_HEIGHT / 2);
+            _pPosExtrem2 = new Utils.Point(_pPosition.x + (_length * Math.cos((_angle * (Math.PI/180)) + Math.PI)) + OffTheLineLogic.LOGIC_WIDTH / 2,
+                    -_pPosition.y + (_length * Math.sin((_angle * Math.PI/180)) + Math.PI) + OffTheLineLogic.LOGIC_HEIGHT / 2);
+        }
+
+
+
+
+//        double coseno = Math.cos(-_angle);
+//
+//        Utils.Vector vpa = new Utils.Vector(_pPosition.x - _length, _pPosition.y);
+//        double modulo = vpa.module();
+//        //double y1 = (2*coseno*vpa.y + Math.sqrt(4*(coseno*coseno * vpa.y*vpa.y - modulo*modulo * coseno + vpa.x*vpa.x)))/2;
+//        double y1 = Math.sqrt(4*( - _length*_length * coseno + _length*_length))/2;
+//        double x1 = Math.sqrt(_length*_length - y1*y1);
+//        _pPosExtrem1 = new Utils.Point(x1, y1);
+//
+//        double y2 = -y1;
+//        double x2 = -x1;
+//        _pPosExtrem2 = new Utils.Point(x2, y2);
+//
+//        _pPosExtrem1.x += (int)_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2;
+//        _pPosExtrem1.y += -(int)_pPosition.y + OffTheLineLogic.LOGIC_HEIGHT / 2;
+//
+//        _pPosExtrem2.x += (int)_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2;
+//        _pPosExtrem2.y += -(int)_pPosition.y + OffTheLineLogic.LOGIC_HEIGHT / 2;
+
     }
 
-    Utils.Point getPoint2(){
-        return null;
+    Utils.Point[] getExtremPoints(){
+        //calculatePoints();
+        return new Utils.Point[]{_pPosExtrem1,_pPosExtrem2};
     }
 
     void reset(){
