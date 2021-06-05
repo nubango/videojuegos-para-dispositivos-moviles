@@ -38,6 +38,14 @@ public abstract class AbstractGraphics implements Graphics {
         return _height;
     }
 
+    @Override
+    public int getWidthBlackBar(){ return widthBlackBar; }
+
+    @Override
+    public int getHeightBlackBar(){ return heightBlackBar; }
+
+    @Override
+    public double getScaleFactor(){ return scaleFactor; }
 
 /* ---------------------------------------------------------------------------------------------- *
  * -------------------------------------- MÉTODOS PRIVADOS -------------------------------------- *

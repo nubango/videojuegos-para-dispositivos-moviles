@@ -76,8 +76,27 @@ public class JSONReader {
             JSONObject item = (JSONObject) items.get(j);
             double x = Double.parseDouble(item.get("x").toString());
             double y = Double.parseDouble(item.get("y").toString());
-            itemArray.add(new Item(x, y));
-            //itemArray.add(new Item(x + OffTheLineLogic.LOGIC_WIDTH / 2, y + OffTheLineLogic.LOGIC_HEIGHT / 2));
+
+            double radius = 0;
+            Object o1 = item.get("radius");
+            if(o1!= null){
+                radius = Double.parseDouble(item.get("radius").toString());
+            }
+
+            double speed = 0;
+            Object o2 = item.get("speed");
+            if(o2!= null){
+                speed = Double.parseDouble(item.get("speed").toString());
+            }
+
+            double angle = 0;
+            Object o3 =  item.get("angle");
+            if(o3 != null){
+                angle = Double.parseDouble(item.get("angle").toString());
+            }
+
+
+            itemArray.add(new Item(x, y, radius, speed, angle));
         }
 
         return itemArray;

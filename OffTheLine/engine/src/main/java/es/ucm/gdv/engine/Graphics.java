@@ -44,5 +44,7 @@ public interface Graphics {
     int getWidth();
     int getHeight();
     void setLogicSize(int w, int h);
-
+    int getWidthBlackBar();
+    int getHeightBlackBar();
+    double getScaleFactor();
 }

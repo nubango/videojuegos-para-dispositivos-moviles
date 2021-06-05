@@ -15,7 +15,7 @@ public class Level {
     private int _numItems = 0;
     private Game _logic = null;
 
-    private double _timeWaitToNextLevel = 2;    // Tiempo de espera hasta que pasa al siguente nivel (en segundos)
+    private double _timeWaitToNextLevel = 1;    // Tiempo de espera hasta que pasa al siguente nivel (en segundos)
     private double _elapsedTime = 0;
 
     Level(int numLevel, String name, ArrayList<Path> paths, ArrayList<Item> items){

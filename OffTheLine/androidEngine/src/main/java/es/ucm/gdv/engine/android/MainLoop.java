@@ -71,9 +71,6 @@ public class MainLoop implements Runnable {
     @Override
     public void run() {
         if (_renderThread != Thread.currentThread()) {
-            // ¿¿Quién es el tuercebotas que está llamando al
-            // run() directamente?? Programación defensiva
-            // otra vez, con excepción, por merluzo.
             throw new RuntimeException("run() should not be called directly");
         }
 

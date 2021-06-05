@@ -10,11 +10,13 @@ public class Input extends es.ucm.gdv.engine.AbstractInput {
 
     private ClickEvents _clickEvents;
     private MotionEvents _motionEvents;
+    private Graphics _graphics;
 
-    Input(JFrame jFrame){
+    Input(JFrame jFrame, Graphics e){
 
         _clickEvents = new ClickEvents();
         _motionEvents = new MotionEvents();
+        _graphics = e;
 
         jFrame.addMouseListener(_clickEvents);
         jFrame.addMouseMotionListener(_motionEvents);
@@ -31,7 +33,8 @@ public class Input extends es.ucm.gdv.engine.AbstractInput {
          */
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
-            addEvent(new Input.TouchEvent(Input.Type.displace, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
+            addEvent(new Input.TouchEvent(Input.Type.displace, (int)((mouseEvent.getX() - _graphics.getWidthBlackBar()) / _graphics.getScaleFactor()),
+                    (int)((mouseEvent.getY() - _graphics.getHeightBlackBar() - _graphics.hightBarOffset) / _graphics.getScaleFactor()), mouseEvent.getButton()));
         }
 
         @Override
@@ -40,7 +43,7 @@ public class Input extends es.ucm.gdv.engine.AbstractInput {
         }
     }
 
-    public class ClickEvents implements MouseListener {
+    class ClickEvents implements MouseListener {
 
         /* ---------------------------------------------------------------------------------------------- *
          * -------------------------------------- MÉTODOS PUBLICOS -------------------------------------- *
@@ -60,7 +63,8 @@ public class Input extends es.ucm.gdv.engine.AbstractInput {
          * */
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
-            addEvent(new Input.TouchEvent(Input.Type.press, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
+            addEvent(new Input.TouchEvent(Input.Type.press, (int)((mouseEvent.getX() - _graphics.getWidthBlackBar()) / _graphics.getScaleFactor()),
+                    (int)((mouseEvent.getY() - _graphics.getHeightBlackBar() - _graphics.hightBarOffset) / _graphics.getScaleFactor()), mouseEvent.getButton()));
         }
 
         /**
@@ -68,7 +72,8 @@ public class Input extends es.ucm.gdv.engine.AbstractInput {
          */
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
-            addEvent(new Input.TouchEvent(Input.Type.release, mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getButton()));
+            addEvent(new Input.TouchEvent(Input.Type.release, (int)((mouseEvent.getX() - _graphics.getWidthBlackBar()) / _graphics.getScaleFactor()),
+                    (int)((mouseEvent.getY() - _graphics.getHeightBlackBar() - _graphics.hightBarOffset) / _graphics.getScaleFactor()), mouseEvent.getButton()));
         }
 
         @Override

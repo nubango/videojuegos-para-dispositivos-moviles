@@ -11,7 +11,7 @@ public class Graphics extends es.ucm.gdv.engine.AbstractGraphics {
     private java.awt.Graphics2D _graphics;
     private Queue<AffineTransform> _transformQueue;
     private Engine _engine;
-    private int hightBarOffset = 58;
+    int hightBarOffset = 58;
 
 
     public Graphics(Engine engine)

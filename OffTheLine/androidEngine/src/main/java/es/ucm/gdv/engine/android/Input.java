@@ -7,9 +7,10 @@ import android.view.View;
 public class Input extends es.ucm.gdv.engine.AbstractInput {
 
     private TouchEvents _touchEvents;
-
-    Input(SurfaceView sv) {
+    private Graphics _graphics;
+    Input(SurfaceView sv, Graphics g) {
         _touchEvents = new TouchEvents();
+        _graphics = g;
         sv.setOnTouchListener(_touchEvents);
     }
 
@@ -24,8 +25,8 @@ public class Input extends es.ucm.gdv.engine.AbstractInput {
             if (type == null)
                 return false;
 
-            int x = (int)event.getX();
-            int y = (int)event.getY();
+            int x = (int)((event.getX() - _graphics.getWidthBlackBar()) / _graphics.getScaleFactor());
+            int y = (int)((event.getY() - _graphics.getHeightBlackBar()) / _graphics.getScaleFactor());
             int fingerId = event.getActionIndex();
 
             addEvent(new Input.TouchEvent(type, x, y, fingerId));

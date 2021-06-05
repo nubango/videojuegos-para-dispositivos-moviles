@@ -1,6 +1,4 @@
 package es.ucm.gdv.offtheline;
-
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +15,24 @@ public class Game implements Logic {
     private Engine _engine;
     private Player _player;
     private ArrayList<Level> _levels;
-    private int _currentLevel = 19;
+    private int _currentLevel = 0;
     private boolean _endOfGame = false;
+    private boolean _easy = true;
 
-    Game(OffTheLineLogic otl, Font f){
+    Game(OffTheLineLogic otl){
         _otl = otl;
-        _font = f;
     }
 
     @Override
     public boolean init(Engine e) {
         _engine = e;
+
+        try {
+            _font = _engine.getGraphics().newFont("fonts/BungeeHairline-Regular.ttf",
+                    10, true);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
 
         JSONReader jsonReader = new JSONReader(_engine);
         _levels = jsonReader.parserLevels("levels.json");
@@ -36,6 +41,7 @@ public class Game implements Logic {
 
         _levels.get(_currentLevel).setLogic(this);
         _player.setCurrentLevel(_levels.get(_currentLevel));
+        _player.setDificulty(_easy);
         _levels.get(_currentLevel).setFont(_font);
 
         return true;
@@ -53,6 +59,10 @@ public class Game implements Logic {
     }
     boolean playerIsAlive(){
         return !_player.isDeath();
+    }
+
+    void setDificulty(boolean easy){
+        _easy = easy;
     }
 
     public void handleInput() {

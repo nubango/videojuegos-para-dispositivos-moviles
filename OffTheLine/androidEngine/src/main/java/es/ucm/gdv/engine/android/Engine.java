@@ -29,7 +29,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _assetManager = context.getAssets();
         _mainLoop = new MainLoop(this);
         _graphics = new Graphics(_assetManager);
-        _input = new Input(_surfaceView);
+        _input = new Input(_surfaceView, _graphics);
     } // Engine
 
 /* ---------------------------------------------------------------------------------------------- *

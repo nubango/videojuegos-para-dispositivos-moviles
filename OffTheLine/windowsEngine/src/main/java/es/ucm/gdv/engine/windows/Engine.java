@@ -36,7 +36,7 @@ public class Engine implements es.ucm.gdv.engine.Engine {
         _ventana.setVisible(true);
 
         _graphics = new es.ucm.gdv.engine.windows.Graphics(this);
-        _input = new Input(_ventana);
+        _input = new Input(_ventana, _graphics);
 
         return true;
     }

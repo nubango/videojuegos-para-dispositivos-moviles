@@ -10,23 +10,22 @@ public class Player {
     private int _lifes = 10;        // Vidas del jugador
     private int _currentLifes = 0;        // Vidas del jugador
 
-    // Nuevo-----------------------------------------------
     private Utils.Point _pPosition;             // Posicion actual
     private Utils.Point _pLastPosition;         // Posicion anterior
 
     private int _playerColor = 0xFF0081F9;            // Color del player
     private int _lifeCrossColor = 0xFFFF1D03;            // Color del player
     private int _scale = 1;                     // Escala del player
-    private int _tam = 6;                       // Tamaño de los segmentos que forman el item
+    private int _tam = 6;                       // Mitad del tamaño de los segmentos que forman el player
     private int _side = 0;
     private double umbralItemCollision = 20;    // Distancia a la que coges un item
 
     private double _velocity = 0;               // Velocidad actual
-    private double _translateVelocity = 200;    // Velocidad de traslacion del player
+    private double _translateVelocity = 250;    // Velocidad de traslacion del player
     private int _orientation = 1;               // Sentido de movimiento
 
     private double _angle = 0;                  // Angulo de rotacion
-    private double _speed = 150;                // Velocidad de rotacion
+    private double _speed = 180;                // Velocidad de rotacion
 
     private Utils.Point _pV1;                   // Punto 1 del segmento transitado
     private Utils.Point _pV2;                   // Punto 2 del segmento transitado
@@ -72,6 +71,20 @@ public class Player {
         _linesAnimationDir = new Utils.Vector[_numLinesAnimation];
         _linesAnimationPos = new Utils.Vector[_numLinesAnimation];
         _linesAnimationAngle = new double[_numLinesAnimation];
+    }
+
+    void setDificulty(boolean easy) {
+        if(easy) {
+            _translateVelocity = 250;
+            _lifes = 10;
+            _currentLifes = 10;
+        }
+        else {
+            _translateVelocity = 400;
+            _lifes = 5;
+            _currentLifes = 5;
+        }
+        _velocity = _translateVelocity;
     }
 
     void reset(){
@@ -278,6 +291,8 @@ public class Player {
     }
 
     void update(double deltaTime) {
+        System.out.println(_currentLifes);
+
         _side = _tam / _scale;
 
         if (!_deathAnimation && !_deathOutBounds) {
