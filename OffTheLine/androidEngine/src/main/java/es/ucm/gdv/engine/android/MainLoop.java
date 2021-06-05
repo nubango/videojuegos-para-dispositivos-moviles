@@ -5,8 +5,9 @@ public class MainLoop implements Runnable {
     private boolean _running;
     private Thread _renderThread;
     private Engine _engine;
+    boolean _initLogic = false;
 
-    public MainLoop(Engine engine) {
+    MainLoop(Engine engine) {
         _engine = engine;
     }
 
@@ -20,7 +21,7 @@ public class MainLoop implements Runnable {
      * active rendering. El "juego" se vuelve a poner en marcha
      * (o se pone en marcha por primera vez).
      */
-    public void resume() {
+    void resume() {
 
         if (!_running) {
             // Solo hacemos algo si no nos estábamos ejecutando ya
@@ -45,7 +46,7 @@ public class MainLoop implements Runnable {
      * por ejemplo que Android llame a resume() antes de que el último
      * frame haya terminado de generarse).
      */
-    public void pause() {
+    void pause() {
 
         if (_running) {
             _running = false;
@@ -95,13 +96,17 @@ public class MainLoop implements Runnable {
         _engine.getGraphics().setScaleFactor(_engine.getSurfaceView().getWidth(), _engine.getSurfaceView().getHeight());
         _engine.getSurfaceView().getHolder().unlockCanvasAndPost(_engine.getGraphics().getCanvas());
 
-        if(!_engine.getLogic().init(_engine)) {
-            System.err.println("****Init de la lógica ha devuelto false****");
-            return;
-        }
+
 
         // Bucle principal.
         while(_running) {
+            if(_initLogic){
+                _initLogic = false;
+                if(!_engine.getLogic().init(_engine)) {
+                    System.err.println("****Init de la lógica ha devuelto false****");
+                    return;
+                }
+            }
 
             long currentTime = System.nanoTime();
             long nanoElapsedTime = currentTime - lastFrameTime;

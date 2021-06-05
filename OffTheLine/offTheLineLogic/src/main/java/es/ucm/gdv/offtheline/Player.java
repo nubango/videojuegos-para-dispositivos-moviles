@@ -8,14 +8,17 @@ import es.ucm.gdv.engine.Input;
 public class Player {
 
     private int _lifes = 10;        // Vidas del jugador
+    private int _currentLifes = 0;        // Vidas del jugador
 
     // Nuevo-----------------------------------------------
     private Utils.Point _pPosition;             // Posicion actual
     private Utils.Point _pLastPosition;         // Posicion anterior
 
-    private int _color = 0xFF0081F9;            // Color del player
+    private int _playerColor = 0xFF0081F9;            // Color del player
+    private int _lifeCrossColor = 0xFFFF1D03;            // Color del player
     private int _scale = 1;                     // Escala del player
     private int _tam = 6;                       // Tamaño de los segmentos que forman el item
+    private int _side = 0;
     private double umbralItemCollision = 20;    // Distancia a la que coges un item
 
     private double _velocity = 0;               // Velocidad actual
@@ -49,10 +52,11 @@ public class Player {
     private double _lineVelocityDeathAnimation = 15;    // velocidad de traslacion de las lineas
     private double _lineSpeedDeathAnimation = 50;       // velocidad de rotacion de las lineas
     private double _elapsedTime = 0;                    // tiempo transcurrido para controlar la animacion
-    private double _deathAnimationTime = 3;             // tiempo que dura la animacion de muerte
+    private double _deathAnimationTime = 2;             // tiempo que dura la animacion de muerte
 
 
     Player(){
+        _currentLifes = _lifes;
         _pLastPosition = new Utils.Point(0, 0);
         _pPosition = new Utils.Point(0, 0);
         _originJumpPosition = new Utils.Point(0, 0);
@@ -70,6 +74,14 @@ public class Player {
         _linesAnimationAngle = new double[_numLinesAnimation];
     }
 
+    void reset(){
+        _currentPathIndex = 0;
+        _currentLineIndex = -1;
+        _orientation = 1;
+        _velocity = _translateVelocity;
+        _jumping = false;
+    }
+
     boolean isDeath(){ return _deathAnimation || _deathOutBounds; }
 
     void setCurrentLevel(Level level){
@@ -77,11 +89,7 @@ public class Player {
         _currentPath = _currentLevel.getPaths().get(0);
         // reseteamos los valores
 
-        _currentPathIndex = 0;
-        _currentLineIndex = -1;
-        _orientation = 1;
-        _velocity = _translateVelocity;
-        _jumping = false;
+        reset();
 
         nextSegment();
     }
@@ -149,23 +157,24 @@ public class Player {
     }
 
     private void checkEnemiesCollision() {
-        if (_pPosition.x > OffTheLineLogic.LOGIC_WIDTH / 1.9 || _pPosition.x < -OffTheLineLogic.LOGIC_WIDTH / 1.9 ||
-                _pPosition.y > OffTheLineLogic.LOGIC_HEIGHT / 1.9 || _pPosition.y < -OffTheLineLogic.LOGIC_HEIGHT / 1.9) {
+        if (_pPosition.x > OffTheLineLogic.LOGIC_WIDTH / 2.0 || _pPosition.x < -OffTheLineLogic.LOGIC_WIDTH / 2.0 ||
+                _pPosition.y > OffTheLineLogic.LOGIC_HEIGHT / 2.0 || _pPosition.y < -OffTheLineLogic.LOGIC_HEIGHT / 2.0) {
             _deathOutBounds = true;
             _elapsedTime = 0;
+            _currentLifes--;
         }
         else if(_currentLevel.getEnemies()!=null)
             for (int j = 0; j < _currentLevel.getEnemies().size(); j++) {
-                Utils.Point[] points = _currentLevel.getEnemies().get(j).getExtremPoints();
-                if(points[0] != null && points[1] != null){
-                    Utils.Point p = Utils.segmentsIntersection(_pLastPosition, _pPosition, points[0], points[1]);
-                    if(p != null) {
-                        // Iniciamos animacion del personaje
-                        startDeathAction();
-                        // Cuando acabe la animacion reseteamos el nivel completo
-
-                    }
-                }
+//                Utils.Point[] points = _currentLevel.getEnemies().get(j).getExtremPoints();
+//                if(points[0] != null && points[1] != null){
+//                    Utils.Point p = Utils.segmentsIntersection(_pLastPosition, _pPosition, points[0], points[1]);
+//                    if(p != null) {
+//                        // Iniciamos animacion del personaje
+//                        startDeathAction();
+//                        // Cuando acabe la animacion reseteamos el nivel completo
+//
+//                    }
+//                }
             }
     }
 
@@ -269,6 +278,7 @@ public class Player {
     }
 
     void update(double deltaTime) {
+        _side = _tam / _scale;
 
         if (!_deathAnimation && !_deathOutBounds) {
             // Actualizamos la rotacion
@@ -374,68 +384,113 @@ public class Player {
         _pPosition.y = _orientation == 1 ? _pV1.y : _pV2.y;
     }
 
-    void render(Graphics g){
-        g.setColor(_color);
+    private void drawSquare(Graphics g, int side){
+        g.drawLine(-side, -side, side, -side);
+        g.drawLine(side, -side, side, side);
+        g.drawLine(side, side, -side, side);
+        g.drawLine(-side, side, -side, -side);
+    }
 
-        int side = _tam / _scale;
+    private void drawCross(Graphics g, int side){
+        g.drawLine(-side, -side, side, side);
+        g.drawLine(side, -side, -side, side);
+    }
 
+    private void drawPlayer(Graphics g){
+        g.setColor(_playerColor);
 
-        if(!_deathAnimation) {
-            if(!g.save()) {
-                return;
-            }
-
-            g.translate(_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2, -_pPosition.y +
-                    OffTheLineLogic.LOGIC_HEIGHT / 2);
-
-            g.scale(_scale, _scale);
-            g.rotate(_angle);
-
-
-            g.drawLine(-side, -side, side, -side);
-            g.drawLine(side, -side, side, side);
-            g.drawLine(side, side, -side, side);
-            g.drawLine(-side, side, -side, -side);
-
-            g.restore();
-        }
-        else{
-
-            for (int i = 0; i < _numLinesAnimation; i++) {
+        if(!_deathOutBounds)
+            if(!_deathAnimation) {
                 if(!g.save()) {
                     return;
                 }
 
-                g.translate(_linesAnimationPos[i].x+_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2, _linesAnimationPos[i].y-_pPosition.y +
+                g.translate(_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2, -_pPosition.y +
                         OffTheLineLogic.LOGIC_HEIGHT / 2);
 
                 g.scale(_scale, _scale);
-                g.rotate(_linesAnimationAngle[i]);
+                g.rotate(_angle);
 
-                g.drawLine(-side, -side, side, -side);
+                drawSquare(g, _side);
 
                 g.restore();
             }
+            else{
+
+                for (int i = 0; i < _numLinesAnimation; i++) {
+                    if(!g.save()) {
+                        return;
+                    }
+
+                    g.translate(_linesAnimationPos[i].x+_pPosition.x + OffTheLineLogic.LOGIC_WIDTH / 2,
+                            _linesAnimationPos[i].y-_pPosition.y + OffTheLineLogic.LOGIC_HEIGHT / 2);
+
+                    g.scale(_scale, _scale);
+                    g.rotate(_linesAnimationAngle[i]);
+
+                    g.drawLine(-_side, -_side, _side, -_side);
+
+                    g.restore();
+                }
+            }
+    }
+
+    private void drawLifes(Graphics g){
+        double offset = 15;
+        int i = 0;
+        for (; i < _lifes - _currentLifes; i++) {
+            if (!g.save()) {
+                return;
+            }
+
+            g.translate(OffTheLineLogic.LOGIC_WIDTH - (i*offset) - _side*10, _side*2 );
+            g.scale(_scale, _scale);
+
+            g.setColor(_lifeCrossColor);
+            drawCross(g, _side);
+
+            g.restore();
         }
+        for (; i < _lifes; i++) {
+            if (!g.save()) {
+                return;
+            }
+
+            g.translate(OffTheLineLogic.LOGIC_WIDTH - (i*offset) - _side*10, _side*2 );
+            g.scale(_scale, _scale);
+
+            g.setColor(_playerColor);
+            drawSquare(g, _side);
+
+            g.restore();
+        }
+    }
+
+    void render(Graphics g){
+
+        drawPlayer(g);
+        drawLifes(g);
 
         //jumpLineDebug(g);
     }
 
-    void jumpLineDebug(Graphics g){
+    private void jumpLineDebug(Graphics g) {
         // DEBUG
-        if(!g.save()) {
+        if (!g.save()) {
             return;
         }
-        g.translate((OffTheLineLogic.LOGIC_WIDTH / 2),OffTheLineLogic.LOGIC_HEIGHT / 2);
+        g.translate((OffTheLineLogic.LOGIC_WIDTH / 2), OffTheLineLogic.LOGIC_HEIGHT / 2);
         g.scale(_scale, -_scale);
 
-        if(_jumping)
-            g.drawLine((int) _pPosition.x/_scale, (int) _pPosition.y/_scale,
-                    (int)_originJumpPosition.x/_scale, (int)_originJumpPosition.y/_scale);
+        if (_jumping)
+            g.drawLine((int) _pPosition.x / _scale, (int) _pPosition.y / _scale,
+                    (int) _originJumpPosition.x / _scale, (int) _originJumpPosition.y / _scale);
 
         g.restore();
         // DEBUG
     }
+
+    int getCurrentLifes(){ return _currentLifes; }
 }
 
 

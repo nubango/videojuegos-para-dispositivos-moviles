@@ -62,13 +62,13 @@ public class Enemy {
             _maxUp = Math.min(aux1, aux2);
             _maxDown = Math.max(aux1, aux2);
 
-            calculatePoints();
+            //calculatePoints();
         }
     }
 
     void update(double deltaTime){
 
-        calculatePoints();
+        //calculatePoints();
         // Rotacion del enemigo. Si _speed es 0 no rota
         _angle = (_angle + _speed * deltaTime) % 360;
 

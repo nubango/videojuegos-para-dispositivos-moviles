@@ -83,6 +83,6 @@ public class Engine implements es.ucm.gdv.engine.Engine {
     public SurfaceView getSurfaceView(){ return _surfaceView; }
 
     @Override
-    public void setLogic(Logic l){ _logic = l; }
+    public void setLogic(Logic l){ _logic = l; _mainLoop._initLogic = true;}
 
 }

@@ -13,7 +13,7 @@ public class Level {
     private ArrayList<Enemy> _enemies = null;
     private Font _font = null;
     private int _numItems = 0;
-    private OffTheLineLogic _logic = null;
+    private Game _logic = null;
 
     private double _timeWaitToNextLevel = 2;    // Tiempo de espera hasta que pasa al siguente nivel (en segundos)
     private double _elapsedTime = 0;
@@ -111,9 +111,13 @@ public class Level {
         _numItems--;
     }
 
-    void setLogic(OffTheLineLogic l){
+    void setLogic(Game l){
         _logic = l;
     }
 
     ArrayList<Enemy> getEnemies(){ return _enemies; }
+
+    void init(){
+        resetLevel();
+    }
 }
