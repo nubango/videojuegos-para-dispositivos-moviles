@@ -44,7 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelManager: {fileID: 0}
-  levelPackages:
-  - {fileID: 11400000, guid: ebfe77e72ac827b458d3fa1396d380aa, type: 2}
-  - {fileID: 11400000, guid: d253028081ef9c44b88b66ccc597ad98, type: 2}
-  levelToPlay: 1
+  levelToPlay: 0
